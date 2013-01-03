@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>username</key>
+	<string>用户名</string>
+	<key>env_path</key>
+	<string>https://cooper.wf.taobao.org</string>
+	<key>skip_btn_text</key>
+	<string>跳过</string>
+	<key>login_btn_text</key>
+	<string>登录</string>
+	<key>googlelogin_btn_text</key>
+	<string>使用谷歌账号登录</string>
+	<key>googleClientId</key>
+	<string>585828767504.apps.googleusercontent.com</string>
+	<key>googleClientSecret</key>
+	<string>EoRiUVUV1rkxSOU28BQzorFC</string>
+	<key>googleScope</key>
+	<string>https://www.googleapis.com/auth/plus.me</string>
+	<key>google_redirect_uri</key>
+	<string>https://cooper.apphb.com/Account/GoogleLogin</string>
+	<key>isENTVersion</key>
+	<string>0</string>
+</dict>
+</plist>

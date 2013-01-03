@@ -1,0 +1,67 @@
+//
+// Prefix header for all source files of the 'CooperService' target in the 'CooperService' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
+
+#ifdef DEBUG
+#   define NSLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#   define NSLog(...)
+#endif
+
+#import "NSObject+SBJSON.h"
+#import "NSString+SBJSON.h"
+
+#import "CooperCore/Constant.h"
+
+#import "CodesharpSDK/NetworkManager.h"
+#import "CodesharpSDK/HttpWebRequest.h"
+
+//获取版本配置路径
+#define GETVERSION_URL                  @"http://sc.alibaba-inc.com/Taobao.Facades.ISysConfigTableService/GetSysConfigs?key=CooperConfig&flag=Test&source=CooperWeb&authkey=196F36349C6520E69CEAB9F0B9A23B43";
+//获取任务列表路径
+#define GETTASKLISTS_URL                @"/Personal/GetTaskFolders"
+//同步任务列表路径
+#define CREATETASKLIST_URL              @"/Personal/CreateTaskFolder"
+//同步所有的任务列表
+#define TASKLISTS_SYNC_URL              @"/Personal/CreateTaskFolders"
+//优先级获取路径
+#define TASK_GETBYPRIORITY_URL          @"/Personal/GetByPriority"
+//个人任务同步路径
+#define TASK_SYNC_URL                   @"/Personal/Sync"
+//团队任务同步路径
+#define TEAMTASK_SYNC_URL               @"/Team/Sync"
+//获取所有团队
+#define GETTEAMS_URL                    @"/Team/GetTeams"
+//获取指定团队的任务列表
+#define TeamTask_GETINCOMPLETEDBYPRIORITY_URL   @"/Team/GetIncompletedByPriority"
+//注销路径
+#define LOGOUT_URL                      @"/Account/Logout"
+//默认登录入口
+#define LOGIN_URL                       @"/Account/Login"
+//Google登录入口
+#define GOOGLE_LOGIN_URL                @"/Account/GoogleLogin"
+//Ark登录入口
+#define ARKLOGIN_URL                    @"/Account/ArkLogin"
+//Workbench登录入口
+#define WORKBENCHLOGIN_URL              @"/Account/WorkbenchLogin"
+
+////////////////////////////////////////////////////////////////
+//企业任务相关API接口
+#define ENTERPRISE_GETRELEVANTTASKS_URL         @"/EnterpriseTask/GetRelevantTasks"
+#define ENTERPRISE_CHANGETASKCOMPLETED_URL      @"/EnterpriseTask/ChangeTaskCompleted"
+#define ENTERPRISE_CHANGETASKDUETIME_URL        @"/EnterpriseTask/ChangeTaskDueTime"
+#define ENTERPRISE_CHANGETASKPRIORITY_URL       @"/EnterpriseTask/ChangeTaskPriority"
+#define ENTERPRISE_UPDATETASK_URL               @"/EnterpriseTask/UpdateTask"
+#define ENTERPRISE_CREATETASK_URL               @"/EnterpriseTask/CreateTask"
+#define ENTERPRISE_NEWTASK_URL                  @"/EnterpriseTask/NewTask"
+#define ENTERPRISE_CREATETASKATTACH_URL         @"/EnterpriseTask/CreateTaskAttach"
+#define ENTERPRISE_TASKDETAIL_URL               @"/EnterpriseTask/TaskDetail"
+#define ENTERPRISE_GETTODOTASKS_URL             @"/EnterpriseTask/GetTodoTasks"
+#define ENTERPRISE_FINDUSERS_URL                @"/EnterpriseTask/FindUsers"
+////////////////////////////////////////////////////////////////
+
+#define REQUEST_TYPE                    @"RequestType"

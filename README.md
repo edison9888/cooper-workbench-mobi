@@ -1,4 +1,4 @@
-aita-mobi
+cooper-workbench-mobi
 =========
 
-aita mobile app.
+工作台的任务客户端移动App.
