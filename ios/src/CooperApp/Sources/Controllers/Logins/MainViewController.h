@@ -17,7 +17,7 @@
 #import "EnterpriseOptionViewController.h"
 #import "JASidePanelController.h"
 
-@interface MainViewController : BaseViewController<LoginViewDelegate,UITabBarControllerDelegate>
+@interface MainViewController : Base2ViewController<LoginViewDelegate,UITabBarControllerDelegate>
 
 @property (nonatomic, retain) BaseNavigationController *loginViewNavController;
 @property (nonatomic, retain) BaseNavigationController *tasklistNavController;

@@ -29,6 +29,8 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_bg.png"]];
+    
     accountService = [[AccountService alloc] init];
     
     NSString* login_btn_text = [[[SysConfig instance] keyValue] objectForKey:@"login_btn_text"];

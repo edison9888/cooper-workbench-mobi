@@ -178,6 +178,7 @@
 		18A92DBA15D2EA2800423A55 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A92DB515D2EA2800423A55 /* GTMOAuth2ViewControllerTouch.m */; };
 		18A92DBB15D2EA2800423A55 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18A92DB615D2EA2800423A55 /* GTMOAuth2ViewTouch.xib */; };
 		18A92DBD15D2EA5600423A55 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A92DBC15D2EA5600423A55 /* Security.framework */; };
+		18EDFAFE1695ED1A00F61A8A /* login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 18EDFAFD1695ED1A00F61A8A /* login_bg.png */; };
 		18F5D48215F8A5FE004C5771 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18F5D48115F8A5FD004C5771 /* CoreText.framework */; };
 		6AA9EE801606D68D00A5B013 /* libCodesharpSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E2F8A115F4D9060062E57F /* libCodesharpSDK.a */; };
 		6AA9EE811606D68D00A5B013 /* libCooperCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABD915D2D59400C7E8DA /* libCooperCore.a */; };
@@ -530,6 +531,7 @@
 		18A92DB615D2EA2800423A55 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
 		18A92DBC15D2EA5600423A55 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		18E2F89C15F4D9050062E57F /* CodesharpSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodesharpSDK.xcodeproj; path = ../../lib/CodesharpSDK/CodesharpSDK.xcodeproj; sourceTree = "<group>"; };
+		18EDFAFD1695ED1A00F61A8A /* login_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_bg.png; sourceTree = "<group>"; };
 		18F5D48115F8A5FD004C5771 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6AD180EA168020B20064FA10 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		6AD180EC168020DA0064FA10 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -600,6 +602,7 @@
 		18752AD516958AF00058F614 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				18EDFAFC1695ED1A00F61A8A /* Login */,
 				18752AD616958AFB0058F614 /* Enterprise */,
 				18752B0716958AFB0058F614 /* PersonalAndTeam */,
 			);
@@ -1140,6 +1143,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		18EDFAFC1695ED1A00F61A8A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				18EDFAFD1695ED1A00F61A8A /* login_bg.png */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		6AD181C9168194090064FA10 /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1421,6 +1432,7 @@
 				18752B6F16958AFB0058F614 /* tasklist.png in Resources */,
 				18752B7016958AFB0058F614 /* team.png in Resources */,
 				18752B7116958AFB0058F614 /* uncomplete.png in Resources */,
+				18EDFAFE1695ED1A00F61A8A /* login_bg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,10 +10,10 @@
 #import "LoginViewDelegate.h"
 #import "CustomButton.h"
 #import "DomainLabel.h"
-#import "BaseViewController.h"
+#import "Base2ViewController.h"
 #import "GTMOAuth2Authentication.h"
 
-@interface LoginViewController : BaseViewController<UITableViewDelegate
+@interface LoginViewController : Base2ViewController<UITableViewDelegate
 ,UITableViewDataSource
 ,LoginViewDelegate
 ,DomainLabelDelegate
