@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "App">
+      <FileRef
+         location = "group:src/CooperApp/CooperApp.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "CooperKit">
+      <FileRef
+         location = "group:src/CooperCore/CooperCore.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:src/CooperRepository/CooperRepository.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:src/CooperService/CooperService.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "CodesharpKit">
+      <FileRef
+         location = "group:lib/CodesharpSDK/CodesharpSDK.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Three20">
+      <FileRef
+         location = "group:lib/Three20/Three20UICommon/Three20UICommon.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:lib/Three20/Three20UINavigator/Three20UINavigator.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:lib/Three20/Three20UI/Three20UI.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:lib/Three20/Three20Style/Three20Style.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:lib/Three20/Three20Network/Three20Network.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:lib/Three20/Three20Core/Three20Core.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:lib/Three20/Three20/Three20.xcodeproj">
+      </FileRef>
+   </Group>
+</Workspace>

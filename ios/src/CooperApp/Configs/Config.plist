@@ -21,6 +21,6 @@
 	<key>google_redirect_uri</key>
 	<string>https://cooper.apphb.com/Account/GoogleLogin</string>
 	<key>isENTVersion</key>
-	<string>0</string>
+	<string>1</string>
 </dict>
 </plist>
