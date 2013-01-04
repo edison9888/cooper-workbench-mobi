@@ -29,70 +29,162 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_bg.png"]];
-    
     accountService = [[AccountService alloc] init];
     
-    NSString* login_btn_text = [[[SysConfig instance] keyValue] objectForKey:@"login_btn_text"];
-    NSString* skip_btn_text = [[[SysConfig instance] keyValue] objectForKey:@"skip_btn_text"];
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewClick:)];
+    [self.view addGestureRecognizer:recognizer];
+    [recognizer release];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_bg.png"]];
+    
+    //LogoImageView
+    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 164)];
+    UIImage *logoImage = [UIImage imageNamed:@"login_logo.png"];
+    logoImageView.image = logoImage;
+    [self.view addSubview:logoImageView];
+    [logoImageView release];
+    
+    //域账号View
+    UIView *domainView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 180, 176, 35)];
+    domainView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
+    
+    domainTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 176, 35)];
+    domainTextField.userInteractionEnabled = NO;
+    domainTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    domainTextField.placeholder = @"域账号";
+    domainTextField.textColor = [UIColor colorWithRed:190.0/255 green:182.0/255 blue:175.0/255 alpha:1];
+    
+    [domainView addSubview:domainTextField];
+    
+    UIView *selDomainView = [[UIView alloc] initWithFrame:CGRectMake(133, 0, 14, 35)];
+    selDomainView.userInteractionEnabled = YES;
+    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selDomain:)];
+    [domainView addGestureRecognizer:recognizer];
+    [recognizer release];
+    
+    selDomainButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [selDomainButton setFrame:CGRectMake(13, 13, 14, 9)];
+    [selDomainButton setBackgroundImage:[UIImage imageNamed:@"login_selDown.png"] forState:UIControlStateNormal];
+    [selDomainView addSubview:selDomainButton];
+    
+    [domainView addSubview:selDomainView];
+    
+    [selDomainView release];
+    
+    [self.view addSubview:domainView];
+    
+    [domainView release];
+    
+    //域账号选择框
+    selectedDomainView = [[SelectedDomainView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 230, 176, 107)];
+    selectedDomainView.delegate = self;
+    
+    //用户名TextField
+    UIView *userNameView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 230, 176, 35)];
+    userNameView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
+    
+    userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 176, 35)];
+    userNameTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    userNameTextField.placeholder = @"用户名";
+    userNameTextField.textColor = [UIColor colorWithRed:190.0/255 green:182.0/255 blue:175.0/255 alpha:1];
+    userNameTextField.keyboardType = UIKeyboardTypeDefault;
+    userNameTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
+    userNameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    userNameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    userNameTextField.returnKeyType = UIReturnKeyNext;
+    [userNameTextField addTarget:self action:@selector(textFieldNextEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    
+    [userNameView addSubview:userNameTextField];
+    
+    [self.view addSubview:userNameView];
+    
+    [userNameView release];
+    
+    //密码TextField
+    UIView *passwordView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 280, 176, 35)];
+    passwordView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
+    
+    passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 176, 35)];
+    passwordTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    passwordTextField.placeholder = @"密码";
+    passwordTextField.textColor = [UIColor colorWithRed:190.0/255 green:182.0/255 blue:175.0/255 alpha:1];
+    passwordTextField.keyboardType = UIKeyboardTypeDefault;
+    passwordTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
+    passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    passwordTextField.returnKeyType = UIReturnKeyJoin;
+    passwordTextField.secureTextEntry = YES;
+    [passwordTextField addTarget:self action:@selector(textFieldDoneEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    
+    [passwordView addSubview:passwordTextField];
+    
+    [self.view addSubview:passwordView];
+    
+    [passwordView release];
+    
+    
+    //[self.view addSubview:selectedDomainView];
+    //NSString* login_btn_text = [[[SysConfig instance] keyValue] objectForKey:@"login_btn_text"];
+    //NSString* skip_btn_text = [[[SysConfig instance] keyValue] objectForKey:@"skip_btn_text"];
     //NSString* googlelogin_btn_text = [[[SysConfig instance] keyValue] objectForKey:@"googlelogin_btn_text"];
     
-    //登录View
-    float loginIpadHeight = 150;
-    float loginIphoneHeight = 220;
-    float googleLoginHeight = 0;
-
-    self.loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 180 + googleLoginHeight, [Tools screenMaxWidth], [Tools isPad] ? loginIpadHeight : loginIphoneHeight) style:UITableViewStyleGrouped];
-    if(!IS_ENTVERSION) {
-        self.loginTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
-    }
-    else {
-        self.loginTableView.backgroundColor = [UIColor clearColor];
-    }
-    self.loginTableView.allowsSelection = NO;
-    self.loginTableView.delegate = self;
-    self.loginTableView.dataSource = self;
-    self.loginTableView.scrollEnabled = NO;
-    self.loginTableView.backgroundView.alpha = 0.0;
-    
-    [self.view addSubview:self.loginTableView];
-
-    //登录按钮
-    self.btnLogin = [[CustomButton alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 150 + (IS_ENTVERSION ? 80 : 0) - [Tools screenMaxWidth] / 16.0, 320 + googleLoginHeight, 70, 40)
-                                                  image:[UIImage imageNamed:@"btn_center.png"]];
-    self.btnLogin.layer.cornerRadius = 10.0f;
-    self.btnLogin.layer.masksToBounds = YES;
-    [self.btnLogin addTarget:self 
-                      action:@selector(login:)
-            forControlEvents:UIControlEventTouchUpInside];
-    [self.btnLogin setTitle:login_btn_text 
-                   forState:UIControlStateNormal];
-    self.btnLogin.titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    [self.view addSubview:self.btnLogin];
-        
-    if(!IS_ENTVERSION) {
-        //跳过按钮
-        self.btnSkip = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        self.btnSkip.frame = CGRectMake([Tools screenMaxWidth] - 70 - [Tools screenMaxWidth] / 16.0, 250 + googleLoginHeight, 70, 40);
-        self.btnSkip.layer.cornerRadius = 6.0f;
-        self.btnSkip.layer.masksToBounds = YES;
-        [self.btnSkip addTarget:self 
-                         action:@selector(skip:)
-               forControlEvents:UIControlEventTouchUpInside];
-        [self.btnSkip setTitle:skip_btn_text 
-                      forState:UIControlStateNormal];
-        self.btnSkip.titleLabel.font = [UIFont boldSystemFontOfSize:20];
-        [self.view addSubview:self.btnSkip];
-    }
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 164)];
-    UIImage *imgLogo = [UIImage imageNamed:@"login_logo.png"];
-    
-    imageView.image = imgLogo;
-    
-    [self.view addSubview:imageView];
-    
-    [imageView release];
+//    //登录View
+//    float loginIpadHeight = 150;
+//    float loginIphoneHeight = 220;
+//    //float googleLoginHeight = 0;
+//
+//    self.loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 180, [Tools screenMaxWidth], [Tools isPad] ? loginIpadHeight : loginIphoneHeight) style:UITableViewStyleGrouped];
+//    if(!IS_ENTVERSION) {
+//        self.loginTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
+//    }
+//    else {
+//        self.loginTableView.backgroundColor = [UIColor clearColor];
+//    }
+//    self.loginTableView.allowsSelection = NO;
+//    self.loginTableView.delegate = self;
+//    self.loginTableView.dataSource = self;
+//    self.loginTableView.scrollEnabled = NO;
+//    self.loginTableView.backgroundView.alpha = 0.0;
+//    
+//    [self.view addSubview:self.loginTableView];
+//
+//    //登录按钮
+//    self.btnLogin = [[CustomButton alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 150 + (IS_ENTVERSION ? 80 : 0) - [Tools screenMaxWidth] / 16.0, 320 + googleLoginHeight, 70, 40)
+//                                                  image:[UIImage imageNamed:@"btn_center.png"]];
+//    self.btnLogin.layer.cornerRadius = 10.0f;
+//    self.btnLogin.layer.masksToBounds = YES;
+//    [self.btnLogin addTarget:self 
+//                      action:@selector(login:)
+//            forControlEvents:UIControlEventTouchUpInside];
+//    [self.btnLogin setTitle:login_btn_text 
+//                   forState:UIControlStateNormal];
+//    self.btnLogin.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+//    [self.view addSubview:self.btnLogin];
+//        
+//    if(!IS_ENTVERSION) {
+//        //跳过按钮
+//        self.btnSkip = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        self.btnSkip.frame = CGRectMake([Tools screenMaxWidth] - 70 - [Tools screenMaxWidth] / 16.0, 250 + googleLoginHeight, 70, 40);
+//        self.btnSkip.layer.cornerRadius = 6.0f;
+//        self.btnSkip.layer.masksToBounds = YES;
+//        [self.btnSkip addTarget:self 
+//                         action:@selector(skip:)
+//               forControlEvents:UIControlEventTouchUpInside];
+//        [self.btnSkip setTitle:skip_btn_text 
+//                      forState:UIControlStateNormal];
+//        self.btnSkip.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+//        [self.view addSubview:self.btnSkip];
+//    }
+//    
+//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 164)];
+//    UIImage *imgLogo = [UIImage imageNamed:@"login_logo.png"];
+//    
+//    imageView.image = imgLogo;
+//    
+//    [self.view addSubview:imageView];
+//    
+//    [imageView release];
     
 //#ifndef __ALI_VERSION__
 //    //使用谷歌登录
@@ -122,22 +214,51 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
 {
     self.navigationController.navigationBar.hidden = YES;
 
-    viewCenter = self.view.center;
+    viewCenter = CGPointMake(self.view.center.x, self.view.center.y + 22.0f);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     self.navigationController.navigationBar.hidden = NO;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+- (void)textFieldNextEditing:(id)sender
+{
+    if ([userNameTextField isFirstResponder]) {
+        [passwordTextField becomeFirstResponder];
+    }
 }
 
 -(IBAction)textFieldDoneEditing:(id)sender
 {
     [sender resignFirstResponder];
+    
+    [self login:nil];
 }
 
 - (void)dealloc 
 {
     [accountService release];
+    [domainTextField release];
+    [selectedDomainView release];
+    [userNameTextField release];
+    [passwordTextField release];
     [self.domainLabel release];
     [textUsername release];
     [textPassword release];
@@ -150,6 +271,40 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
 }
 
 #pragma mark - 触发自定义事件
+
+- (void)viewClick:(id)sender
+{
+    NSLog(@"【viewClick】");
+    if([self.view.subviews containsObject:selectedDomainView]) {
+        [selectedDomainView removeFromSuperview];
+        [selDomainButton setBackgroundImage:[UIImage imageNamed:@"login_selDown.png"] forState:UIControlStateNormal];
+    }
+    [userNameTextField resignFirstResponder];
+    [passwordTextField resignFirstResponder];
+}
+
+- (void)selDomain:(id)sender
+{
+    if ([self.view.subviews containsObject:selectedDomainView]) {
+        [selectedDomainView removeFromSuperview];
+        [selDomainButton setBackgroundImage:[UIImage imageNamed:@"login_selDown.png"] forState:UIControlStateNormal];
+    }
+    else {
+//        [selectBtn removeFromSuperview];
+//        if ([regionLabel.text isEqualToString:kTAOBAO_HZ]) {
+//            selectBtn.frame = btn1.frame;
+//        }
+//        else if ([regionLabel.text isEqualToString:kHZ]) {
+//            selectBtn.frame = btn2.frame;
+//        }
+//        else if ([regionLabel.text isEqualToString:kALIPAY]) {
+//            selectBtn.frame = btn3.frame;
+//        }
+//        [regionView insertSubview:selectBtn atIndex:2];
+        [self.view addSubview:selectedDomainView];
+        [selDomainButton setBackgroundImage:[UIImage imageNamed:@"login_selUp.png"] forState:UIControlStateNormal];
+    }
+}
 
 - (void)googleLogin:(id)sender
 {
@@ -193,9 +348,9 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
 {
     NSLog("【开始登录】");
     
-    if (self.domainLabel.text.length > 0 
-        && self.textUsername.text.length > 0
-        && self.textPassword.text.length > 0) 
+    if (domainTextField.text.length > 0
+        && userNameTextField.text.length > 0
+        && passwordTextField.text.length > 0)
         {
             self.HUD = [Tools process:@"登录中" view:self.view];
 
@@ -209,16 +364,16 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
             }
             
             if(IS_ENTVERSION) {
-                [accountService workbenchLogin:self.domainLabel.text
-                                      username:self.textUsername.text
-                                      password:self.textPassword.text
+                [accountService workbenchLogin:domainTextField.text
+                                      username:userNameTextField.text
+                                      password:passwordTextField.text
                                        context:context
                                       delegate:self];
             }
             else {
-                [accountService login:self.domainLabel.text
-                             username:self.textUsername.text
-                             password:self.textPassword.text
+                [accountService login:domainTextField.text
+                             username:userNameTextField.text
+                             password:passwordTextField.text
                               context:context
                              delegate:self];
             }
@@ -492,7 +647,45 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     return cell;
 }
 
+#pragma mark keyboard
+
+- (void)keyboardWillShow:(NSNotification *)aNotification
+{
+    [selectedDomainView removeFromSuperview];
+	CGRect keyboardRect = [[[aNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSTimeInterval animationDuration =
+	[[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    CGPoint center = viewCenter;
+    center.y -= keyboardRect.size.height;
+    center.y += 120.0f;
+    self.view.center = center;
+    [UIView setAnimationDuration:animationDuration];
+    [UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification
+{
+    [selectedDomainView removeFromSuperview];
+    NSTimeInterval animationDuration =
+	[[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    self.view.center = viewCenter;
+    [UIView setAnimationDuration:animationDuration];
+    [UIView commitAnimations];
+}
+
+#pragma mark - SelectedDomainViewDelegate接口
+
+- (void)callbackText:(NSString *)text
+{
+    domainTextField.text = text;
+    [selectedDomainView removeFromSuperview];
+    [selDomainButton setBackgroundImage:[UIImage imageNamed:@"login_selDown.png"] forState:UIControlStateNormal];
+}
+
 #pragma mark - google oauth相关
+
 - (void)viewController:(GTMOAuth2ViewControllerTouch *)viewController
       finishedWithAuth:(GTMOAuth2Authentication *)authInfo
                  error:(NSError *)error 

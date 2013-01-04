@@ -18,7 +18,7 @@
 
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:workId forKey:@"workId"];
-    [params setObject:[NSNumber numberWithInt:1] forKey:@"includeCompleted"];
+    //[params setObject:[NSNumber numberWithInt:1] forKey:@"includeCompleted"];
 
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params headers:nil context:context delegate:delegate];

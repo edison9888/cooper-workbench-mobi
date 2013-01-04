@@ -296,7 +296,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    textTitleLabel.text = @"我的任务(内测)";
+    textTitleLabel.text = @"我的任务";
     
     NSLog(@"【请求任务响应数据】%@\n【返回状态码】%d", request.responseString, request.responseStatusCode);
 
@@ -422,13 +422,15 @@
 
 - (void)startAudio:(id)sender
 {
-    audioActionSheet = [[UIActionSheet alloc]
-                        initWithTitle:nil
-                        delegate:self
-                        cancelButtonTitle:@"取消"
-                        destructiveButtonTitle:nil
-                        otherButtonTitles: @"开始录音",nil];
-    [audioActionSheet showInView:self.view];
+//    audioActionSheet = [[UIActionSheet alloc]
+//                        initWithTitle:nil
+//                        delegate:self
+//                        cancelButtonTitle:@"取消"
+//                        destructiveButtonTitle:nil
+//                        otherButtonTitles: @"开始录音",nil];
+//    [audioActionSheet showInView:self.view];
+    
+    [self takeAudio];
 }
 
 - (void)startAdd:(id)sender
@@ -472,16 +474,16 @@
                 break;
         }
     }
-    else if(actionSheet == audioActionSheet) {
-        switch (buttonIndex) {
-            case 0:
-                //录音
-                [self takeAudio];
-                break;
-            default:
-                break;
-        }
-    }
+//    else if(actionSheet == audioActionSheet) {
+//        switch (buttonIndex) {
+//            case 0:
+//                //录音
+//                [self takeAudio];
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 }
 
 - (void)takePhoto

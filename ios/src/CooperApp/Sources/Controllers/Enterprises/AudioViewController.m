@@ -28,12 +28,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"audio_bg.png"]];
 
     self.navigationController.navigationBarHidden = YES;
 
     //底部
-    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 23, [Tools screenMaxWidth], 49)];
-    tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background.png"]];
+    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 110 - 23, [Tools screenMaxWidth], 110)];
+    tabbarView.backgroundColor = [UIColor colorWithRed:228.0/255 green:227.0/255 blue:227.0/255 alpha:1];
     [self.view addSubview:tabbarView];
 
     //添加返回按钮
@@ -92,7 +94,7 @@
     //    [photoBtn release];
 
     recordingView = [[[UIView alloc] init] autorelease];
-    recordingView.frame = CGRectMake(0, 100, [Tools screenMaxWidth], 300);
+    recordingView.frame = CGRectMake(0, 179, [Tools screenMaxWidth], 300);
     [self.view addSubview:recordingView];
 
     durationLabel = [[[UILabel alloc] init] autorelease];
@@ -103,8 +105,8 @@
     durationLabel.frame = CGRectMake(0, 0, [Tools screenMaxWidth], 60);
     [recordingView addSubview:durationLabel];
 
-    UIImageView *startAudioImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"startAudio.png"]] autorelease];
-    startAudioImageView.frame = CGRectMake(([Tools screenMaxWidth] - 64) / 2.0, 120, 64, 64);
+    UIImageView *startAudioImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_huatong.png"]] autorelease];
+    startAudioImageView.frame = CGRectMake(([Tools screenMaxWidth] - 157) / 2.0, 120, 157, 113);
     [recordingView addSubview:startAudioImageView];
 
     //停止录音后UI

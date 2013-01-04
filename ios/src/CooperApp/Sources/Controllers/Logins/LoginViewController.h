@@ -10,6 +10,7 @@
 #import "LoginViewDelegate.h"
 #import "CustomButton.h"
 #import "DomainLabel.h"
+#import "SelectedDomainView.h"
 #import "Base2ViewController.h"
 #import "GTMOAuth2Authentication.h"
 
@@ -17,6 +18,7 @@
 ,UITableViewDataSource
 ,LoginViewDelegate
 ,DomainLabelDelegate
+,SelectedDomainViewDelegate
 >
 {
     //google oauth2 client id and key
@@ -28,6 +30,13 @@
     AccountService *accountService;
 
     CGPoint viewCenter;
+    
+    UITextField *domainTextField;
+    UIButton *selDomainButton;
+    SelectedDomainView *selectedDomainView;
+    
+    UITextField *userNameTextField;
+    UITextField *passwordTextField;
 }
 
 @property(nonatomic,assign) id<LoginViewDelegate> delegate;
