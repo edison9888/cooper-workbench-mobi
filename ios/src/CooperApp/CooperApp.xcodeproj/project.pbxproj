@@ -180,6 +180,7 @@
 		18A92DBD15D2EA5600423A55 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A92DBC15D2EA5600423A55 /* Security.framework */; };
 		18EDFAFE1695ED1A00F61A8A /* login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 18EDFAFD1695ED1A00F61A8A /* login_bg.png */; };
 		18F5D48215F8A5FE004C5771 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18F5D48115F8A5FD004C5771 /* CoreText.framework */; };
+		6A40B4B7169679FB003D3D42 /* login_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A40B4B6169679FB003D3D42 /* login_logo.png */; };
 		6AA9EE801606D68D00A5B013 /* libCodesharpSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E2F8A115F4D9060062E57F /* libCodesharpSDK.a */; };
 		6AA9EE811606D68D00A5B013 /* libCooperCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABD915D2D59400C7E8DA /* libCooperCore.a */; };
 		6AA9EE821606D68D00A5B013 /* libCooperRepository.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABDF15D2D59C00C7E8DA /* libCooperRepository.a */; };
@@ -533,6 +534,7 @@
 		18E2F89C15F4D9050062E57F /* CodesharpSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodesharpSDK.xcodeproj; path = ../../lib/CodesharpSDK/CodesharpSDK.xcodeproj; sourceTree = "<group>"; };
 		18EDFAFD1695ED1A00F61A8A /* login_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_bg.png; sourceTree = "<group>"; };
 		18F5D48115F8A5FD004C5771 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		6A40B4B6169679FB003D3D42 /* login_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_logo.png; sourceTree = "<group>"; };
 		6AD180EA168020B20064FA10 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		6AD180EC168020DA0064FA10 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6AD181CA168194090064FA10 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
@@ -1146,6 +1148,7 @@
 		18EDFAFC1695ED1A00F61A8A /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				6A40B4B6169679FB003D3D42 /* login_logo.png */,
 				18EDFAFD1695ED1A00F61A8A /* login_bg.png */,
 			);
 			path = Login;
@@ -1433,6 +1436,7 @@
 				18752B7016958AFB0058F614 /* team.png in Resources */,
 				18752B7116958AFB0058F614 /* uncomplete.png in Resources */,
 				18EDFAFE1695ED1A00F61A8A /* login_bg.png in Resources */,
+				6A40B4B7169679FB003D3D42 /* login_logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

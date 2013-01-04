@@ -26,6 +26,8 @@
     GTMOAuth2Authentication *mAuth;
     
     AccountService *accountService;
+
+    CGPoint viewCenter;
 }
 
 @property(nonatomic,assign) id<LoginViewDelegate> delegate;

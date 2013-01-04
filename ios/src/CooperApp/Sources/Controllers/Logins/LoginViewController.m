@@ -39,10 +39,10 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     
     //登录View
     float loginIpadHeight = 150;
-    float loginIphoneHeight = 120;
+    float loginIphoneHeight = 220;
     float googleLoginHeight = 0;
 
-    self.loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 90 + googleLoginHeight, [Tools screenMaxWidth], [Tools isPad] ? loginIpadHeight : loginIphoneHeight) style:UITableViewStyleGrouped];
+    self.loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 180 + googleLoginHeight, [Tools screenMaxWidth], [Tools isPad] ? loginIpadHeight : loginIphoneHeight) style:UITableViewStyleGrouped];
     if(!IS_ENTVERSION) {
         self.loginTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
     }
@@ -58,7 +58,7 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     [self.view addSubview:self.loginTableView];
 
     //登录按钮
-    self.btnLogin = [[CustomButton alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 150 + (IS_ENTVERSION ? 80 : 0) - [Tools screenMaxWidth] / 16.0, 250 + googleLoginHeight, 70, 40)
+    self.btnLogin = [[CustomButton alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 150 + (IS_ENTVERSION ? 80 : 0) - [Tools screenMaxWidth] / 16.0, 320 + googleLoginHeight, 70, 40)
                                                   image:[UIImage imageNamed:@"btn_center.png"]];
     self.btnLogin.layer.cornerRadius = 10.0f;
     self.btnLogin.layer.masksToBounds = YES;
@@ -85,8 +85,8 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
         [self.view addSubview:self.btnSkip];
     }
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(([Tools screenMaxWidth] - 170) / 2.0, 30, 170, 50)];
-    UIImage *imgLogo = [UIImage imageNamed:@"logo.png"];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 164)];
+    UIImage *imgLogo = [UIImage imageNamed:@"login_logo.png"];
     
     imageView.image = imgLogo;
     
@@ -121,6 +121,8 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationController.navigationBar.hidden = YES;
+
+    viewCenter = self.view.center;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
