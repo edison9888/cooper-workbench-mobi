@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Base2ViewController.h"
-//#import "BaseNavigationController.h"
+#import "Base2NavigationController.h"
 //#import "AssigneeTaskViewController.h"
 //#import "RelatedTaskViewController.h"
 //#import "EnterpriseTaskDetailCreateViewController.h"

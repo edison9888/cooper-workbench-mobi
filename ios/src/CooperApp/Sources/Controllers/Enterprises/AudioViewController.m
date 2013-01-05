@@ -29,108 +29,95 @@
 {
     [super viewDidLoad];
     
+    recording = 0;
+    
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"audio_bg.png"]];
 
     self.navigationController.navigationBarHidden = YES;
 
     //底部
-    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 110 - 23, [Tools screenMaxWidth], 110)];
+    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 96 - 23, [Tools screenMaxWidth], 96)];
     tabbarView.backgroundColor = [UIColor colorWithRed:228.0/255 green:227.0/255 blue:227.0/255 alpha:1];
     [self.view addSubview:tabbarView];
 
-    //添加返回按钮
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
-    UIImageView *backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 15, 10)];
-    UIImage *backImage = [UIImage imageNamed:@"back2.png"];
-    backImageView.image = backImage;
-    [backView addSubview:backImageView];
-    backView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *backRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
-    [backView addGestureRecognizer:backRecognizer];
-    [backRecognizer release];
-    [tabbarView addSubview:backView];
-    [backImageView release];
-    [backView release];
-
-    //添加录音停止按钮
-    stopView = [[[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] / 2.0 - 16, 0, 38, 45)] autorelease];
-    UIImageView *stopImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 10, 32, 32)];
-    UIImage *stopImage = [UIImage imageNamed:@"pauseAudio.png"];
-    stopImageView.image = stopImage;
-    [stopView addSubview:stopImageView];
-    stopView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *stopRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(stopRecord:)];
-    [stopView addGestureRecognizer:stopRecognizer];
-    [stopRecognizer release];
-    [tabbarView addSubview:stopView];
-    [stopImageView release];
-
-    //添加录音提交按钮
-    submitView = [[[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 16 - 32, 0, 38, 45)] autorelease];
-    UIImageView *submitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 10, 32, 32)];
-    UIImage *submitImage = [UIImage imageNamed:@"ok.png"];
-    submitImageView.image = submitImage;
-    [submitView addSubview:submitImageView];
+    //添加关闭按钮
+    UIView *closeView = [[[UIView alloc] initWithFrame:CGRectMake(19, 32, 32, 32)] autorelease];
+    closeView.backgroundColor = [UIColor clearColor];
+    UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    closeButton.frame = CGRectMake(0, 0, 32, 32);
+    [closeButton setBackgroundImage:[UIImage imageNamed:@"audio_close.png"] forState:UIControlStateNormal];
+    [closeView addSubview:closeButton];
+    closeView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
+    [closeView addGestureRecognizer:recognizer];
+    [recognizer release];
+    [tabbarView addSubview:closeView];
+    
+    //添加录音开始按钮
+    UIView *startView = [[[UIView alloc] initWithFrame:CGRectMake((320 - 75) / 2.0, 10, 75, 75)] autorelease];
+    startButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    startButton.frame = CGRectMake(0, 0, 75, 75);
+    [startButton setBackgroundImage:[UIImage imageNamed:@"audio_start.png"] forState:UIControlStateNormal];
+    [startView addSubview:startButton];
+    startView.userInteractionEnabled = YES;
+    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startRecord:)];
+    [startView addGestureRecognizer:recognizer];
+    [recognizer release];
+    [tabbarView addSubview:startView];
+    
+    //添加提交按钮
+    submitView = [[[UIView alloc] initWithFrame:CGRectMake(269, 32, 32, 32)] autorelease];
+    submitView.backgroundColor = [UIColor clearColor];
+    UIButton *submitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    submitButton.frame = CGRectMake(0, 0, 32, 32);
+    [submitButton setBackgroundImage:[UIImage imageNamed:@"audio_submit.png"] forState:UIControlStateNormal];
+    [submitView addSubview:submitButton];
     submitView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *submitRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(submitAudio:)];
-    [submitView addGestureRecognizer:submitRecognizer];
-    [submitRecognizer release];
+    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(submitAudio:)];
+    [submitView addGestureRecognizer:recognizer];
+    [recognizer release];
     [tabbarView addSubview:submitView];
-    [submitImageView release];
     submitView.hidden = YES;
 
-    //    //上传按钮
-    //    UIView *photoBtn = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 10 - 42, 0, 38, 45)];
-    //    UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 35, 32)];
-    //    UIImage *photoImage = [UIImage imageNamed:@"photo.png"];
-    //    photoImageView.image = photoImage;
-    //    [photoBtn addSubview:photoImageView];
-    //    photoBtn.userInteractionEnabled = YES;
-    //    UITapGestureRecognizer *photoRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendFile:)];
-    //    [photoBtn addGestureRecognizer:photoRecognizer];
-    //    [photoRecognizer release];
-    //    [tabbarView addSubview:photoBtn];
-    //    [photoImageView release];
-    //    [photoBtn release];
-
     recordingView = [[[UIView alloc] init] autorelease];
-    recordingView.frame = CGRectMake(0, 179, [Tools screenMaxWidth], 300);
+    recordingView.frame = CGRectMake(0, 56, 320, 300);
     [self.view addSubview:recordingView];
 
     durationLabel = [[[UILabel alloc] init] autorelease];
-    durationLabel.font = [UIFont boldSystemFontOfSize:56.0f];
+    durationLabel.font = [UIFont boldSystemFontOfSize:90.0f];
+    durationLabel.textColor = [UIColor colorWithRed:141.0/255 green:132.0/255 blue:123.0/255 alpha:1];
     durationLabel.text = @"00:00";
     durationLabel.backgroundColor = [UIColor clearColor];
     durationLabel.textAlignment = UITextAlignmentCenter;
-    durationLabel.frame = CGRectMake(0, 0, [Tools screenMaxWidth], 60);
+    durationLabel.frame = CGRectMake(0, 0, 320, 90);
     [recordingView addSubview:durationLabel];
 
-    UIImageView *startAudioImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_huatong.png"]] autorelease];
-    startAudioImageView.frame = CGRectMake(([Tools screenMaxWidth] - 157) / 2.0, 120, 157, 113);
-    [recordingView addSubview:startAudioImageView];
-
-    //停止录音后UI
-    playingView = [[[UIView alloc] init] autorelease];
-    playingView.frame = CGRectMake(0, 100, [Tools screenMaxWidth], 300);
-    [self.view addSubview:playingView];
-
-    UIImageView *soundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sound.png"]];
-    soundImageView.frame = CGRectMake(([Tools screenMaxWidth] - 48) / 2.0, 0, 48, 48);
-    [playingView addSubview:soundImageView];
-
-    playProgressView = [[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault] autorelease];
-    playProgressView.frame = CGRectMake(20, 80, [Tools screenMaxWidth] - 40, 20);
-    [playingView addSubview:playProgressView];
-
-    UIImageView *playImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"play.png"]];
-    playImageView.frame = CGRectMake(([Tools screenMaxWidth] - 64) / 2.0, 120, 64, 64);
-    [playingView addSubview:playImageView];
-    playImageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *playRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPlay:)];
-    [playImageView addGestureRecognizer:playRecognizer];
-    [playRecognizer release];
-
-    playingView.hidden = YES;
+//    UIImageView *startAudioImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_huatong.png"]] autorelease];
+//    startAudioImageView.frame = CGRectMake(([Tools screenMaxWidth] - 157) / 2.0, 120, 157, 113);
+//    [recordingView addSubview:startAudioImageView];
+//
+//    //停止录音后UI
+//    playingView = [[[UIView alloc] init] autorelease];
+//    playingView.frame = CGRectMake(0, 100, [Tools screenMaxWidth], 300);
+//    [self.view addSubview:playingView];
+//
+//    UIImageView *soundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sound.png"]];
+//    soundImageView.frame = CGRectMake(([Tools screenMaxWidth] - 48) / 2.0, 0, 48, 48);
+//    [playingView addSubview:soundImageView];
+//
+//    playProgressView = [[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault] autorelease];
+//    playProgressView.frame = CGRectMake(20, 80, [Tools screenMaxWidth] - 40, 20);
+//    [playingView addSubview:playProgressView];
+//
+//    UIImageView *playImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"play.png"]];
+//    playImageView.frame = CGRectMake(([Tools screenMaxWidth] - 64) / 2.0, 120, 64, 64);
+//    [playingView addSubview:playImageView];
+//    playImageView.userInteractionEnabled = YES;
+//    UITapGestureRecognizer *playRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPlay:)];
+//    [playImageView addGestureRecognizer:playRecognizer];
+//    [playRecognizer release];
+//
+//    playingView.hidden = YES;
 
     //    fileSizeLabel = [[UILabel alloc] init];
     //    fileSizeLabel.text = @"";
@@ -148,41 +135,6 @@
     else {
         [session setActive:YES error:nil];
     }
-    ///////////////////////////////////////////////////////////
-    NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithFloat: AUDIO_RATE],
-                              AVSampleRateKey,
-                              [NSNumber numberWithInt: kAudioFormatLinearPCM],
-                              AVFormatIDKey,
-                              [NSNumber numberWithInt: 2],
-                              AVNumberOfChannelsKey,
-                              [NSNumber numberWithInt: AUDIO_QUALITY],
-                              AVEncoderAudioQualityKey,
-                              nil];
-
-    recordedFile = [[NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"RecordedFile"]] retain];
-    NSError* error;
-    recorder = [[AVAudioRecorder alloc] initWithURL:recordedFile settings:settings error:&error];
-    if (error)
-    {
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                        message:@"your device doesn't support your setting"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        [alert show];
-        [alert release];
-        return;
-    }
-    [recorder prepareToRecord];
-    recorder.meteringEnabled = YES;
-    [recorder record];
-
-    timer = [NSTimer scheduledTimerWithTimeInterval:.001f
-                                             target:self
-                                           selector:@selector(timerUpdate:)
-                                           userInfo:nil
-                                            repeats:YES];
 }
 
 - (void)viewDidUnload
@@ -280,6 +232,56 @@
                                             repeats:YES];
 }
 
+- (void)startRecord:(id)sender
+{
+    if(recording == 0) {
+        ///////////////////////////////////////////////////////////
+        NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithFloat: AUDIO_RATE],
+                                  AVSampleRateKey,
+                                  [NSNumber numberWithInt: kAudioFormatLinearPCM],
+                                  AVFormatIDKey,
+                                  [NSNumber numberWithInt: 2],
+                                  AVNumberOfChannelsKey,
+                                  [NSNumber numberWithInt: AUDIO_QUALITY],
+                                  AVEncoderAudioQualityKey,
+                                  nil];
+        
+        recordedFile = [[NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"RecordedFile"]] retain];
+        NSError* error;
+        recorder = [[AVAudioRecorder alloc] initWithURL:recordedFile settings:settings error:&error];
+        if (error)
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                            message:@"your device doesn't support your setting"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles: nil];
+            [alert show];
+            [alert release];
+            return;
+        }
+        [recorder prepareToRecord];
+        recorder.meteringEnabled = YES;
+        [recorder record];
+        
+        timer = [NSTimer scheduledTimerWithTimeInterval:.001f
+                                                 target:self
+                                               selector:@selector(timerUpdate:)
+                                               userInfo:nil
+                                                repeats:YES];
+        
+        [startButton setBackgroundImage:[UIImage imageNamed:@"audio_stop.png"] forState:UIControlStateNormal];
+        submitView.hidden = NO;
+        recording = 1;
+    }
+    else {
+        [self stopRecord:nil];
+        [startButton setBackgroundImage:[UIImage imageNamed:@"audio_start.png"] forState:UIControlStateNormal];
+        recording = 0;
+    }
+}
+
 - (void)stopRecord:(id)sender
 {
     [timer invalidate];
@@ -288,15 +290,14 @@
     [recorder stop];
     [recorder release];
     recorder = nil;
-
-    recordingView.hidden = YES;
-    playingView.hidden = NO;
-    stopView.hidden = YES;
-    submitView.hidden = NO;
 }
 
 - (void)submitAudio:(id)sender
 {
+    if(timer) {
+        [self stopRecord:nil];
+    }
+    
     self.HUD = [Tools process:@"正在处理录音文件" view:self.view];
 
 //    [self performSelectorOnMainThread:@selector(processAudio)
@@ -317,6 +318,8 @@
 
 - (void)goBack:(id)sender
 {
+    [self stopRecord:nil];
+    
     prevViewController.navigationController.navigationBarHidden = NO;
     [Tools layerTransition:self.navigationController.view from:@"left"];
     [self.navigationController popToViewController:prevViewController animated:NO];

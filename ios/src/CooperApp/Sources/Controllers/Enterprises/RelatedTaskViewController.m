@@ -13,7 +13,7 @@
 @implementation RelatedTaskViewController
 
 @synthesize taskInfos;
-@synthesize taskDetailEditViewController;
+@synthesize taskDetailViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil
                bundle:(NSBundle *)nibBundleOrNil
@@ -169,18 +169,18 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    taskDetailEditViewController = [[EnterpriseTaskDetailEditViewController alloc] init];
+    taskDetailViewController = [[EnterpriseTaskDetailViewController alloc] init];
     
     NSMutableDictionary *taskInfoDict = [self.taskInfos objectAtIndex:indexPath.row];
     NSString *taskId = [taskInfoDict objectForKey:@"id"];
-    taskDetailEditViewController.currentTaskId = taskId;
+    taskDetailViewController.currentTaskId = taskId;
     
-    taskDetailEditViewController.hidesBottomBarWhenPushed = YES;
+    taskDetailViewController.hidesBottomBarWhenPushed = YES;
     
     [Tools layerTransition:self.navigationController.view from:@"right"];
-    [self.navigationController pushViewController:taskDetailEditViewController animated:NO];
+    [self.navigationController pushViewController:taskDetailViewController animated:NO];
     
-    [taskDetailEditViewController release];
+    [taskDetailViewController release];
 }
 
 # pragma 似有方法
@@ -367,7 +367,49 @@
             [Tools failed:self.HUD];
         }
     }
-    else if([requestType isEqualToString:@"ChangeCompleted"]) {
+    else if([requestType isEqualToString:@"CreateTaskAttach"]) {
+        if(request.responseStatusCode == 200) {
+            
+            //[Tools close:self.HUD];
+            NSDictionary *dict = [[request responseString] JSONValue];
+            
+            //关闭相册界面
+            [pickerController dismissModalViewControllerAnimated:YES];
+            
+            if(dict)
+            {
+                NSNumber *state = [dict objectForKey:@"state"];
+                
+                if(state == [NSNumber numberWithInt:0]) {
+                    NSMutableDictionary *data = [dict objectForKey:@"data"];
+                    NSString *pictureId = [data objectForKey:@"attachmentId"];
+                    NSString *pictureFileName = [data objectForKey:@"fileName"];
+                    NSString *pictureUrl = [data objectForKey:@"url"];
+                    NSString *pictureThumbUrl = [data objectForKey:@"thumbUrl"];
+                    NSMutableDictionary *taskDetailDict = [NSMutableDictionary dictionary];
+                    [taskDetailDict setObject:pictureId forKey:@"pictureId"];
+                    [taskDetailDict setObject:pictureFileName forKey:@"pictureFileName"];
+                    [taskDetailDict setObject:pictureUrl forKey:@"pictureUrl"];
+                    [taskDetailDict setObject:pictureThumbUrl forKey:@"pictureThumbUrl"];
+                    
+                    EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
+                    
+                    taskDetailCreateViewController.taskDetailDict = taskDetailDict;
+                    taskDetailCreateViewController.prevViewController = self;
+                    taskDetailCreateViewController.createType = 2;
+                    
+                    [Tools layerTransition:self.navigationController.view from:@"right"];
+                    [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
+                    
+                    [taskDetailCreateViewController release];
+                }
+            }
+        }
+        else {
+            [Tools failed:self.HUD];
+        }
+    }
+    else if([requestType isEqualToString:@"ChangeTaskCompleted"]) {
         if(request.responseStatusCode == 200) {
             //TODO:正常ok
         }
@@ -384,27 +426,27 @@
 
 - (void)startAudio:(id)sender
 {
-//    audioActionSheet = [[UIActionSheet alloc]
-//                        initWithTitle:nil
-//                        delegate:self
-//                        cancelButtonTitle:@"取消"
-//                        destructiveButtonTitle:nil
-//                        otherButtonTitles: @"开始录音",nil];
-//    [audioActionSheet showInView:self.view];
-    //录音
+    //    audioActionSheet = [[UIActionSheet alloc]
+    //                        initWithTitle:nil
+    //                        delegate:self
+    //                        cancelButtonTitle:@"取消"
+    //                        destructiveButtonTitle:nil
+    //                        otherButtonTitles: @"开始录音",nil];
+    //    [audioActionSheet showInView:self.view];
+    
     [self takeAudio];
 }
 
 - (void)startAdd:(id)sender
 {
     EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
-
+    
     taskDetailCreateViewController.prevViewController = self;
     taskDetailCreateViewController.createType = 0;
-
+    
     [Tools layerTransition:self.navigationController.view from:@"right"];
     [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
-
+    
     [taskDetailCreateViewController release];
 }
 
@@ -426,7 +468,7 @@
             case 0:
                 //拍照
                 [self takePhoto];
-
+                
                 break;
             case 1:
                 //拍照
@@ -436,16 +478,16 @@
                 break;
         }
     }
-//    else if(actionSheet == audioActionSheet) {
-//        switch (buttonIndex) {
-//            case 0:
-//                //录音
-//                [self takeAudio];
-//                break;
-//            default:
-//                break;
-//        }
-//    }
+    //    else if(actionSheet == audioActionSheet) {
+    //        switch (buttonIndex) {
+    //            case 0:
+    //                //录音
+    //                [self takeAudio];
+    //                break;
+    //            default:
+    //                break;
+    //        }
+    //    }
 }
 
 - (void)takePhoto
@@ -454,14 +496,13 @@
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
     //判断是否有相机
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
+        pickerController = [[[UIImagePickerController alloc] init] autorelease];
+        pickerController.delegate = self;
         //设置拍照后的图片可被编辑
-        picker.allowsEditing = YES;
+        //pickerController.allowsEditing = YES;
         //资源类型为照相机
-        picker.sourceType = sourceType;
-        [self presentModalViewController:picker animated:YES];
-        [picker release];
+        pickerController.sourceType = sourceType;
+        [self presentModalViewController:pickerController animated:YES];
     }else {
         NSLog(@"该设备无摄像头");
     }
@@ -469,14 +510,13 @@
 
 - (void)localPhoto
 {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    pickerController = [[[UIImagePickerController alloc] init] autorelease];
     //资源类型为图片库
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    picker.delegate = self;
+    pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    pickerController.delegate = self;
     //设置选择后的图片可被编辑
-    picker.allowsEditing = YES;
-    [self presentModalViewController:picker animated:YES];
-    [picker release];
+    //picker.allowsEditing = YES;
+    [self presentModalViewController:pickerController animated:YES];
 }
 
 - (void)takeAudio
@@ -485,7 +525,7 @@
     audioViewController.prevViewController = self;
     [Tools layerTransition:self.navigationController.view from:@"right"];
     [self.navigationController pushViewController:audioViewController animated:NO];
-
+    
     [audioViewController release];
 }
 
@@ -498,23 +538,30 @@
 
 //图像选取器的委托方法，选完图片后回调该方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
-
+    
     if (image != nil) {
-
+        
         NSData *data;
         NSString *fileName;
-        if (UIImagePNGRepresentation(image)) {
+        
+        UIImage *bigImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(320.0, 640.0)];
+        
+        if (UIImagePNGRepresentation(bigImage)) {
             //返回为png图像
-            data = UIImagePNGRepresentation(image);
+            data = UIImagePNGRepresentation(bigImage);
             fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
         }
         else {
             //返回为JPEG图像
-            data = UIImageJPEGRepresentation(image, 1.0);
+            data = UIImageJPEGRepresentation(bigImage, 1.0);
             fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
         }
         //保存到阿里云盘
-        self.title = @"图片上传中...";
+        //self.title = @"图片上传中...";
+        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
+        [pickerController.view addSubview:self.HUD];
+        [self.HUD show:YES];
+        self.HUD.labelText = @"正在上传图片";
         NSMutableDictionary *context = [NSMutableDictionary dictionary];
         [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
         [enterpriseService createTaskAttach:data
@@ -523,8 +570,25 @@
                                     context:context
                                    delegate:self];
     }
-    //关闭相册界面
-    [picker dismissModalViewControllerAnimated:YES];
+}
+
+- (UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize
+{
+    // Create a graphics image context
+    UIGraphicsBeginImageContext(newSize);
+    
+    // Tell the old image to draw in this new context, with the desired
+    // new size
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    
+    // Get the new image from the context
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // End the context
+    UIGraphicsEndImageContext();
+    
+    // Return the new image.
+    return newImage;
 }
 
 @end

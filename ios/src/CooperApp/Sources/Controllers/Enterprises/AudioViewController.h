@@ -31,6 +31,10 @@
     UIView *submitView;
     UIProgressView *playProgressView;
     
+    UIButton *startButton;
+    
+    int recording;
+
     //UILabel *fileSizeLabel;
 }
 

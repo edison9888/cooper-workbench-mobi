@@ -13,7 +13,7 @@
 @implementation TodoTasksViewController
 
 @synthesize taskInfos;
-@synthesize taskDetailEditViewController;
+@synthesize taskDetailViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil
                bundle:(NSBundle *)nibBundleOrNil
@@ -172,18 +172,18 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    taskDetailEditViewController = [[EnterpriseTaskDetailEditViewController alloc] init];
+    taskDetailViewController = [[EnterpriseTaskDetailViewController alloc] init];
     
     NSMutableDictionary *taskInfoDict = [self.taskInfos objectAtIndex:indexPath.row];
     NSString *taskId = [taskInfoDict objectForKey:@"id"];
-    taskDetailEditViewController.currentTaskId = taskId;
+    taskDetailViewController.currentTaskId = taskId;
 
-    taskDetailEditViewController.hidesBottomBarWhenPushed = YES;
+    taskDetailViewController.hidesBottomBarWhenPushed = YES;
     
     [Tools layerTransition:self.navigationController.view from:@"right"];
-    [self.navigationController pushViewController:taskDetailEditViewController animated:NO];
+    [self.navigationController pushViewController:taskDetailViewController animated:NO];
     
-    [taskDetailEditViewController release];
+    [taskDetailViewController release];
 }
 
 # pragma 似有方法
@@ -214,8 +214,9 @@
     tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background.png"]];
     [self.view addSubview:tabbarView];
     //底部添加音频按钮
-    UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(39, 0, 38, 49)];
-    UIButton *audioImageView = [[UIButton alloc] initWithFrame:CGRectMake(0, 15, 12, 19)];
+    UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(9, 0, 73, 49)];
+    //audioView.backgroundColor = [UIColor redColor];
+    UIButton *audioImageView = [[UIButton alloc] initWithFrame:CGRectMake(30, 15, 12, 19)];
     [audioImageView setBackgroundImage:[UIImage imageNamed:@"audio.png"] forState:UIControlStateNormal];
     [audioView addSubview:audioImageView];
     audioView.userInteractionEnabled = YES;
@@ -226,9 +227,10 @@
     [audioImageView release];
     [audioView release];
     //底部添加文本按钮
-    UIView *addView = [[UIView alloc] initWithFrame:CGRectMake(145, 0, 38, 49)];
+    UIView *addView = [[UIView alloc] initWithFrame:CGRectMake(120, 0, 73, 49)];
+//    addView.backgroundColor = [UIColor redColor];
     UIButton *addImageView = [[UIButton alloc] init];
-    addImageView.frame = CGRectMake(0, 15, 19, 19);
+    addImageView.frame = CGRectMake(25, 15, 19, 19);
     [addImageView setBackgroundImage:[UIImage imageNamed:@"text.png"] forState:UIControlStateNormal];
     //[addImageView setBackgroundImage:[UIImage imageNamed:@"text_selected.png"] forState:UIControlStateSelected];
     [addView addSubview:addImageView];
@@ -240,8 +242,9 @@
     [addImageView release];
     [addView release];
     //添加拍照按钮
-    UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake(251, 0, 38, 45)];
-    UIButton *photoImageView = [[UIButton alloc] initWithFrame:CGRectMake(0, 15, 19, 17)];
+    UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake(237, 0, 73, 49)];
+    //photoView.backgroundColor = [UIColor redColor];
+    UIButton *photoImageView = [[UIButton alloc] initWithFrame:CGRectMake(25, 15, 19, 17)];
     [photoImageView setBackgroundImage:[UIImage imageNamed:@"photo.png"] forState:UIControlStateNormal];
     [photoView addSubview:photoImageView];
     photoView.userInteractionEnabled = YES;
@@ -370,8 +373,13 @@
     }
     else if([requestType isEqualToString:@"CreateTaskAttach"]) {
         if(request.responseStatusCode == 200) {
-            self.title = @"我的任务";
+
+            //[Tools close:self.HUD];
             NSDictionary *dict = [[request responseString] JSONValue];
+            
+            //关闭相册界面
+            [pickerController dismissModalViewControllerAnimated:YES];
+            
             if(dict)
             {
                 NSNumber *state = [dict objectForKey:@"state"];
@@ -492,14 +500,13 @@
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
     //判断是否有相机
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
+        pickerController = [[[UIImagePickerController alloc] init] autorelease];
+        pickerController.delegate = self;
         //设置拍照后的图片可被编辑
-        picker.allowsEditing = YES;
+        //pickerController.allowsEditing = YES;
         //资源类型为照相机
-        picker.sourceType = sourceType;
-        [self presentModalViewController:picker animated:YES];
-        [picker release];
+        pickerController.sourceType = sourceType;
+        [self presentModalViewController:pickerController animated:YES];
     }else {
         NSLog(@"该设备无摄像头");
     }
@@ -507,14 +514,13 @@
 
 - (void)localPhoto
 {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    pickerController = [[[UIImagePickerController alloc] init] autorelease];
     //资源类型为图片库
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    picker.delegate = self;
+    pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    pickerController.delegate = self;
     //设置选择后的图片可被编辑
-    picker.allowsEditing = YES;
-    [self presentModalViewController:picker animated:YES];
-    [picker release];
+    //picker.allowsEditing = YES;
+    [self presentModalViewController:pickerController animated:YES];
 }
 
 - (void)takeAudio
@@ -541,18 +547,25 @@
         
         NSData *data;
         NSString *fileName;
-        if (UIImagePNGRepresentation(image)) {
+        
+        UIImage *bigImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(320.0, 640.0)];
+        
+        if (UIImagePNGRepresentation(bigImage)) {
             //返回为png图像
-            data = UIImagePNGRepresentation(image);
+            data = UIImagePNGRepresentation(bigImage);
             fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
         }
         else {
             //返回为JPEG图像
-            data = UIImageJPEGRepresentation(image, 1.0);
+            data = UIImageJPEGRepresentation(bigImage, 1.0);
             fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
         }
         //保存到阿里云盘
-        self.title = @"图片上传中...";
+        //self.title = @"图片上传中...";
+        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
+        [pickerController.view addSubview:self.HUD];
+        [self.HUD show:YES];
+        self.HUD.labelText = @"正在上传图片";
         NSMutableDictionary *context = [NSMutableDictionary dictionary];
         [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
         [enterpriseService createTaskAttach:data
@@ -561,8 +574,25 @@
                                     context:context
                                    delegate:self];
     }
-    //关闭相册界面
-    [picker dismissModalViewControllerAnimated:YES];
+}
+
+- (UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize
+{
+    // Create a graphics image context
+    UIGraphicsBeginImageContext(newSize);
+    
+    // Tell the old image to draw in this new context, with the desired
+    // new size
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    
+    // Get the new image from the context
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // End the context
+    UIGraphicsEndImageContext();
+    
+    // Return the new image.
+    return newImage;
 }
 
 @end

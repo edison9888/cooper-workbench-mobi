@@ -9,7 +9,7 @@
 #import "Base2ViewController.h"
 #import "CooperService/EnterpriseService.h"
 #import "EnterpriseTaskTableCell.h"
-#import "EnterpriseTaskDetailEditViewController.h"
+#import "EnterpriseTaskDetailViewController.h"
 #import "EnterpriseTaskDetailCreateViewController.h"
 #import "AudioViewController.h"
 #import "TabbarLineView.h"
@@ -25,10 +25,12 @@
     EnterpriseService *enterpriseService;
 
     UILabel *textTitleLabel;
+    
+    UIImagePickerController *pickerController;
 }
 
 @property (nonatomic, retain) NSMutableArray *taskInfos;
-@property (nonatomic, retain) EnterpriseTaskDetailEditViewController *taskDetailEditViewController;
+@property (nonatomic, retain) EnterpriseTaskDetailViewController *taskDetailViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil
                bundle:(NSBundle *)nibBundleOrNil

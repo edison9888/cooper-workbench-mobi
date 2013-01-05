@@ -82,20 +82,20 @@
     subjectLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     subjectLabel.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
     subjectLabel.backgroundColor = [UIColor clearColor];
-    [subjectLabel setLineBreakMode:UILineBreakModeWordWrap];
     [subjectLabel setFont:[UIFont boldSystemFontOfSize:16]];
+    subjectLabel.lineBreakMode = UILineBreakModeWordWrap | UILineBreakModeTailTruncation;
     
     dueTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     dueTimeLabel.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
     [dueTimeLabel setLineBreakMode:UILineBreakModeWordWrap];
-    [dueTimeLabel setFont:[UIFont systemFontOfSize:14]];
+    [dueTimeLabel setFont:[UIFont systemFontOfSize:11]];
     dueTimeLabel.textColor = [UIColor grayColor];
     dueTimeLabel.backgroundColor = [UIColor clearColor];
     
     creatorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     creatorLabel.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
     [creatorLabel setLineBreakMode:UILineBreakModeWordWrap];
-    creatorLabel.font = [UIFont systemFontOfSize:12];
+    creatorLabel.font = [UIFont systemFontOfSize:11];
     creatorLabel.textColor = [UIColor grayColor];
     creatorLabel.backgroundColor = [UIColor clearColor];
 
@@ -150,77 +150,7 @@
     }
     NSNumber *attachmentCount = [taskInfoDict objectForKey:@"attachmentCount"];
     NSNumber *picCount = [taskInfoDict objectForKey:@"picCount"];
-    CGFloat textWidth = self.bounds.size.width - 120;
-    CGFloat textLeft = 60;
-
-    CGFloat totalHeight = 0;
     
-    NSString *subject = [taskInfoDict objectForKey:@"subject"];
-    subjectLabel.text = subject;
-//    CGSize subjectLabelSize = [subjectLabel.text sizeWithFont:subjectLabel.font
-//                                            constrainedToSize:CGSizeMake(textWidth, MAX_HEIGHT)
-//                                                lineBreakMode:UILineBreakModeWordWrap];
-    //CGFloat subjectLabelHeight = subjectLabelSize.height;
-    int subjectlines = 1;
-    subjectLabel.frame = CGRectMake(textLeft, PADDING, textWidth, subjectlines * 14);
-    subjectLabel.numberOfLines = subjectlines;
-    totalHeight += subjectlines * 14 + PADDING;
-
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"M-dd"];
-    NSString* dueTime = [taskInfoDict objectForKey:@"dueTime"];
-    
-    if(![dueTime isEqualToString:@""])
-    {
-        NSDate *dueDate = [Tools NSStringToShortNSDate:dueTime];
-        dueTimeLabel.text = [formatter stringFromDate:dueDate];
-        [dueTimeLabel setFrame:CGRectMake(textLeft, totalHeight + PADDING, textWidth, 20)];
-
-        totalHeight += 20 + PADDING;
-    }
-    
-    CGFloat tagHeight = totalHeight;
-    
-    NSString *creatorDisplayName = [taskInfoDict objectForKey:@"creatorDisplayName"];
-    
-    if(![creatorDisplayName isEqualToString:@""]) {
-
-        creatorLabel.text = creatorDisplayName;
-        
-        CGSize creatorLabelSize = [creatorLabel.text sizeWithFont:creatorLabel.font
-                                                      constrainedToSize:CGSizeMake(textWidth, MAX_HEIGHT)
-                                                          lineBreakMode:UILineBreakModeWordWrap];
-        CGFloat creatorLabelHeight = creatorLabelSize.height;
-        if(creatorLabelHeight == 0.0f)
-        {
-            
-        }
-        else
-        {
-            int creatorlines = creatorLabelHeight / 12;
-            
-            creatorLabel.frame = CGRectMake(textLeft, totalHeight + PADDING, textWidth, creatorLabelHeight);
-            creatorLabel.numberOfLines = creatorlines;
-            tagHeight = totalHeight + PADDING;
-            totalHeight += creatorLabelHeight + PADDING;
-        }
-    }
-
-    if(totalHeight < 46)
-        totalHeight = 46;
-
-    totalHeight += PADDING;
-    
-    UIView *seperatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
-    seperatorView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_separator.png"]];
-    [self.contentView addSubview:seperatorView];
-    [seperatorView release];
-    
-    totalHeight += 1;
-    
-    [self setFrame:CGRectMake(0, 0, self.bounds.size.width, totalHeight)];
-    [leftView setFrame:CGRectMake(0, 0, 40, totalHeight)];
-
     if([attachmentCount intValue] + [picCount intValue] > 0) {
         
         CGFloat iconLeft = [Tools screenMaxWidth] - 8;
@@ -232,12 +162,12 @@
         }
         
         iconsView = [[UIView alloc] initWithFrame:CGRectMake(iconLeft, PADDING, [Tools screenMaxWidth] - iconLeft, 15)];
-                     
+        
         CGFloat tempFlagLeft = 0;
         if([attachmentCount intValue] > 0) {
             UIImageView *audioImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audioflag.png"]];
             audioImageView.frame = CGRectMake(tempFlagLeft, PADDING, 13, 13);
-            [iconsView addSubview:audioImageView]; 
+            [iconsView addSubview:audioImageView];
             tempFlagLeft += 20;
         }
         
@@ -250,6 +180,76 @@
         
         [self.contentView addSubview:iconsView];
     }
+    
+    CGFloat textWidth = self.bounds.size.width - 120;
+    CGFloat textLeft = 60;
+
+    CGFloat totalHeight = 0;
+    
+    NSString *subject = [taskInfoDict objectForKey:@"subject"];
+    subjectLabel.text = subject;
+    subjectLabel.frame = CGRectMake(textLeft, 8, textWidth, 16);
+    subjectLabel.numberOfLines = 1;
+    totalHeight += 16 + 8;
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"M-dd"];
+    NSString* dueTime = [taskInfoDict objectForKey:@"dueTime"];
+    
+    int lines = 1;
+    
+    if(![dueTime isEqualToString:@""])
+    {
+        NSDate *dueDate = [Tools NSStringToShortNSDate:dueTime];
+        dueTimeLabel.text = [formatter stringFromDate:dueDate];
+        [dueTimeLabel setFrame:CGRectMake(textLeft, totalHeight + PADDING, textWidth, 11)];
+
+        totalHeight += 11 + PADDING;
+        
+        lines += 1;
+    }
+    
+    CGFloat tagHeight = totalHeight;
+    
+    NSString *creatorDisplayName = [taskInfoDict objectForKey:@"creatorDisplayName"];
+    
+    if(![creatorDisplayName isEqualToString:@""]) {
+
+        creatorLabel.text = creatorDisplayName;
+        
+        if(![creatorDisplayName isEqualToString:@""])
+        {
+            creatorLabel.frame = CGRectMake(textLeft, totalHeight + PADDING, textWidth, 11);
+            tagHeight = totalHeight + PADDING;
+            totalHeight += 11 + PADDING;
+            
+            lines += 1;
+        }
+    }
+    
+    if(lines <= 2) {
+        totalHeight = 46;
+    }
+    else {
+        totalHeight = 58;
+    }
+
+//    if(totalHeight < 46)
+//        totalHeight = 46;
+//
+//    totalHeight += PADDING;
+    
+    UIView *seperatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+    seperatorView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_separator.png"]];
+    [self.contentView addSubview:seperatorView];
+    [seperatorView release];
+    
+    totalHeight += 1;
+    
+    [self setFrame:CGRectMake(0, 0, self.bounds.size.width, totalHeight)];
+    [leftView setFrame:CGRectMake(0, 0, 40, totalHeight)];
+
+    
 }
 
 @end

@@ -73,6 +73,13 @@
                     type:(NSString*)type
                  context:(NSMutableDictionary*)context
                 delegate:(id)delegate;
+//评价任务
+- (void)createCommentFeedback:(NSString*)commentId
+                       taskId:(NSString*)taskId
+                       workId:(NSString*)workId
+                  description:(NSString*)description
+                      context:(NSMutableDictionary*)context
+                     delegate:(id)delegate;
 //搜索用户
 - (void)findUsers:(NSString*)workId
                key:(NSString*)key
