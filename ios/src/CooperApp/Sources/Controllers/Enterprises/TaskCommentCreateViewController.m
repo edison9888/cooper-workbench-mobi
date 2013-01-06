@@ -119,7 +119,7 @@
     NSDictionary *userInfo = request.userInfo;
     NSString *requestType = [userInfo objectForKey:REQUEST_TYPE];
     
-    if([requestType isEqualToString:@"CreateCommentFeedback"]) {
+    if([requestType isEqualToString:@"CreateTaskComment"]) {
         if(request.responseStatusCode == 200) {
             [Tools  close:self.HUD];
             
@@ -151,13 +151,8 @@
         return;
     }
     
-    NSString *commentId = nil;
-    if(type == 0) {
-        commentId = [taskDetailDict objectForKey:@"weiboId"];
-    }
-    else {
-        commentId = [commentDict objectForKey:@"commentId"];
-    }
+    NSString *weiboId = nil;
+    weiboId = [taskDetailDict objectForKey:@"weiboId"];
     NSString *taskId = [taskDetailDict objectForKey:@"taskId"];
     NSString *workId = [[Constant instance] workId];
     
@@ -166,11 +161,11 @@
     [self.HUD show:YES];
     self.HUD.labelText = @"正在提交";
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
-    [context setObject:@"CreateCommentFeedback" forKey:REQUEST_TYPE];
-    [enterpriseService createCommentFeedback:commentId
+    [context setObject:@"CreateTaskComment" forKey:REQUEST_TYPE];
+    [enterpriseService createTaskComment:weiboId
                                       taskId:taskId
                                       workId:workId
-                                 description:comment
+                                    content:comment
                                      context:context
                                     delegate:self];
     

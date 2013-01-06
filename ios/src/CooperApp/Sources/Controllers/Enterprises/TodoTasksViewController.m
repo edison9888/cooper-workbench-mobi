@@ -126,10 +126,10 @@
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 //    cell.showsReorderControl = YES;
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    //cell.selectionStyle = UITableViewCellSelectionStyleGray;
     UIView *selectedView = [[UIView alloc] initWithFrame:cell.frame];
-    selectedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_selected.png"]];
-    //selectedView.backgroundColor = [UIColor colorWithRed:220/255.0f green:220/255.0f blue:220/255.0f alpha:1.0];
+    //selectedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_selected.png"]];
+    selectedView.backgroundColor = [UIColor colorWithRed:192/255.0f green:192/255.0f blue:192/255.0f alpha:0.8];
     //cell.backgroundColor = [UIColor whiteColor];
 
     //设置选中后cell的背景颜色

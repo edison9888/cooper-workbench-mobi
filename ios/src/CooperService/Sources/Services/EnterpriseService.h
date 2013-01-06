@@ -74,12 +74,12 @@
                  context:(NSMutableDictionary*)context
                 delegate:(id)delegate;
 //评价任务
-- (void)createCommentFeedback:(NSString*)commentId
-                       taskId:(NSString*)taskId
-                       workId:(NSString*)workId
-                  description:(NSString*)description
-                      context:(NSMutableDictionary*)context
-                     delegate:(id)delegate;
+- (void)createTaskComment:(NSString*)weiboId
+                   taskId:(NSString*)taskId
+                   workId:(NSString*)workId
+                  content:(NSString*)content
+                  context:(NSMutableDictionary*)context
+                 delegate:(id)delegate;
 //搜索用户
 - (void)findUsers:(NSString*)workId
                key:(NSString*)key

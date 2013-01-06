@@ -25,6 +25,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    currentIndex = -1;
     
     UITapGestureRecognizer *recognizer = nil;
     
@@ -74,8 +76,7 @@
     navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
     
     //完成面板
-    UIView *completeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 39)];
-    completeView.userInteractionEnabled = YES;
+    completeView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 39)] autorelease];
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showCompletePanel:)];
     [completeView addGestureRecognizer:recognizer];
     [recognizer release];
@@ -95,15 +96,21 @@
     [completeView addSubview:completeFlagLabel];
     
     [navPanelView addSubview:completeView];
-    [completeView release];
-    
+
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//
+//    [UIView commitAnimations];
+
     //完成时间面板
-    UIView *dueTimeView = [[UIView alloc] initWithFrame:CGRectMake(80, 0, 80, 39)];
+    dueTimeView = [[DateButton alloc] initWithFrame:CGRectMake(80, 0, 80, 39)];
+    dueTimeView.delegate = self;
     dueTimeView.userInteractionEnabled = YES;
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showDueTimePanel:)];
     [dueTimeView addGestureRecognizer:recognizer];
     [recognizer release];
-    
+
     dueTimeFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 23, 23)] autorelease];
     dueTimeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_dueTimeFlag.png"]];
     
@@ -119,7 +126,6 @@
     [dueTimeView addSubview:dueTimeFlagLabel];
     
     [navPanelView addSubview:dueTimeView];
-    [dueTimeView release];
     
     //优先级面板
     UIView *priorityView = [[UIView alloc] initWithFrame:CGRectMake(160, 0, 80, 39)];
@@ -152,7 +158,7 @@
     [userView addGestureRecognizer:recognizer];
     [recognizer release];
     
-    UIView *userFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 23, 23)] autorelease];
+    UIView *userFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 26, 23)] autorelease];
     userFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_userFlag.png"]];
     
     [userView addSubview:userFlagView];
@@ -191,6 +197,8 @@
 - (void)dealloc
 {
     [comments release];
+    [showPanelView release];
+    [arrowImageView release];
     [super dealloc];
 }
 
@@ -225,6 +233,23 @@
     viewController.delegate = self;
     [Tools layerTransition:self.navigationController.view from:@"right"];
     [self.navigationController pushViewController:viewController animated:NO];
+}
+
+#pragma mark - DateButtonDelegate接口
+- (void)returnValue:(NSDate *)value
+{
+    NSString *dueTime = [Tools ShortNSDateToNSString:value];
+
+    currentIndex = -1;
+    self.HUD = [Tools process:@"正在提交" view:self.view];
+
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:dueTime forKey:@"dueTime"];
+    [context setObject:@"ChangeTaskDueTime" forKey:REQUEST_TYPE];
+    [enterpriseService changeTaskDueTime:currentTaskId
+                                 dueTime:dueTime
+                                 context:context
+                                delegate:self];
 }
 
 #pragma mark - ASIHTTPRequest
@@ -309,8 +334,26 @@
         }
     }
     else if([requestType isEqualToString:@"ChangeTaskCompleted"]) {
+        NSNumber *isCompleted = [userInfo objectForKey:@"isCompleted"];
         if(request.responseStatusCode == 200) {
-            //            [detailView reloadData];
+            [Tools close:self.HUD];
+
+            [taskDetailDict setObject:isCompleted forKey:@"isCompleted"];
+            
+            if([isCompleted isEqualToNumber:[NSNumber numberWithInt:0]]) {
+                completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_incomplete.png"]];
+                completeFlagLabel.text = @"未完成";
+            }
+            else {
+                completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_complete.png"]];
+                completeFlagLabel.text = @"已完成";
+            }
+
+            if([self.view.subviews containsObject:showPanelView]) {
+                [showPanelView removeFromSuperview];
+                [arrowImageView removeFromSuperview];
+                navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+            }
         }
         else
         {
@@ -318,8 +361,12 @@
         }
     }
     else if([requestType isEqualToString:@"ChangeTaskDueTime"]) {
+        NSString *dueTime = [userInfo objectForKey:@"dueTime"];
         if(request.responseStatusCode == 200) {
-            //            [detailView reloadData];
+            [Tools close:self.HUD];
+            
+            [taskDetailDict setObject:dueTime forKey:@"dueTime"];
+            dueTimeFlagLabel.text = dueTime;
         }
         else
         {
@@ -327,8 +374,26 @@
         }
     }
     else if([requestType isEqualToString:@"ChangeTaskPriority"]) {
+        NSNumber *priority = [userInfo objectForKey:@"priority"];
         if(request.responseStatusCode == 200) {
-            //            [detailView reloadData];
+            [Tools close:self.HUD];
+
+            [taskDetailDict setObject:priority forKey:@"priority"];
+            
+            //绑定优先级
+            priorityFlagLabel.text = [self getPriorityValue:priority];
+            if([priority isEqualToNumber:[NSNumber numberWithInt:99]]) {
+                priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag.png"]];
+            }
+            else {
+                priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[NSString stringWithFormat:@"detail_priority%@Flag.png", [priority stringValue]]]];
+            }
+
+            if([self.view.subviews containsObject:showPanelView]) {
+                [showPanelView removeFromSuperview];
+                [arrowImageView removeFromSuperview];
+                navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+            }
         }
         else
         {
@@ -552,6 +617,13 @@
     
     totalHeight += 16;
     scrollView.contentSize = CGSizeMake(320, totalHeight + 44);
+
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        completeView.userInteractionEnabled = YES;
+    }
+    else {
+        completeView.userInteractionEnabled = NO;
+    }
     
     //绑定完成状态
     if([isCompleted isEqualToNumber:[NSNumber numberWithInt:0]]) {
@@ -616,95 +688,326 @@
 - (void)showCompletePanel:(id)sender
 {
     NSLog(@"showCompletePanel");
+
+    [dueTimeView resignFirstResponder];
     
     if([self.view.subviews containsObject:showPanelView]) {
         [showPanelView removeFromSuperview];
+        [arrowImageView removeFromSuperview];
+        navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
     }
     
-    showPanelView = [[[UIView alloc] init] autorelease];
+    if(currentIndex == 0) {
+        currentIndex = -1;
+        return;
+    }
+    else {
+        currentIndex = 0;
+    }
+    
+    showPanelView = [[UIView alloc] init];
     showPanelView.frame = CGRectMake(0, 56, 320, 46);
     showPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
+
+    UILabel *iscompleteTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 14, 100, 17)] autorelease];
+    iscompleteTitleLabel.text = @"任务状态：";
+    iscompleteTitleLabel.font = [UIFont systemFontOfSize:17];
+    iscompleteTitleLabel.backgroundColor = [UIColor clearColor];
+    iscompleteTitleLabel.textColor = [UIColor whiteColor];
+    [showPanelView addSubview:iscompleteTitleLabel];
+
+    UIView *incompleteSelView = [[[UIView alloc] initWithFrame:CGRectMake(105, 0, 80, 46)] autorelease];
+    incompleteSelView.userInteractionEnabled = YES;
+    UIButton *incompleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    incompleteButton.frame = CGRectMake(0, 12, 22, 22);
+    [incompleteButton setBackgroundImage:[UIImage imageNamed:@"detail_incomplete.png"] forState:UIControlStateNormal];
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeFalseIsCompleted:)];
+    [incompleteSelView addGestureRecognizer:recognizer];
+    [recognizer release];
+    [incompleteSelView addSubview:incompleteButton];
+    UILabel *incompleteTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(28, 17, 60, 12)] autorelease];
+    incompleteTitleLabel.text = @"未完成";
+    incompleteTitleLabel.font = [UIFont systemFontOfSize:12];
+    incompleteTitleLabel.backgroundColor = [UIColor clearColor];
+    incompleteTitleLabel.textColor = [UIColor whiteColor];
+    [incompleteSelView addSubview:incompleteTitleLabel];
+
+    [showPanelView addSubview:incompleteSelView];
+
+    UIView *completeSelView = [[[UIView alloc] initWithFrame:CGRectMake(180, 0, 80, 46)] autorelease];
+    completeSelView.userInteractionEnabled = YES;
+    UIButton *completeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    completeButton.frame = CGRectMake(0, 12, 22, 22);
+    [completeButton setBackgroundImage:[UIImage imageNamed:@"detail_complete.png"] forState:UIControlStateNormal];
+
+    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeTrueIsCompleted:)];
+    [completeSelView addGestureRecognizer:recognizer];
+    [recognizer release];
+    [completeSelView addSubview:completeButton];
+    UILabel *completeTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(28, 17, 60, 12)] autorelease];
+    completeTitleLabel.text = @"已完成";
+    completeTitleLabel.font = [UIFont systemFontOfSize:12];
+    completeTitleLabel.backgroundColor = [UIColor clearColor];
+    completeTitleLabel.textColor = [UIColor whiteColor];
+    [completeSelView addSubview:completeTitleLabel];
+    
+    [showPanelView addSubview:completeSelView];
     
     navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
-    if(arrowImageView == nil) {
-        arrowImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]] autorelease];
-        [navPanelView addSubview:arrowImageView];
-    }
+    arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
+    [navPanelView addSubview:arrowImageView];
     arrowImageView.frame = CGRectMake(34, 50, 12, 6);
     [self.view addSubview:showPanelView];
     
-    CGRect frame = scrollView.frame;
-    CGFloat frameY = frame.origin.y + 46;
-    scrollView.frame = CGRectMake(frame.origin.x, frameY, frame.size.width, frame.size.height);
+//    CGRect frame = scrollView.frame;
+//    CGFloat frameY = frame.origin.y + 46;
+//    scrollView.frame = CGRectMake(frame.origin.x, frameY, frame.size.width, frame.size.height);
 }
 
 - (void)showDueTimePanel:(id)sender
 {
     NSLog(@"showDueTimePanel");
-    
+
     if([self.view.subviews containsObject:showPanelView]) {
         [showPanelView removeFromSuperview];
+        [arrowImageView removeFromSuperview];
+        navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
     }
-    
-    showPanelView = [[[UIView alloc] init] autorelease];
-    showPanelView.frame = CGRectMake(0, 56, 320, 46);
-    showPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
-    
-    navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
-    if(arrowImageView == nil) {
-        arrowImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]] autorelease];
-        [navPanelView addSubview:arrowImageView];
+
+//    UIDatePicker *datePicker = [[[UIDatePicker alloc] init] autorelease];
+//    datePicker.datePickerMode=UIDatePickerModeDate;
+//    [UIView beginAnimations:@"fa;" context:nil];
+//    datePicker.frame = CGRectMake(0, 480,320 , 300);
+//    datePicker.tag = 201;
+//
+//    [self.view addSubview:datePicker];
+//    datePicker.frame = CGRectMake(0, 240, 320, 220);
+//    [datePicker addTarget:self action:@selector(changedDate:) forControlEvents:      UIControlEventValueChanged];
+//    [UIView setAnimationDuration:5.0];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    [UIView commitAnimations];
+
+    if(currentIndex == 1) {
+        currentIndex = -1;
+        [dueTimeView resignFirstResponder];
+        return;
     }
-    arrowImageView.frame = CGRectMake(114, 50, 12, 6);
-    [self.view addSubview:showPanelView];
+    else {
+        [dueTimeView becomeFirstResponder];
+        currentIndex = 1;
+    }
 }
 
 - (void)showPriorityPanel:(id)sender
 {
     NSLog(@"showPriorityPanel");
+
+    [dueTimeView resignFirstResponder];
     
     if([self.view.subviews containsObject:showPanelView]) {
         [showPanelView removeFromSuperview];
+        [arrowImageView removeFromSuperview];
+        navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+    }
+
+    if(currentIndex == 2) {
+        currentIndex = -1;
+        return;
+    }
+    else {
+        currentIndex = 2;
     }
     
-    showPanelView = [[[UIView alloc] init] autorelease];
+    showPanelView = [[UIView alloc] init];
     showPanelView.frame = CGRectMake(0, 56, 320, 46);
     showPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
     
     navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
     
-    if(arrowImageView == nil) {
-        arrowImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]] autorelease];
-        [navPanelView addSubview:arrowImageView];
-    }
+    arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
+    [navPanelView addSubview:arrowImageView];
     arrowImageView.frame = CGRectMake(194, 50, 12, 6);
+
+    priorityView0 = [[UIView alloc] initWithFrame:CGRectMake(20, 11, 80, 23)];
+    priorityView0.userInteractionEnabled = YES;
+    imageView0 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_priority0Flag.png"]];
+    imageView0.frame = CGRectMake(0, 0, 23, 23);
+    label0 = [[UILabel alloc] initWithFrame:CGRectMake(30, 7, 80, 12)];
+    label0.backgroundColor = [UIColor clearColor];
+    label0.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+    //label0.textColor = LABELCOLOR;
+    label0.text = @"尽快完成";
+    label0.font = [UIFont systemFontOfSize:12.0f];
+    [priorityView0 addSubview:imageView0];
+    [priorityView0 addSubview:label0];
+
+    priorityView1 = [[UIView alloc] initWithFrame:CGRectMake(120, 11, 80, 23)];
+    priorityView1.userInteractionEnabled = YES;
+    imageView1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_priority1Flag.png"]];
+    imageView1.frame = CGRectMake(0, 0, 23, 23);
+    label1 = [[UILabel alloc] initWithFrame:CGRectMake(30, 7, 100, 12)];
+    label1.backgroundColor = [UIColor clearColor];
+    //label1.textColor = LABELCOLOR;
+    label1.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+    label1.text = @"稍后完成";
+    label1.font = [UIFont systemFontOfSize:12.0f];
+    [priorityView1 addSubview:imageView1];
+    [priorityView1 addSubview:label1];
+
+    priorityView2 = [[UIView alloc] initWithFrame:CGRectMake(220, 11, 80, 23)];
+    priorityView2.userInteractionEnabled = YES;
+    imageView2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_priority2Flag.png"]];
+    imageView2.frame = CGRectMake(0, 0, 23, 23);
+    label2 = [[UILabel alloc] initWithFrame:CGRectMake(30, 7, 100, 12)];
+    label2.backgroundColor = [UIColor clearColor];
+    //label2.textColor = LABELCOLOR;
+    label2.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+    label2.text = @"迟些再说";
+    label2.font = [UIFont systemFontOfSize:12.0f];
+    [priorityView2 addSubview:imageView2];
+    [priorityView2 addSubview:label2];
+
+    [showPanelView addSubview:priorityView0];
+    [showPanelView addSubview:priorityView1];
+    [showPanelView addSubview:priorityView2];
+
+    if([label0.text isEqualToString:priorityFlagLabel.text]) {
+        imageView0.image = [UIImage imageNamed:@"detail_priority0Flag_sel.png"];
+        label0.textColor = [UIColor whiteColor];
+    }
+    else if([label1.text isEqualToString:priorityFlagLabel.text]) {
+        imageView1.image = [UIImage imageNamed:@"detail_priority1Flag_sel.png"];
+        label1.textColor = [UIColor whiteColor];
+    }
+    else if([label2.text isEqualToString:priorityFlagLabel.text]) {
+        imageView2.image = [UIImage imageNamed:@"detail_priority2Flag_sel.png"];
+        label2.textColor = [UIColor whiteColor];
+    }
+
+    UITapGestureRecognizer *recognizer0 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setPriority0:)];
+    [priorityView0 addGestureRecognizer:recognizer0];
+    [recognizer0 release];
+
+    UITapGestureRecognizer *recognizer1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setPriority1:)];
+    [priorityView1 addGestureRecognizer:recognizer1];
+    [recognizer1 release];
+
+    UITapGestureRecognizer *recognizer2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setPriority2:)];
+    [priorityView2 addGestureRecognizer:recognizer2];
+    [recognizer2 release];
     
     [self.view addSubview:showPanelView];
     
-    CGRect frame = scrollView.frame;
-    CGFloat frameY = frame.origin.y + 46;
-    scrollView.frame = CGRectMake(frame.origin.x, frameY, frame.size.width, frame.size.height);
+//    CGRect frame = scrollView.frame;
+//    CGFloat frameY = frame.origin.y + 46;
+//    scrollView.frame = CGRectMake(frame.origin.x, frameY, frame.size.width, frame.size.height);
 }
 
 - (void)showUserPanel:(id)sender
 {
     NSLog(@"showUserPanel");
+
+    [dueTimeView resignFirstResponder];
     
     if([self.view.subviews containsObject:showPanelView]) {
         [showPanelView removeFromSuperview];
+        [arrowImageView removeFromSuperview];
+        navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+    }
+
+    if(currentIndex == 3) {
+        currentIndex = -1;
+        return;
+    }
+    else {
+        currentIndex = 3;
     }
     
-    showPanelView = [[[UIView alloc] init] autorelease];
+    showPanelView = [[UIView alloc] init];
     showPanelView.frame = CGRectMake(0, 56, 320, 46);
     showPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
     
     navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
-    if(arrowImageView == nil) {
-        arrowImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]] autorelease];
-        [navPanelView addSubview:arrowImageView];
-    }
+    arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
+    [navPanelView addSubview:arrowImageView];
     arrowImageView.frame = CGRectMake(274, 50, 12, 6);
     [self.view addSubview:showPanelView];
+}
+
+- (void)changeTrueIsCompleted:(id)sender
+{
+    [self changeIsCompleted:[NSNumber numberWithInt:1]];
+}
+
+- (void)changeFalseIsCompleted:(id)sender
+{
+    [self changeIsCompleted:[NSNumber numberWithInt:0]];
+}
+
+- (void)changeIsCompleted:(NSNumber*)isCompleted
+{
+    currentIndex = -1;
+    
+    self.HUD = [Tools process:@"正在提交" view:self.view];
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:@"ChangeTaskCompleted" forKey:REQUEST_TYPE];
+    [context setObject:isCompleted forKey:@"isCompleted"];
+    [enterpriseService changeTaskCompleted:currentTaskId
+                               isCompleted:isCompleted
+                                   context:context
+                                  delegate:self];
+}
+
+- (void)setPriority0:(id)sender
+{
+    [self setSelectedIndex:0];
+}
+- (void)setPriority1:(id)sender
+{
+    [self setSelectedIndex:1];
+}
+- (void)setPriority2:(id)sender
+{
+    [self setSelectedIndex:2];
+}
+
+- (void)setSelectedIndex:(int)index
+{
+    if(index == 0) {
+        imageView0.image = [UIImage imageNamed:@"detail_priority0Flag_sel.png"];
+        imageView1.image = [UIImage imageNamed:@"detail_priority1Flag.png"];
+        imageView2.image = [UIImage imageNamed:@"detail_priority2Flag.png"];
+        label0.textColor = [UIColor whiteColor];
+        label1.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+        label2.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+    }
+    else if(index == 1) {
+        imageView0.image = [UIImage imageNamed:@"detail_priority0Flag.png"];
+        imageView1.image = [UIImage imageNamed:@"detail_priority1Flag_sel.png"];
+        imageView2.image = [UIImage imageNamed:@"detail_priority2Flag.png"];
+        label0.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+        label1.textColor = [UIColor whiteColor];
+        label2.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+    }
+    else if(index == 2) {
+        imageView0.image = [UIImage imageNamed:@"detail_priority0Flag.png"];
+        imageView1.image = [UIImage imageNamed:@"detail_priority1Flag.png"];
+        imageView2.image = [UIImage imageNamed:@"detail_priority2Flag_sel.png"];
+        label0.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+        label1.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
+        label2.textColor = [UIColor whiteColor];
+    }
+
+    currentIndex = -1;
+    self.HUD = [Tools process:@"正在提交" view:self.view];
+    NSNumber *priority = [NSNumber numberWithInt:index];
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:priority forKey:@"priority"];
+    [context setObject:@"ChangeTaskPriority" forKey:REQUEST_TYPE];
+    [enterpriseService changeTaskPriority:currentTaskId
+                                 priority:priority
+                                  context:context
+                                 delegate:self];
 }
 
 - (NSNumber*)getPriorityKey:(NSString*)priorityValue
@@ -724,7 +1027,7 @@
         return PRIORITY_TITLE_1;
     else if([priorityKey isEqualToNumber:[NSNumber numberWithInt:1]])
         return PRIORITY_TITLE_2;
-    else if([priorityKey isEqualToNumber:[NSNumber numberWithInt:0]])
+    else if([priorityKey isEqualToNumber:[NSNumber numberWithInt:2]])
         return PRIORITY_TITLE_3;
     return @"未设置";
 }

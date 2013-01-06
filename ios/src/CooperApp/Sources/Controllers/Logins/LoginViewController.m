@@ -44,10 +44,11 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     [logoImageView release];
     
     //域账号View
-    UIView *domainView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 180, 176, 35)];
+    UIView *domainView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 193, 176, 35)];
     domainView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
     
-    domainTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 176, 35)];
+    domainTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 170, 35)];
+    domainTextField.font = [UIFont systemFontOfSize:15];
     domainTextField.userInteractionEnabled = NO;
     domainTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     domainTextField.placeholder = @"域账号";
@@ -55,14 +56,14 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     
     [domainView addSubview:domainTextField];
     
-    UIView *selDomainView = [[UIView alloc] initWithFrame:CGRectMake(133, 0, 14, 35)];
+    UIView *selDomainView = [[UIView alloc] initWithFrame:CGRectMake(151, 0, 26, 35)];
     selDomainView.userInteractionEnabled = YES;
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selDomain:)];
     [domainView addGestureRecognizer:recognizer];
     [recognizer release];
     
     selDomainButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [selDomainButton setFrame:CGRectMake(13, 13, 14, 9)];
+    [selDomainButton setFrame:CGRectMake(6, 13, 14, 9)];
     [selDomainButton setBackgroundImage:[UIImage imageNamed:@"login_selDown.png"] forState:UIControlStateNormal];
     [selDomainView addSubview:selDomainButton];
     
@@ -75,14 +76,15 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     [domainView release];
     
     //域账号选择框
-    selectedDomainView = [[SelectedDomainView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 230, 176, 107)];
+    selectedDomainView = [[SelectedDomainView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 239, 176, 107)];
     selectedDomainView.delegate = self;
     
     //用户名TextField
-    UIView *userNameView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 230, 176, 35)];
+    UIView *userNameView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 239, 176, 35)];
     userNameView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
     
-    userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 176, 35)];
+    userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 170, 35)];
+    userNameTextField.font = [UIFont systemFontOfSize:15];
     userNameTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     userNameTextField.placeholder = @"用户名";
     userNameTextField.textColor = [UIColor colorWithRed:190.0/255 green:182.0/255 blue:175.0/255 alpha:1];
@@ -101,10 +103,11 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     [userNameView release];
     
     //密码TextField
-    UIView *passwordView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 280, 176, 35)];
+    UIView *passwordView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 285, 176, 35)];
     passwordView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
     
-    passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 176, 35)];
+    passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 170, 35)];
+    passwordTextField.font = [UIFont systemFontOfSize:15];
     passwordTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     passwordTextField.placeholder = @"密码";
     passwordTextField.textColor = [UIColor colorWithRed:190.0/255 green:182.0/255 blue:175.0/255 alpha:1];

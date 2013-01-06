@@ -92,9 +92,9 @@
     durationLabel.frame = CGRectMake(0, 0, 320, 90);
     [recordingView addSubview:durationLabel];
 
-//    UIImageView *startAudioImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_huatong.png"]] autorelease];
-//    startAudioImageView.frame = CGRectMake(([Tools screenMaxWidth] - 157) / 2.0, 120, 157, 113);
-//    [recordingView addSubview:startAudioImageView];
+    startAudioImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_inhuatong.png"]] autorelease];
+    startAudioImageView.frame = CGRectMake(([Tools screenMaxWidth] - 157) / 2.0, 123, 157, 113);
+    [recordingView addSubview:startAudioImageView];
 //
 //    //停止录音后UI
 //    playingView = [[[UIView alloc] init] autorelease];
@@ -272,12 +272,14 @@
                                                 repeats:YES];
         
         [startButton setBackgroundImage:[UIImage imageNamed:@"audio_stop.png"] forState:UIControlStateNormal];
+        startAudioImageView.image = [UIImage imageNamed:@"audio_huatong.png"];
         submitView.hidden = NO;
         recording = 1;
     }
     else {
         [self stopRecord:nil];
         [startButton setBackgroundImage:[UIImage imageNamed:@"audio_start.png"] forState:UIControlStateNormal];
+        startAudioImageView.image = [UIImage imageNamed:@"audio_inhuatong.png"];
         recording = 0;
     }
 }

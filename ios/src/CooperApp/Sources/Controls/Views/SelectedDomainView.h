@@ -16,9 +16,9 @@
 
 @interface SelectedDomainView : UIView
 {
-    UIView *view0;
-    UIView *view1;
-    UIView *view2;
+    UIButton *view0;
+    UIButton *view1;
+    UIButton *view2;
     
     UILabel *label0;
     UILabel *label1;

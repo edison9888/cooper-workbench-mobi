@@ -199,23 +199,21 @@
     [request postAsync:url params:params fileData:attachmentData fileKey:@"attachment" headers:nil context:context delegate:delegate];
     [request release];
 }
-- (void)createCommentFeedback:(NSString*)commentId
-                       taskId:(NSString*)taskId
-                       workId:(NSString*)workId
-                  description:(NSString*)description
-                      context:(NSMutableDictionary*)context
-                     delegate:(id)delegate
+- (void)createTaskComment:(NSString*)weiboId
+                   taskId:(NSString*)taskId
+                   workId:(NSString*)workId
+                  content:(NSString*)content
+                  context:(NSMutableDictionary*)context
+                 delegate:(id)delegate
 {
-    NSString *url = [[[Constant instance] rootPath] stringByAppendingFormat:ENTERPRISE_CREATECOMMENTFEEDBACK_URL];
-    NSLog(@"【CreateCommentFeedback服务接口路径】%@", url);
+    NSString *url = [[[Constant instance] rootPath] stringByAppendingFormat:ENTERPRISE_CREATETASKCOMMENT_URL];
+    NSLog(@"【CreateTaskComment服务接口路径】%@", url);
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:commentId forKey:@"commentId"];
+    [params setObject:weiboId forKey:@"weiboId"];
     [params setObject:taskId forKey:@"taskId"];
     [params setObject:workId forKey:@"workId"];
-    [params setObject:@"评论任务" forKey:@"action"];
-    [params setObject:description forKey:@"description"];
-    [params setObject:description forKey:@"renderDescription"];
+    [params setObject:content forKey:@"content"];
     
     HttpWebRequest *request = [[HttpWebRequest alloc] init];
     [request postAsync:url params:params headers:nil context:context delegate:delegate];

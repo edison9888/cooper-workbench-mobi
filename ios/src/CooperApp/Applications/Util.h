@@ -74,7 +74,7 @@
 //背景主色调2
 #define APP_BACKGROUNDCOLOR_2           [UIColor colorWithRed:245.0/255 green:245.0/255 blue:245.0/255 alpha:1]
 //标题文字色调
-#define APP_TITLECOLOR                  [UIColor colorWithRed:29.0/255 green:112.0/255 blue:157.0/255 alpha:1]
+#define APP_TITLECOLOR                  [UIColor colorWithRed:47.0/255 green:157.0/255 blue:216.0/255 alpha:1]
 //导航背景图片
 #define NAVIGATIONBAR_BG_IMAGE          @"navigationbar_bg.png"
 //底部栏背景图片

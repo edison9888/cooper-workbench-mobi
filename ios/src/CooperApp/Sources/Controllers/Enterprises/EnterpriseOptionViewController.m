@@ -67,7 +67,15 @@
     optionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     optionView.dataSource = self;
     optionView.delegate = self;
+    //去掉底部空白
+    UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    optionView.tableFooterView = footer;
     [self.view addSubview:optionView];
+
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_foot.png"]];
+    logoImageView.frame = CGRectMake(121,self.view.bounds.size.height - 10 - 14,77,14);
+    [self.view addSubview:logoImageView];
+    [logoImageView release];
 }
 
 # pragma mark - 任务列表相关委托事件

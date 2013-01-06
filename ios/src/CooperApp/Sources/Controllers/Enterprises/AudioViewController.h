@@ -30,6 +30,8 @@
     UIView *stopView;
     UIView *submitView;
     UIProgressView *playProgressView;
+
+    UIImageView *startAudioImageView;
     
     UIButton *startButton;
     

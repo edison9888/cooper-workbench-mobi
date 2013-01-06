@@ -24,9 +24,9 @@
 
 - (void)dealloc
 {
-    [view0 release];
-    [view1 release];
-    [view2 release];
+    [UIButton release];
+    [UIButton release];
+    [UIButton release];
     [label0 release];
     [label1 release];
     [label2 release];
@@ -37,13 +37,17 @@
 - (void)initContentView
 {
     selectedIndex = -1;
+
+    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_selDomain.png"]];
     
-    view0 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 176, 36)];
-    view0.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainTop"]];
-    view0.userInteractionEnabled = YES;
+    view0 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 176, 36)];
+    //view0.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainTop"]];
+//    view0.userInteractionEnabled = YES;
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selDomain0:)];
     [view0 addGestureRecognizer:recognizer];
     [recognizer release];
+    [view0 setBackgroundImage:[UIImage imageNamed:@"login_domainTop"] forState:UIControlStateHighlighted];
+    
 
     label0 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 146, 36)];
     label0.backgroundColor = [UIColor clearColor];
@@ -54,12 +58,13 @@
     
     [self addSubview:view0];
     
-    view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 36, 176, 36)];
-    view1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainCenter"]];
+    view1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 36, 176, 36)];
+    //view1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainCenter"]];
     view1.userInteractionEnabled = YES;
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selDomain1:)];
     [view1 addGestureRecognizer:recognizer];
     [recognizer release];
+    [view1 setBackgroundImage:[UIImage imageNamed:@"login_domainCenter"] forState:UIControlStateHighlighted];
     
     label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 146, 36)];
     label1.backgroundColor = [UIColor clearColor];
@@ -70,12 +75,13 @@
     
     [self addSubview:view1];
     
-    view2 = [[UIView alloc] initWithFrame:CGRectMake(0, 72, 176, 35)];
-    view2.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainButtom"]];
+    view2 = [[UIButton alloc] initWithFrame:CGRectMake(0, 72, 176, 35)];
+    //view2.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainButtom"]];
     view2.userInteractionEnabled = YES;
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selDomain2:)];
     [view2 addGestureRecognizer:recognizer];
     [recognizer release];
+    [view2 setBackgroundImage:[UIImage imageNamed:@"login_domainButtom"] forState:UIControlStateHighlighted];
     
     label2 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 146, 36)];
     label2.backgroundColor = [UIColor clearColor];
@@ -87,7 +93,7 @@
     [self addSubview:view2];
     
     selectedImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_selectedDomain"]];
-    selectedImageView.frame = CGRectMake(143, 11, 16, 14);
+    selectedImageView.frame = CGRectMake(153, 11, 16, 14);
     
 //    [self addSubview:selectedImageView];
 }
@@ -107,19 +113,32 @@
 - (void)setSelectedIndex:(int)index
 {
     NSLog(@"select");
+    view0.backgroundColor = [UIColor clearColor];
+    view1.backgroundColor = [UIColor clearColor];
+    view2.backgroundColor = [UIColor clearColor];
+    label0.textColor = [UIColor colorWithRed:190.0/255 green:182.0/255 blue:175.0/255 alpha:1];
+    label1.textColor = [UIColor colorWithRed:190.0/255 green:182.0/255 blue:175.0/255 alpha:1];
+    label2.textColor = [UIColor colorWithRed:190.0/255 green:182.0/255 blue:175.0/255 alpha:1];
     if([self.subviews containsObject:selectedImageView]) {
         [selectedImageView removeFromSuperview];
+        
     }
     
     if(index == 0) {
+        view0.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainTop"]];
+        label0.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
         [view0 addSubview:selectedImageView];
         [delegate callbackText:label0.text];
     }
     else if(index == 1) {
+        view1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainCenter"]];
+        label1.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
         [view1 addSubview:selectedImageView];
         [delegate callbackText:label1.text];
     }
     else if(index == 2) {
+        view2.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_domainButtom"]];
+        label2.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
         [view2 addSubview:selectedImageView];
         [delegate callbackText:label2.text];
     }

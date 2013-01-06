@@ -112,7 +112,7 @@
     [super layoutSubviews];
   
     CGRect frame = self.imageView.frame;
-    self.imageView.frame = CGRectMake(16, frame.origin.y, frame.size.width, frame.size.height);
+    self.imageView.frame = CGRectMake(12, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void) setTaskInfo:(NSMutableDictionary*)taskInfo
@@ -192,16 +192,17 @@
     subjectLabel.numberOfLines = 1;
     totalHeight += 16 + 8;
 
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"M-dd"];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"M-dd"];
     NSString* dueTime = [taskInfoDict objectForKey:@"dueTime"];
     
     int lines = 1;
     
     if(![dueTime isEqualToString:@""])
     {
-        NSDate *dueDate = [Tools NSStringToShortNSDate:dueTime];
-        dueTimeLabel.text = [formatter stringFromDate:dueDate];
+        //NSDate *dueDate = [Tools NSStringToShortNSDate:dueTime];
+        //dueTimeLabel.text = [formatter stringFromDate:dueDate];
+        dueTimeLabel.text = dueTime;
         [dueTimeLabel setFrame:CGRectMake(textLeft, totalHeight + PADDING, textWidth, 11)];
 
         totalHeight += 11 + PADDING;
@@ -239,7 +240,7 @@
 //
 //    totalHeight += PADDING;
     
-    UIView *seperatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+    UIView *seperatorView = [[UIView alloc] initWithFrame:CGRectMake(0, totalHeight, self.bounds.size.width, 1)];
     seperatorView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_separator.png"]];
     [self.contentView addSubview:seperatorView];
     [seperatorView release];

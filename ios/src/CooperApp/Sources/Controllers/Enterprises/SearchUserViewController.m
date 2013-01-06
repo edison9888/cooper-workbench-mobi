@@ -182,8 +182,9 @@
     UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(10, 12, 270, 44)];
     searchView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
 
-    searchText = [[[UITextField alloc] initWithFrame:CGRectMake(10, 12, 250, 20)] autorelease];
-    searchText.font = [UIFont boldSystemFontOfSize:20.0f];
+    searchText = [[[UITextField alloc] initWithFrame:CGRectMake(10, 13, 250, 20)] autorelease];
+    searchText.font = [UIFont systemFontOfSize:16.0f];
+    searchText.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:102.0/255];
     searchText.backgroundColor = [UIColor clearColor];
 
     [searchView addSubview:searchText];
@@ -258,6 +259,10 @@
                 if(state == [NSNumber numberWithInt:0]) {
 
                     NSMutableArray *data = [dict objectForKey:@"data"];
+
+                    if([data isEqual:[NSNull null]]) {
+                        return;
+                    }
 
                     for (NSMutableDictionary *user in data) {
                         NSString *workId = [user objectForKey:@"id"];

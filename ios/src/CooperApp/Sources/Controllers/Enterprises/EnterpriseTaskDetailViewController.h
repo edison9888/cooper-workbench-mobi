@@ -12,8 +12,10 @@
 #import "CommentInfoView.h"
 #import "TaskContentEditViewController.h"
 #import "TaskCommentCreateViewController.h"
+#import "DateButton.h"
+#import "PriorityOptionView.h"
 
-@interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate>
+@interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate, DateButtonDelegate>
 {
     UILabel *textTitleLabel;
     
@@ -21,15 +23,18 @@
     
     UIView *navPanelView;
     UIImageView *arrowImageView;
-    
+
+    UIView *completeView;
     UIView *completeFlagView;
     UILabel *completeFlagLabel;
     
     UIView *dueTimeFlagView;
     UILabel *dueTimeFlagLabel;
+    DateButton *dueTimeView;
     
     UIView *priorityFlagView;
     UILabel *priorityFlagLabel;
+    PriorityOptionView *priorityOptionView;
     
     EnterpriseService *enterpriseService;
     
@@ -45,6 +50,20 @@
     UIView *commentView;
     
     NSMutableArray *comments;
+
+    int currentIndex;
+
+    UIView *priorityView0;
+    UIView *priorityView1;
+    UIView *priorityView2;
+
+    UIImageView *imageView0;
+    UIImageView *imageView1;
+    UIImageView *imageView2;
+
+    UILabel *label0;
+    UILabel *label1;
+    UILabel *label2;
 }
 
 @property (retain, nonatomic) NSString *currentTaskId;
