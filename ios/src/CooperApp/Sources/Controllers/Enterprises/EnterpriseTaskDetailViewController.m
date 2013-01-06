@@ -569,7 +569,7 @@
                     imageView.frame = CGRectMake(tempLeft, totalHeight + 16, 50, 50);
                     //                            imageView.tag = count;
                     imageView.userInteractionEnabled = YES;
-                    UITapGestureRecognizer *recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(getPicUrl:)] autorelease];
+                    UITapGestureRecognizer *recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(getAudioUrl:)] autorelease];
                     [imageView addGestureRecognizer:recognizer];
                     [contentView addSubview:imageView];
                     tempLeft += 56;
@@ -650,7 +650,48 @@
 
 - (void)goBack:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [Tools layerTransition:self.navigationController.view from:@"left"]; 
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
+- (void)getPicUrl:(id)sender
+{
+    NSLog("getPicUrl");
+    //UITapGestureRecognizer *imageView = (UITapGestureRecognizer*)sender;
+    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+    NSMutableDictionary *dict = [pictures objectAtIndex:0];
+    NSString *url = [dict objectForKey:@"url"];
+    
+    ImagePreviewViewController *controller = [[[ImagePreviewViewController alloc] init] autorelease];
+    controller.url = url;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:controller animated:NO];
+}
+
+- (void)getAudioUrl:(id)sender
+{
+    NSLog("getAudioUrl");
+    UITapGestureRecognizer *recognizer = (UITapGestureRecognizer*)sender;
+    UILabel *label = (UILabel*)recognizer.view;
+    NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
+    for (NSMutableDictionary *dict in attachments) {
+        NSString *fileName = [dict objectForKey:@"fileName"];
+        //if([label.text isEqualToString:fileName]) {
+            NSString *url = [dict objectForKey:@"url"];
+            NSLog("url:%@", url);
+            
+            if([fileName.pathExtension isEqualToString:@"mp3"]) {
+                AudioPreviewViewController *controller = [[[AudioPreviewViewController alloc] init] autorelease];
+                controller.url = url;
+                [Tools layerTransition:self.navigationController.view from:@"right"];
+                [self.navigationController pushViewController:controller animated:NO];
+                
+                break;
+            }
+            
+          //  break;
+        //}
+    }
 }
 
 - (void)editContent:(id)sender

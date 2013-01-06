@@ -139,8 +139,9 @@
 
 - (void)goBack:(id)sender
 {
+    [Tools layerTransition:self.navigationController.view from:@"left"];
     //[self.navigationController popToViewController:prevViewController animated:YES];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void)addComment:(id)sender

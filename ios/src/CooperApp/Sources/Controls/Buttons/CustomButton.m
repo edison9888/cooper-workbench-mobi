@@ -20,7 +20,7 @@
     if (self) {
         self.layer.cornerRadius = 14.0f;
         self.layer.masksToBounds = YES;
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        //self.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         [self setBackgroundImage:image forState:UIControlStateNormal];
     }
     return self;
@@ -32,7 +32,7 @@
     if (self) {
         self.layer.cornerRadius = 14.0f;
         self.layer.masksToBounds = YES;
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        //self.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         self.backgroundColor = color;
     }
     return self;

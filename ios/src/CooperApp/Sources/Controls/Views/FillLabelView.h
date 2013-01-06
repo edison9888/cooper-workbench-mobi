@@ -10,6 +10,11 @@
 
 @interface FillLabelView : UIView
 
+- (void)bindTags:(NSMutableArray*)tags
+ backgroundColor:(UIColor*)backgroundColor
+       textColor:(UIColor*)textColor
+            font:(UIFont*)font
+          radius:(CGFloat)radius;
 - (void)bindTags:(NSMutableArray*)tags;
 
 @end

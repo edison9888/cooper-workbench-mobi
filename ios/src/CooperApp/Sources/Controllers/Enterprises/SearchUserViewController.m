@@ -186,6 +186,10 @@
     searchText.font = [UIFont systemFontOfSize:16.0f];
     searchText.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:102.0/255];
     searchText.backgroundColor = [UIColor clearColor];
+    searchText.keyboardType = UIKeyboardTypeDefault;
+    searchText.keyboardAppearance = UIKeyboardAppearanceDefault;
+    searchText.autocorrectionType = UITextAutocorrectionTypeNo;
+    searchText.autocapitalizationType = UITextAutocapitalizationTypeNone;
 
     [searchView addSubview:searchText];
 

@@ -14,6 +14,8 @@
 #import "TaskCommentCreateViewController.h"
 #import "DateButton.h"
 #import "PriorityOptionView.h"
+#import "ImagePreviewViewController.h"
+#import "AudioPreviewViewController.h"
 
 @interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate, DateButtonDelegate>
 {

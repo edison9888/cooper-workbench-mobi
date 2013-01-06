@@ -51,12 +51,22 @@
     [backButtonItem release];
     [backView release];
 
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    [imageView setImageWithURL:[NSURL URLWithString:url]];
-     imageView.contentMode = UIViewContentModeScaleAspectFit;  
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [imageView setImageWithURL:[NSURL URLWithString:url] success:^(UIImage *image, BOOL cached)
+     {
+         imageView.frame = CGRectMake(0,0,image.size.width,image.size.height);
+         NSLog(@"image.size :%f,%f",image.size.width,image.size.height);
+         scrollView.contentSize = CGSizeMake(image.size.width,image.size.height);
+     } failure:nil];
     [imageView setUserInteractionEnabled:YES];
     [imageView setMultipleTouchEnabled:YES];
-    [self.view addSubview:imageView];
+    
+    [scrollView addSubview:imageView];
+    [self.view addSubview:scrollView];
+    [imageView release];
+    [scrollView release];
 }
 
 - (void)viewDidUnload

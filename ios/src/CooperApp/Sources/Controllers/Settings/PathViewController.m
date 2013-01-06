@@ -190,7 +190,8 @@
 
 -(void)goBack
 {
-    [self.navigationController popViewControllerAnimated:YES];  
+    [Tools layerTransition:self.navigationController.view from:@"left"];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 -(void)textFieldDoneEditing:(id)sender

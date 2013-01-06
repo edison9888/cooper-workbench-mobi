@@ -228,20 +228,31 @@
     
     UIView *assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 26, 270, 44)];
     assigneeView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
-
-    assigneeBtn = [[CustomButton alloc] initWithFrame:CGRectZero];
-    //assigneeBtn.layer.cornerRadius = 6.0f;
-    assigneeBtn.backgroundColor = [UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1];
-    assigneeBtn.userInteractionEnabled = NO;
-    assigneeBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-    [assigneeBtn setTitleColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] forState:UIControlStateNormal];
+    
+    NSMutableArray *assignMembers = [NSMutableArray array];
+    [assignMembers addObject:@"萧玄"];
+    [assignMembers addObject:@"何望"];
+    [assignMembers addObject:@"何望"];
+    [assignMembers addObject:@"何望"];
+    [assignMembers addObject:@"何望"];
+    
+    FillLabelView *fillLabelView = [[FillLabelView alloc] initWithFrame:CGRectMake(10, 7, 232, 0)];
+    //fillLabelView.layer.borderWidth = 1.0f;
+    //fillLabelView.layer.borderColor = [[UIColor blueColor] CGColor];
+    [fillLabelView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
+    [assigneeView addSubview:fillLabelView];
+    
+//    assigneeBtn = [[CustomButton alloc] initWithFrame:CGRectZero color:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1]];
+//    assigneeBtn.userInteractionEnabled = NO;
+//    assigneeBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+//    [assigneeBtn setTitleColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] forState:UIControlStateNormal];
 //    [assigneeBtn setTitle:@"萧玄" forState:UIControlStateNormal];
 //    CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
 //    CGSize labelsize = [assigneeBtn.titleLabel.text sizeWithFont:assigneeBtn.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
 //    CGFloat labelsizeHeight = labelsize.height + 10;
-//    assigneeBtn.frame = CGRectMake(10, 8, labelsize.width + 40, labelsizeHeight);
-
-    [assigneeView addSubview:assigneeBtn];
+//    assigneeBtn.frame = CGRectMake(10, 7, labelsize.width + 40, labelsizeHeight);
+//
+//    [assigneeView addSubview:assigneeBtn];
 
     UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(242, 12, 18, 18)] autorelease];
     UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
@@ -329,7 +340,8 @@
 
 - (void)goBack:(id)sender
 {
-    [self.navigationController popToViewController:prevViewController animated:YES];
+    [Tools layerTransition:self.navigationController.view from:@"left"];
+    [self.navigationController popToViewController:prevViewController animated:NO];
     //[self.navigationController popViewControllerAnimated:YES];
 }
 

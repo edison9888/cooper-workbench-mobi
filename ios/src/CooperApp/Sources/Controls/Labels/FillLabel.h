@@ -10,4 +10,6 @@
 
 @interface FillLabel : UILabel
 
+-(void)setRadius:(CGFloat)radius;
+
 @end
