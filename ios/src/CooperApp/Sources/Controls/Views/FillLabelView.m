@@ -31,6 +31,10 @@
             font:(UIFont*)font
           radius:(CGFloat)radius
 {
+    for (UIView *subView in self.subviews) {
+        [subView removeFromSuperview];
+    }
+
     CGFloat frameWidth = self.frame.size.width;
     
     CGFloat tagsTotalWidth = 0.0f;

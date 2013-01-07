@@ -458,8 +458,8 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
             [sharedHTTPCookie setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
             [sharedHTTPCookie setCookie:cookie];
             
-            [[Constant instance] setDomain:self.domainLabel.text];
-            [[Constant instance] setUsername:self.textUsername.text];
+            [[Constant instance] setDomain:domainTextField.text];
+            [[Constant instance] setUsername:userNameTextField.text];
             [[Constant instance] setLoginType:@"normal"];
 
             NSMutableDictionary *result = [request.responseString JSONValue];

@@ -16,8 +16,11 @@
 #import "PriorityOptionView.h"
 #import "ImagePreviewViewController.h"
 #import "AudioPreviewViewController.h"
+#import "FillLabelView.h"
+#import "SearchUserViewController.h"
+#import "EnterpriseTaskCreateDelegate.h"
 
-@interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate, DateButtonDelegate>
+@interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate, DateButtonDelegate, EnterpriseTaskCreateDelegate>
 {
     UILabel *textTitleLabel;
     
@@ -39,7 +42,8 @@
     PriorityOptionView *priorityOptionView;
     
     EnterpriseService *enterpriseService;
-    
+
+    UIView *centerPanelView;
     UIView *showPanelView;
     
     UIScrollView *scrollView;
@@ -66,6 +70,8 @@
     UILabel *label0;
     UILabel *label1;
     UILabel *label2;
+
+    FillLabelView *assgineesView;
 }
 
 @property (retain, nonatomic) NSString *currentTaskId;

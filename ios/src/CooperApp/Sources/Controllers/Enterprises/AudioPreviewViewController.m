@@ -51,8 +51,8 @@
     [backButtonItem release];
     [backView release];
 
-    UIImageView *soundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sound.png"]];
-    soundImageView.frame = CGRectMake(([Tools screenMaxWidth] - 48) / 2.0, 100, 48, 48);
+    UIImageView *soundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_huatong.png"]];
+    soundImageView.frame = CGRectMake(([Tools screenMaxWidth] - 153) / 2.0, 100, 153, 117);
     [self.view addSubview:soundImageView];
 
     ASIHTTPRequest *request=[[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];

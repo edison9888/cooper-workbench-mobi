@@ -112,7 +112,7 @@
     [recognizer release];
 
     dueTimeFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 23, 23)] autorelease];
-    dueTimeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_dueTimeFlag.png"]];
+    dueTimeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_dueTime.png"]];
     
     [dueTimeView addSubview:dueTimeFlagView];
     
@@ -198,6 +198,7 @@
 {
     [comments release];
     [showPanelView release];
+    [centerPanelView release];
     [arrowImageView release];
     [super dealloc];
 }
@@ -341,11 +342,11 @@
             [taskDetailDict setObject:isCompleted forKey:@"isCompleted"];
             
             if([isCompleted isEqualToNumber:[NSNumber numberWithInt:0]]) {
-                completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_incomplete.png"]];
+                completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_incomplete_sel.png"]];
                 completeFlagLabel.text = @"未完成";
             }
             else {
-                completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_complete.png"]];
+                completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_complete_sel.png"]];
                 completeFlagLabel.text = @"已完成";
             }
 
@@ -386,7 +387,7 @@
                 priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag.png"]];
             }
             else {
-                priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[NSString stringWithFormat:@"detail_priority%@Flag.png", [priority stringValue]]]];
+                priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[NSString stringWithFormat:@"detail_priority%@Flag2.png", [priority stringValue]]]];
             }
 
             if([self.view.subviews containsObject:showPanelView]) {
@@ -401,8 +402,13 @@
         }
     }
     else if([requestType isEqualToString:@"UpdateTask"]) {
+        NSString *assigneeWorkId = [userInfo objectForKey:@"assigneeWorkId"];
+        NSString *assigneeName = [userInfo objectForKey:@"assigneeName"];
         if(request.responseStatusCode == 200) {
-            //            [detailView reloadData];
+            [Tools close:self.HUD];
+
+            [taskDetailDict setObject:assigneeWorkId forKey:@"assigneeWorkId"];
+            [taskDetailDict setObject:assigneeName forKey:@"assigneeName"];
         }
         else
         {
@@ -627,11 +633,11 @@
     
     //绑定完成状态
     if([isCompleted isEqualToNumber:[NSNumber numberWithInt:0]]) {
-        completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_incomplete.png"]];
+        completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_incomplete_sel.png"]];
         completeFlagLabel.text = @"未完成";
     }
     else {
-        completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_complete.png"]];
+        completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_complete_sel.png"]];
         completeFlagLabel.text = @"已完成";
     }
     //绑定期待完成时间
@@ -644,7 +650,7 @@
         priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag.png"]];
     }
     else {
-        priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[NSString stringWithFormat:@"detail_priority%@Flag.png", [priority stringValue]]]];
+        priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[NSString stringWithFormat:@"detail_priority%@Flag2.png", [priority stringValue]]]];
     }
 }
 
@@ -672,7 +678,8 @@
 {
     NSLog("getAudioUrl");
     UITapGestureRecognizer *recognizer = (UITapGestureRecognizer*)sender;
-    UILabel *label = (UILabel*)recognizer.view;
+    UIImageView *imageView = (UIImageView*)recognizer.view;
+    imageView.image = [UIImage imageNamed:@"detail_audio_sel.png"];
     NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
     for (NSMutableDictionary *dict in attachments) {
         NSString *fileName = [dict objectForKey:@"fileName"];
@@ -963,7 +970,45 @@
     else {
         currentIndex = 3;
     }
-    
+
+//    centerPanelView = [[UIView alloc] init];
+//    centerPanelView.frame = CGRectMake(0, 56, 320, 44);
+//    centerPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_centerPanel.png"]];
+//
+//    UILabel *assigneeTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 10, 90, 17)] autorelease];
+//    assigneeTitleLabel.text = @"转交他人：";
+//    assigneeTitleLabel.font = [UIFont systemFontOfSize:17];
+//    assigneeTitleLabel.backgroundColor = [UIColor clearColor];
+//    assigneeTitleLabel.textColor = [UIColor whiteColor];
+//    [centerPanelView addSubview:assigneeTitleLabel];
+//
+//    NSString *assigneeName = [taskDetailDict objectForKey:@"assigneeName"];
+//    NSMutableArray *assignMembers = [NSMutableArray array];
+//    [assignMembers addObject:assigneeName];
+//
+//    assgineesView = [[FillLabelView alloc] initWithFrame:CGRectMake(102, 3, 188, 0)];
+//    [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
+//    [centerPanelView addSubview:assgineesView];
+//
+//    UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 8, 18, 18)] autorelease];
+//    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+//    [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
+//    UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
+//    [assigenChooseView addGestureRecognizer:chooseRecognizer];
+//    [chooseRecognizer release];
+//
+//    [assigenChooseView addSubview:assigneeChooseBtn];
+//
+//    [centerPanelView addSubview:assigenChooseView];
+//
+//    [self.view addSubview:centerPanelView];
+
+
+//    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, 320, 1)];
+//    lineView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_shiline.png"]];
+//    [self.view addSubview:lineView];
+//    [lineView release];
+
     showPanelView = [[UIView alloc] init];
     showPanelView.frame = CGRectMake(0, 56, 320, 46);
     showPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
@@ -972,6 +1017,36 @@
     arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
     [navPanelView addSubview:arrowImageView];
     arrowImageView.frame = CGRectMake(274, 50, 12, 6);
+
+    UILabel *assigneeTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 15, 90, 17)] autorelease];
+    assigneeTitleLabel.text = @"转交他人：";
+    assigneeTitleLabel.font = [UIFont systemFontOfSize:17];
+    assigneeTitleLabel.backgroundColor = [UIColor clearColor];
+    assigneeTitleLabel.textColor = [UIColor whiteColor];
+    [showPanelView addSubview:assigneeTitleLabel];
+
+    NSString *assigneeName = [taskDetailDict objectForKey:@"assigneeName"];
+    NSMutableArray *assignMembers = [NSMutableArray array];
+    [assignMembers addObject:assigneeName];
+
+    assgineesView = [[FillLabelView alloc] initWithFrame:CGRectMake(102, 8, 188, 0)];
+    [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
+    [showPanelView addSubview:assgineesView];
+
+    NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 13, 18, 18)] autorelease];
+        UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+        [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
+        UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
+        [assigenChooseView addGestureRecognizer:chooseRecognizer];
+        [chooseRecognizer release];
+
+        [assigenChooseView addSubview:assigneeChooseBtn];
+
+        [showPanelView addSubview:assigenChooseView];
+    }
+    
     [self.view addSubview:showPanelView];
 }
 
@@ -997,6 +1072,69 @@
                                isCompleted:isCompleted
                                    context:context
                                   delegate:self];
+}
+
+- (void)chooseUser:(id)sender
+{
+    NSLog(@"chooseUser");
+
+    SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
+    searchUserController.delegate = self;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:searchUserController animated:NO];
+
+    //[searchUserController release];
+}
+
+- (void)modifyAssignee:(NSMutableDictionary*)assignee
+{
+    NSString *workId = [assignee objectForKey:@"workId"];
+    [taskDetailDict setObject:workId forKey:@"assigneeWorkId"];
+    NSString *name = [assignee objectForKey:@"name"];
+    NSString *assigneeWorkId = [assignee objectForKey:@"workId"];
+
+    NSMutableArray *assignMembers = [NSMutableArray array];
+    [assignMembers addObject:name];
+
+    [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
+
+    NSString *subject = [taskDetailDict objectForKey:@"subject"];
+    NSString *body = [taskDetailDict objectForKey:@"body"];
+    NSString *dueTime = [taskDetailDict objectForKey:@"dueTime"];
+    NSNumber *priority = [taskDetailDict objectForKey:@"priority"];
+    NSNumber *isCompleted = [taskDetailDict objectForKey:@"isCompleted"];
+
+    NSString *attachmentsStr = @"";
+    NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
+    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+    NSMutableArray *attachmentIds = [NSMutableArray array];
+    for (NSMutableDictionary *dict in attachments) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    for (NSMutableDictionary *dict in pictures) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    attachmentsStr = [attachmentIds componentsJoinedByString:@"||"];
+
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.HUD];
+    [self.HUD show:YES];
+    self.HUD.labelText = @"正在提交";
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:@"UpdateTask" forKey:REQUEST_TYPE];
+    [context setObject:assigneeWorkId forKey:@"assigneeWorkId"];
+    [context setObject:name forKey:@"assigneeName"];
+    [enterpriseService updateTask:currentTaskId
+                          subject:subject
+                             body:body
+                          dueTime:dueTime
+                   assigneeWorkId:assigneeWorkId
+                  relatedUserJson:@""
+                         priority:priority
+                      isCompleted:isCompleted
+                    attachmentIds:attachmentsStr
+                          context:context
+                         delegate:self];
 }
 
 - (void)setPriority0:(id)sender
