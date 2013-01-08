@@ -148,8 +148,6 @@
 		1889366C1695511500694FF3 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188936201695511500694FF3 /* WebViewController.m */; };
 		1889366D1695511500694FF3 /* AudioPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188936231695511500694FF3 /* AudioPreviewViewController.m */; };
 		1889366E1695511500694FF3 /* AudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188936251695511500694FF3 /* AudioViewController.m */; };
-		1889366F1695511500694FF3 /* EnterpriseAudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188936271695511500694FF3 /* EnterpriseAudioViewController.m */; };
-		188936701695511500694FF3 /* EnterpriseImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188936291695511500694FF3 /* EnterpriseImageViewController.m */; };
 		188936711695511500694FF3 /* EnterpriseOptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1889362B1695511500694FF3 /* EnterpriseOptionViewController.m */; };
 		188936721695511500694FF3 /* EnterpriseTaskDetailCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1889362E1695511500694FF3 /* EnterpriseTaskDetailCreateViewController.m */; };
 		188936731695511500694FF3 /* EnterpriseTaskDetailEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 188936301695511500694FF3 /* EnterpriseTaskDetailEditViewController.m */; };
@@ -292,6 +290,7 @@
 		6AA9EE811606D68D00A5B013 /* libCooperCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABD915D2D59400C7E8DA /* libCooperCore.a */; };
 		6AA9EE821606D68D00A5B013 /* libCooperRepository.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABDF15D2D59C00C7E8DA /* libCooperRepository.a */; };
 		6AA9EE831606D68D00A5B013 /* libCooperService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1891ABE515D2D5A800C7E8DA /* libCooperService.a */; };
+		6ABA2F79169BDF7B00498C50 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ABA2F78169BDF7B00498C50 /* Default-568h@2x.png */; };
 		6AD180EB168020B20064FA10 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD180EA168020B20064FA10 /* ImageIO.framework */; };
 		6AD180ED168020DA0064FA10 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD180EC168020DA0064FA10 /* MapKit.framework */; };
 		6AD181DE168194090064FA10 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD181CB168194090064FA10 /* MKAnnotationView+WebCache.m */; };
@@ -568,10 +567,6 @@
 		188936231695511500694FF3 /* AudioPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioPreviewViewController.m; sourceTree = "<group>"; };
 		188936241695511500694FF3 /* AudioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioViewController.h; sourceTree = "<group>"; };
 		188936251695511500694FF3 /* AudioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioViewController.m; sourceTree = "<group>"; };
-		188936261695511500694FF3 /* EnterpriseAudioViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseAudioViewController.h; sourceTree = "<group>"; };
-		188936271695511500694FF3 /* EnterpriseAudioViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterpriseAudioViewController.m; sourceTree = "<group>"; };
-		188936281695511500694FF3 /* EnterpriseImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseImageViewController.h; sourceTree = "<group>"; };
-		188936291695511500694FF3 /* EnterpriseImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterpriseImageViewController.m; sourceTree = "<group>"; };
 		1889362A1695511500694FF3 /* EnterpriseOptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseOptionViewController.h; sourceTree = "<group>"; };
 		1889362B1695511500694FF3 /* EnterpriseOptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterpriseOptionViewController.m; sourceTree = "<group>"; };
 		1889362C1695511500694FF3 /* EnterpriseTaskCreateDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseTaskCreateDelegate.h; sourceTree = "<group>"; };
@@ -756,6 +751,7 @@
 		6AA736FA169A77A00060D21A /* detail_priority1Flag2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_priority1Flag2@2x.png"; sourceTree = "<group>"; };
 		6AA736FB169A77A00060D21A /* detail_priority2Flag2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detail_priority2Flag2.png; sourceTree = "<group>"; };
 		6AA736FC169A77A00060D21A /* detail_priority2Flag2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_priority2Flag2@2x.png"; sourceTree = "<group>"; };
+		6ABA2F78169BDF7B00498C50 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		6AD180EA168020B20064FA10 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		6AD180EC168020DA0064FA10 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6AD181CA168194090064FA10 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
@@ -1007,6 +1003,7 @@
 		1889313D169529E100694FF3 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6ABA2F78169BDF7B00498C50 /* Default-568h@2x.png */,
 				6A6E15ED1699572200748513 /* Default@2x.png */,
 				1889313E169529E100694FF3 /* Default.png */,
 				1889313F169529E100694FF3 /* Default~ipad.png */,
@@ -1290,10 +1287,6 @@
 				188936231695511500694FF3 /* AudioPreviewViewController.m */,
 				188936241695511500694FF3 /* AudioViewController.h */,
 				188936251695511500694FF3 /* AudioViewController.m */,
-				188936261695511500694FF3 /* EnterpriseAudioViewController.h */,
-				188936271695511500694FF3 /* EnterpriseAudioViewController.m */,
-				188936281695511500694FF3 /* EnterpriseImageViewController.h */,
-				188936291695511500694FF3 /* EnterpriseImageViewController.m */,
 				1889362A1695511500694FF3 /* EnterpriseOptionViewController.h */,
 				1889362B1695511500694FF3 /* EnterpriseOptionViewController.m */,
 				1889362C1695511500694FF3 /* EnterpriseTaskCreateDelegate.h */,
@@ -1872,6 +1865,7 @@
 				6AA73700169A77A00060D21A /* detail_priority1Flag2@2x.png in Resources */,
 				6AA73701169A77A00060D21A /* detail_priority2Flag2.png in Resources */,
 				6AA73702169A77A00060D21A /* detail_priority2Flag2@2x.png in Resources */,
+				6ABA2F79169BDF7B00498C50 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1953,8 +1947,6 @@
 				1889366C1695511500694FF3 /* WebViewController.m in Sources */,
 				1889366D1695511500694FF3 /* AudioPreviewViewController.m in Sources */,
 				1889366E1695511500694FF3 /* AudioViewController.m in Sources */,
-				1889366F1695511500694FF3 /* EnterpriseAudioViewController.m in Sources */,
-				188936701695511500694FF3 /* EnterpriseImageViewController.m in Sources */,
 				188936711695511500694FF3 /* EnterpriseOptionViewController.m in Sources */,
 				188936721695511500694FF3 /* EnterpriseTaskDetailCreateViewController.m in Sources */,
 				188936731695511500694FF3 /* EnterpriseTaskDetailEditViewController.m in Sources */,

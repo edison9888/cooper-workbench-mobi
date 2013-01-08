@@ -833,6 +833,7 @@
     [recognizer release];
     
     UIButton *coutiImageView = [[UIButton alloc] init];
+    coutiImageView.userInteractionEnabled = NO;
     [coutiImageView setBackgroundImage:[[self class] defaultImage] forState:UIControlStateNormal];
     coutiImageView.frame = CGRectMake(12, 15, 13, 13);
     [coutiView addSubview:coutiImageView];

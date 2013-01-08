@@ -19,7 +19,6 @@
 {
     UIView *emptyView;
     UITableView *taskView;
-    UIView *tabbarView;
 
     UIActionSheet *photoActionSheet;
     UIActionSheet *audioActionSheet;

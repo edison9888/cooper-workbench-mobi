@@ -46,6 +46,7 @@
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     closeButton.frame = CGRectMake(0, 0, 32, 32);
     [closeButton setBackgroundImage:[UIImage imageNamed:@"audio_close.png"] forState:UIControlStateNormal];
+    closeButton.userInteractionEnabled = NO;
     [closeView addSubview:closeButton];
     closeView.userInteractionEnabled = YES;
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
@@ -58,6 +59,7 @@
     startButton = [UIButton buttonWithType:UIButtonTypeCustom];
     startButton.frame = CGRectMake(0, 0, 75, 75);
     [startButton setBackgroundImage:[UIImage imageNamed:@"audio_start.png"] forState:UIControlStateNormal];
+    startButton.userInteractionEnabled = NO;
     [startView addSubview:startButton];
     startView.userInteractionEnabled = YES;
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startRecord:)];
@@ -69,6 +71,7 @@
     submitView = [[[UIView alloc] initWithFrame:CGRectMake(269, 32, 32, 32)] autorelease];
     submitView.backgroundColor = [UIColor clearColor];
     UIButton *submitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    submitButton.userInteractionEnabled = NO;
     submitButton.frame = CGRectMake(0, 0, 32, 32);
     [submitButton setBackgroundImage:[UIImage imageNamed:@"audio_submit.png"] forState:UIControlStateNormal];
     [submitView addSubview:submitButton];

@@ -167,6 +167,7 @@
 
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.userInteractionEnabled = NO;
     [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
@@ -197,6 +198,7 @@
 
     UIView *assigneeChooseView = [[[UIView alloc] initWithFrame:CGRectMake(290, 24, 18, 18)] autorelease];
     UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+    assigneeChooseBtn.userInteractionEnabled = NO;
     [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
     UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchUser:)];
     [assigneeChooseView addGestureRecognizer:chooseRecognizer];

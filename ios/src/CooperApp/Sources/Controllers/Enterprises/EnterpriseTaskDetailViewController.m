@@ -42,6 +42,7 @@
     
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.userInteractionEnabled = NO;
     [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
@@ -767,6 +768,7 @@
     UIView *incompleteSelView = [[[UIView alloc] initWithFrame:CGRectMake(105, 0, 80, 46)] autorelease];
     incompleteSelView.userInteractionEnabled = YES;
     UIButton *incompleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    incompleteButton.userInteractionEnabled = NO;
     incompleteButton.frame = CGRectMake(0, 12, 22, 22);
     [incompleteButton setBackgroundImage:[UIImage imageNamed:@"detail_incomplete.png"] forState:UIControlStateNormal];
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeFalseIsCompleted:)];
@@ -785,6 +787,7 @@
     UIView *completeSelView = [[[UIView alloc] initWithFrame:CGRectMake(180, 0, 80, 46)] autorelease];
     completeSelView.userInteractionEnabled = YES;
     UIButton *completeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    completeButton.userInteractionEnabled = NO;
     completeButton.frame = CGRectMake(0, 12, 22, 22);
     [completeButton setBackgroundImage:[UIImage imageNamed:@"detail_complete.png"] forState:UIControlStateNormal];
 
@@ -1036,7 +1039,9 @@
     NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
     if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
         UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 13, 18, 18)] autorelease];
+        assigenChooseView.userInteractionEnabled = YES;
         UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+        assigneeChooseBtn.userInteractionEnabled = NO;
         [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
         UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
         [assigenChooseView addGestureRecognizer:chooseRecognizer];

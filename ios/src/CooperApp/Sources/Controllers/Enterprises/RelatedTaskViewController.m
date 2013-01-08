@@ -87,7 +87,6 @@
 {
     [emptyView release];
     [taskView release];
-    [tabbarView release];
     [enterpriseService release];
     [taskInfos release];
     [super dealloc];
@@ -207,15 +206,15 @@
     //    [tabbarLineView release];
     
     //底部
-    tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 63, [Tools screenMaxWidth], 49)];
+    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 63, [Tools screenMaxWidth], 49)];
     tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background.png"]];
     [self.view addSubview:tabbarView];
     //底部添加音频按钮
-    UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
-    
-    UIImageView *audioImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 12, 19)];
-    UIImage *audioImage = [UIImage imageNamed:@"audio.png"];
-    audioImageView.image = audioImage;
+    UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(9, 0, 73, 49)];
+    //audioView.backgroundColor = [UIColor redColor];
+    UIButton *audioImageView = [[UIButton alloc] initWithFrame:CGRectMake(30, 15, 12, 19)];
+    [audioImageView setBackgroundImage:[UIImage imageNamed:@"audio.png"] forState:UIControlStateNormal];
+    audioImageView.userInteractionEnabled = NO;
     [audioView addSubview:audioImageView];
     audioView.userInteractionEnabled = YES;
     UITapGestureRecognizer *audioRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAudio:)];
@@ -225,10 +224,13 @@
     [audioImageView release];
     [audioView release];
     //底部添加文本按钮
-    UIView *addView = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] / 2.0 - 23, 0, 38, 45)];
-    UIImageView *addImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 19, 19)];
-    UIImage *addImage = [UIImage imageNamed:@"text.png"];
-    addImageView.image = addImage;
+    UIView *addView = [[UIView alloc] initWithFrame:CGRectMake(120, 0, 73, 49)];
+    //    addView.backgroundColor = [UIColor redColor];
+    UIButton *addImageView = [[UIButton alloc] init];
+    addImageView.userInteractionEnabled = NO;
+    addImageView.frame = CGRectMake(25, 15, 19, 19);
+    [addImageView setBackgroundImage:[UIImage imageNamed:@"text.png"] forState:UIControlStateNormal];
+    //[addImageView setBackgroundImage:[UIImage imageNamed:@"text_selected.png"] forState:UIControlStateSelected];
     [addView addSubview:addImageView];
     addView.userInteractionEnabled = YES;
     UITapGestureRecognizer *addRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAdd:)];
@@ -238,10 +240,11 @@
     [addImageView release];
     [addView release];
     //添加拍照按钮
-    UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake([Tools screenMaxWidth] - 10 - 42, 0, 38, 45)];
-    UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 19, 17)];
-    UIImage *photoImage = [UIImage imageNamed:@"photo.png"];
-    photoImageView.image = photoImage;
+    UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake(237, 0, 73, 49)];
+    //photoView.backgroundColor = [UIColor redColor];
+    UIButton *photoImageView = [[UIButton alloc] initWithFrame:CGRectMake(25, 15, 19, 17)];
+    [photoImageView setBackgroundImage:[UIImage imageNamed:@"photo.png"] forState:UIControlStateNormal];
+    photoImageView.userInteractionEnabled = NO;
     [photoView addSubview:photoImageView];
     photoView.userInteractionEnabled = YES;
     UITapGestureRecognizer *photoRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
@@ -538,13 +541,15 @@
 
 //图像选取器的委托方法，选完图片后回调该方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
+
     
     if (image != nil) {
         
         NSData *data;
         NSString *fileName;
-        
-        UIImage *bigImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(320.0, 640.0)];
+
+        //TODO:优化图片尺寸算法
+        UIImage *bigImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(320.0, 480.0)];
         
         if (UIImagePNGRepresentation(bigImage)) {
             //返回为png图像

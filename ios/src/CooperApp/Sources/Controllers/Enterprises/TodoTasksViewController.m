@@ -218,6 +218,7 @@
     //audioView.backgroundColor = [UIColor redColor];
     UIButton *audioImageView = [[UIButton alloc] initWithFrame:CGRectMake(30, 15, 12, 19)];
     [audioImageView setBackgroundImage:[UIImage imageNamed:@"audio.png"] forState:UIControlStateNormal];
+    audioImageView.userInteractionEnabled = NO;
     [audioView addSubview:audioImageView];
     audioView.userInteractionEnabled = YES;
     UITapGestureRecognizer *audioRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAudio:)];
@@ -230,6 +231,7 @@
     UIView *addView = [[UIView alloc] initWithFrame:CGRectMake(120, 0, 73, 49)];
 //    addView.backgroundColor = [UIColor redColor];
     UIButton *addImageView = [[UIButton alloc] init];
+    addImageView.userInteractionEnabled = NO;
     addImageView.frame = CGRectMake(25, 15, 19, 19);
     [addImageView setBackgroundImage:[UIImage imageNamed:@"text.png"] forState:UIControlStateNormal];
     //[addImageView setBackgroundImage:[UIImage imageNamed:@"text_selected.png"] forState:UIControlStateSelected];
@@ -246,6 +248,7 @@
     //photoView.backgroundColor = [UIColor redColor];
     UIButton *photoImageView = [[UIButton alloc] initWithFrame:CGRectMake(25, 15, 19, 17)];
     [photoImageView setBackgroundImage:[UIImage imageNamed:@"photo.png"] forState:UIControlStateNormal];
+    photoImageView.userInteractionEnabled = NO;
     [photoView addSubview:photoImageView];
     photoView.userInteractionEnabled = YES;
     UITapGestureRecognizer *photoRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
@@ -547,8 +550,9 @@
         
         NSData *data;
         NSString *fileName;
-        
-        UIImage *bigImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(320.0, 640.0)];
+
+        //TODO:优化图片尺寸算法
+        UIImage *bigImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(320.0, 480.0)];
         
         if (UIImagePNGRepresentation(bigImage)) {
             //返回为png图像
