@@ -42,7 +42,7 @@
               body:(NSString*)body
            dueTime:(NSString*)dueTime
     assigneeWorkId:(NSString*)assigneeWorkId
-   relatedUserJson:(NSString*)relatedUserJson
+relatedUserWorkIds:(NSString*)relatedUserWorkIds
           priority:(NSNumber*)priority
        isCompleted:(NSNumber*)isCompleted
      attachmentIds:(NSString*)attachmentIds

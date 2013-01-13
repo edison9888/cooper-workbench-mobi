@@ -77,6 +77,7 @@
     subjectTextView.frame = CGRectMake(10, 10, 279, 85);
     subjectTextView.font = [UIFont systemFontOfSize:16.0f];
     subjectTextView.placeholder = @"写点什么";
+    subjectTextView.delegate = self;
     subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
     subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
     subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -106,6 +107,16 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - TextViewDelegate
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"@"]) {
+        [self performSelector:@selector(searchUser:) withObject:nil afterDelay:0.5];
+    }
+    return YES;
 }
 
 #pragma mark - ASIHTTPRequest
@@ -168,6 +179,9 @@
     }
     attachmentsStr = [attachmentIds componentsJoinedByString:@"||"];
     
+    NSMutableArray *relatedWorkIdArray = [taskDetailDict objectForKey:@"relatedWorkIdArray"];
+    NSString *relatedUserWorkIds = [relatedWorkIdArray componentsJoinedByString:@"||"];
+    
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.HUD];
     [self.HUD show:YES];
@@ -179,7 +193,7 @@
                              body:body
                           dueTime:dueTime
                    assigneeWorkId:assigneeWorkId
-                  relatedUserJson:@""
+                relatedUserWorkIds:relatedUserWorkIds
                          priority:priority
                       isCompleted:isCompleted
                     attachmentIds:attachmentsStr
@@ -187,6 +201,38 @@
                          delegate:self];
     
     [subjectTextView resignFirstResponder];
+}
+
+- (void)searchUser:(id)sender
+{
+    SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
+    searchUserController.delegate = self;
+    searchUserController.type = 2;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:searchUserController animated:NO];
+}
+
+- (void)modifyAssignee:(NSMutableDictionary*)assignee
+{
+    
+}
+- (void)modifyRelated:(NSMutableDictionary*)related
+{
+    
+}
+- (void)writeName:(NSString*)displayname
+{
+    NSArray *array = [displayname componentsSeparatedByString: @"-"];
+    NSString *name;
+    if(array.count == 0) {
+        name = displayname;
+    }
+    else {
+        name = [array objectAtIndex: 0];
+    }
+    
+    NSString *subject = subjectTextView.text;
+    subjectTextView.text = [NSString stringWithFormat:@"%@%@", subject, name];
 }
 
 @end

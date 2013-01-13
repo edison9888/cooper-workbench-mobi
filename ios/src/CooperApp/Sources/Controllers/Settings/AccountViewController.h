@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "Base2ViewController.h"
 #import "CustomButton.h"
 #import "DomainLabel.h"
 #import "CooperService/AccountService.h"
@@ -15,7 +15,7 @@
 #import "CooperRepository/ChangeLogDao.h"
 #import "CooperRepository/TasklistDao.h"
 
-@interface AccountViewController : BaseViewController<UITableViewDelegate
+@interface AccountViewController : Base2ViewController<UITableViewDelegate
     , UITableViewDataSource
     , DomainLabelDelegate
 >

@@ -17,10 +17,12 @@
 #import "ImagePreviewViewController.h"
 #import "AudioPreviewViewController.h"
 #import "FillLabelView.h"
+#import "EditFillLabelView.h"
 #import "SearchUserViewController.h"
 #import "EnterpriseTaskCreateDelegate.h"
+#import "KTPhotoScrollViewController.h"
 
-@interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate, DateButtonDelegate, EnterpriseTaskCreateDelegate>
+@interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate, DateButtonDelegate, EnterpriseTaskCreateDelegate, EditFillLabelViewDelegate>
 {
     UILabel *textTitleLabel;
     

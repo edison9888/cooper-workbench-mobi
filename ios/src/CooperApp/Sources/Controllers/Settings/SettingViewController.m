@@ -9,6 +9,7 @@
 #import "SettingViewController.h"
 #import "PathViewController.h"
 #import "AccountViewController.h"
+#import "AboutViewController.h"
 #import "NoticeViewController.h"
 #import "CustomTabBarItem.h"
 #import "UIImage+Scale.h"
@@ -26,15 +27,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        UILabel *textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-        textTitleLabel.backgroundColor = [UIColor clearColor];
-        textTitleLabel.textAlignment = UITextAlignmentCenter;
-        textTitleLabel.textColor = APP_TITLECOLOR;
-        textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-        textTitleLabel.text = APP_TITLE;
-        self.navigationItem.titleView = textTitleLabel;
-        [textTitleLabel release];
-        
         CustomTabBarItem *tabBarItem = [[CustomTabBarItem alloc] init];
         [tabBarItem setTitle:title];
         [tabBarItem setCustomImage:[UIImage imageNamed:imageName]];
@@ -52,23 +44,27 @@
 //    [UIColor colorWithPatternImage:[UIImage imageNamed:APP_BACKGROUNDIMAGE]];
 //    self.tabBarController.title = @"系统设置";
 
-    UILabel *textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-    textTitleLabel.backgroundColor = [UIColor clearColor];
-    textTitleLabel.textAlignment = UITextAlignmentCenter;
-    textTitleLabel.textColor = APP_TITLECOLOR;
-    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    textTitleLabel.text = @"系统设置";
-    self.navigationItem.titleView = textTitleLabel;
-    [textTitleLabel release];
+//    UILabel *textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+//    textTitleLabel.backgroundColor = [UIColor clearColor];
+//    textTitleLabel.textAlignment = UITextAlignmentCenter;
+//    textTitleLabel.textColor = APP_TITLECOLOR;
+//    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+//    textTitleLabel.text = @"系统设置";
+//    self.navigationItem.titleView = textTitleLabel;
+//    [textTitleLabel release];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    if(IS_ENTVERSION) {
-        self.title = APP_TITLE;
-    }
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel.backgroundColor = [UIColor clearColor];
+    textTitleLabel.textAlignment = UITextAlignmentCenter;
+    textTitleLabel.textColor = APP_TITLECOLOR;
+    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    textTitleLabel.text = @"系统设置";
+    self.navigationItem.titleView = textTitleLabel;
 }
 
 - (void)viewDidUnload
@@ -108,6 +104,7 @@
                 
                 cell.textLabel.text = @"帐号设置";
                 
+                //cell.textLabel.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.editingAccessoryType = UITableViewCellAccessoryNone;
                 
@@ -127,7 +124,8 @@
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"AboutCell"] autorelease];
 
                 cell.textLabel.text = @"关于";
-
+                
+                //cell.textLabel.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.editingAccessoryType = UITableViewCellAccessoryNone;
 
@@ -201,6 +199,13 @@
             [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
             
             [self.navigationController pushViewController:accountViewController animated:NO];
+        }
+        else if(indexPath.row == 1)
+        {
+            AboutViewController *aboutViewController = [[[AboutViewController alloc] init] autorelease];
+            
+             [Tools layerTransition:self.navigationController.view from:@"right"];
+            [self.navigationController pushViewController:aboutViewController animated:NO];
         }
 //        else if(indexPath.row == 2)
 //        {

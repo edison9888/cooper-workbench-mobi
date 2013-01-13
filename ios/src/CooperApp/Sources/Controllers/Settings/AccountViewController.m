@@ -76,14 +76,20 @@
     changeLogDao = [[ChangeLogDao alloc] init];
     tasklistDao = [[TasklistDao alloc] init];
     
-    //后退按钮
-    btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack setFrame:CGRectMake(5, 5, 15, 10)];
-    [btnBack setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
-    [btnBack addTarget: self action: @selector(goBack:) forControlEvents: UIControlEventTouchUpInside];
-    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
+    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.userInteractionEnabled = NO;
+    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+    [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [backView addSubview:backBtn];
+    backView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *backRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
+    [backView addGestureRecognizer:backRecognizer];
+    [backRecognizer release];
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backView];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     [backButtonItem release];
+    [backView release];
     
     //保存按钮（相当于切换用户）
 //    CustomButton *saveTaskBtn = [[[CustomButton alloc] initWithFrame:CGRectMake(5,5,70,30) image:[UIImage imageNamed:@"btn_center.png"]] autorelease];

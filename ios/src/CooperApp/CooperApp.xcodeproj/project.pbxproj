@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		1835EFE715C10898004AF233 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1835EFE615C10898004AF233 /* QuartzCore.framework */; };
+		18508A9A16A32A170091F008 /* KTPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 18508A8C16A32A170091F008 /* KTPhotoBrowser.bundle */; };
+		18508A9B16A32A170091F008 /* KTPhotoBrowserGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A8F16A32A170091F008 /* KTPhotoBrowserGlobal.m */; };
+		18508A9C16A32A170091F008 /* KTPhotoScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A9116A32A170091F008 /* KTPhotoScrollViewController.m */; };
+		18508A9D16A32A170091F008 /* KTPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A9316A32A170091F008 /* KTPhotoView.m */; };
+		18508A9E16A32A170091F008 /* KTThumbsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A9516A32A170091F008 /* KTThumbsView.m */; };
+		18508A9F16A32A170091F008 /* KTThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A9716A32A170091F008 /* KTThumbsViewController.m */; };
+		18508AA016A32A170091F008 /* KTThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A9916A32A170091F008 /* KTThumbView.m */; };
 		186000691697216E0077D658 /* login_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 186000681697216E0077D658 /* login_input.png */; };
 		1860006B169727480077D658 /* login_selDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 1860006A169727480077D658 /* login_selDown.png */; };
 		18600073169729C10077D658 /* login_domainButtom.png in Resources */ = {isa = PBXBuildFile; fileRef = 18600070169729C10077D658 /* login_domainButtom.png */; };
@@ -184,6 +191,12 @@
 		18A92DBA15D2EA2800423A55 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A92DB515D2EA2800423A55 /* GTMOAuth2ViewControllerTouch.m */; };
 		18A92DBB15D2EA2800423A55 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18A92DB615D2EA2800423A55 /* GTMOAuth2ViewTouch.xib */; };
 		18A92DBD15D2EA5600423A55 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A92DBC15D2EA5600423A55 /* Security.framework */; };
+		18BDEA8616A264C700690B7D /* about_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 18BDEA8416A264C700690B7D /* about_bg.png */; };
+		18BDEA8716A264C700690B7D /* about_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18BDEA8516A264C700690B7D /* about_bg@2x.png */; };
+		18BDEA8A16A2694B00690B7D /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BDEA8916A2694B00690B7D /* AboutViewController.m */; };
+		18BDEA8C16A2C55F00690B7D /* login_bg-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18BDEA8B16A2C55F00690B7D /* login_bg-568h@2x.png */; };
+		18BDEAA916A2FDC300690B7D /* EditFillLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BDEAA816A2FDC300690B7D /* EditFillLabelView.m */; };
+		18BDEAAC16A2FE6500690B7D /* EditFillLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BDEAAB16A2FE6500690B7D /* EditFillLabel.m */; };
 		18C5FBCC1697EBCA00ADBAFA /* EnterpriseTaskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C5FBCB1697EBCA00ADBAFA /* EnterpriseTaskDetailViewController.m */; };
 		18C5FBCE1697EE5500ADBAFA /* detail_navPanel.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C5FBCD1697EE5500ADBAFA /* detail_navPanel.png */; };
 		18C5FBD11697F00300ADBAFA /* detail_complete.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C5FBCF1697F00300ADBAFA /* detail_complete.png */; };
@@ -373,6 +386,20 @@
 
 /* Begin PBXFileReference section */
 		1835EFE615C10898004AF233 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		18508A8C16A32A170091F008 /* KTPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = KTPhotoBrowser.bundle; sourceTree = "<group>"; };
+		18508A8D16A32A170091F008 /* KTPhotoBrowserDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPhotoBrowserDataSource.h; sourceTree = "<group>"; };
+		18508A8E16A32A170091F008 /* KTPhotoBrowserGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPhotoBrowserGlobal.h; sourceTree = "<group>"; };
+		18508A8F16A32A170091F008 /* KTPhotoBrowserGlobal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPhotoBrowserGlobal.m; sourceTree = "<group>"; };
+		18508A9016A32A170091F008 /* KTPhotoScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPhotoScrollViewController.h; sourceTree = "<group>"; };
+		18508A9116A32A170091F008 /* KTPhotoScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPhotoScrollViewController.m; sourceTree = "<group>"; };
+		18508A9216A32A170091F008 /* KTPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTPhotoView.h; sourceTree = "<group>"; };
+		18508A9316A32A170091F008 /* KTPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTPhotoView.m; sourceTree = "<group>"; };
+		18508A9416A32A170091F008 /* KTThumbsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTThumbsView.h; sourceTree = "<group>"; };
+		18508A9516A32A170091F008 /* KTThumbsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTThumbsView.m; sourceTree = "<group>"; };
+		18508A9616A32A170091F008 /* KTThumbsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTThumbsViewController.h; sourceTree = "<group>"; };
+		18508A9716A32A170091F008 /* KTThumbsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTThumbsViewController.m; sourceTree = "<group>"; };
+		18508A9816A32A170091F008 /* KTThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTThumbView.h; sourceTree = "<group>"; };
+		18508A9916A32A170091F008 /* KTThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTThumbView.m; sourceTree = "<group>"; };
 		186000681697216E0077D658 /* login_input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_input.png; sourceTree = "<group>"; };
 		1860006A169727480077D658 /* login_selDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_selDown.png; sourceTree = "<group>"; };
 		18600070169729C10077D658 /* login_domainButtom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_domainButtom.png; sourceTree = "<group>"; };
@@ -642,6 +669,15 @@
 		18A92DB515D2EA2800423A55 /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2ViewControllerTouch.m; sourceTree = "<group>"; };
 		18A92DB615D2EA2800423A55 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
 		18A92DBC15D2EA5600423A55 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		18BDEA8416A264C700690B7D /* about_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_bg.png; sourceTree = "<group>"; };
+		18BDEA8516A264C700690B7D /* about_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_bg@2x.png"; sourceTree = "<group>"; };
+		18BDEA8816A2694B00690B7D /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		18BDEA8916A2694B00690B7D /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		18BDEA8B16A2C55F00690B7D /* login_bg-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_bg-568h@2x.png"; sourceTree = "<group>"; };
+		18BDEAA716A2FDC300690B7D /* EditFillLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditFillLabelView.h; sourceTree = "<group>"; };
+		18BDEAA816A2FDC300690B7D /* EditFillLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditFillLabelView.m; sourceTree = "<group>"; };
+		18BDEAAA16A2FE6500690B7D /* EditFillLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditFillLabel.h; sourceTree = "<group>"; };
+		18BDEAAB16A2FE6500690B7D /* EditFillLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditFillLabel.m; sourceTree = "<group>"; };
 		18C5FBCA1697EBCA00ADBAFA /* EnterpriseTaskDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterpriseTaskDetailViewController.h; sourceTree = "<group>"; };
 		18C5FBCB1697EBCA00ADBAFA /* EnterpriseTaskDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterpriseTaskDetailViewController.m; sourceTree = "<group>"; };
 		18C5FBCD1697EE5500ADBAFA /* detail_navPanel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detail_navPanel.png; sourceTree = "<group>"; };
@@ -818,9 +854,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18508A8B16A32A170091F008 /* KTPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				18508A8C16A32A170091F008 /* KTPhotoBrowser.bundle */,
+				18508A8D16A32A170091F008 /* KTPhotoBrowserDataSource.h */,
+				18508A8E16A32A170091F008 /* KTPhotoBrowserGlobal.h */,
+				18508A8F16A32A170091F008 /* KTPhotoBrowserGlobal.m */,
+				18508A9016A32A170091F008 /* KTPhotoScrollViewController.h */,
+				18508A9116A32A170091F008 /* KTPhotoScrollViewController.m */,
+				18508A9216A32A170091F008 /* KTPhotoView.h */,
+				18508A9316A32A170091F008 /* KTPhotoView.m */,
+				18508A9416A32A170091F008 /* KTThumbsView.h */,
+				18508A9516A32A170091F008 /* KTThumbsView.m */,
+				18508A9616A32A170091F008 /* KTThumbsViewController.h */,
+				18508A9716A32A170091F008 /* KTThumbsViewController.m */,
+				18508A9816A32A170091F008 /* KTThumbView.h */,
+				18508A9916A32A170091F008 /* KTThumbView.m */,
+			);
+			name = KTPhotoBrowser;
+			path = ../../lib/KTPhotoBrowser;
+			sourceTree = "<group>";
+		};
 		18752AD516958AF00058F614 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				18BDEA8316A264C700690B7D /* Setting */,
 				18EDFAFC1695ED1A00F61A8A /* Login */,
 				18752AD616958AFB0058F614 /* Enterprise */,
 				18752B0716958AFB0058F614 /* PersonalAndTeam */,
@@ -1151,6 +1210,8 @@
 				188935CC169550F700694FF3 /* FillLabel.m */,
 				188935CD169550F700694FF3 /* TeamTaskFilterLabel.h */,
 				188935CE169550F700694FF3 /* TeamTaskFilterLabel.m */,
+				18BDEAAA16A2FE6500690B7D /* EditFillLabel.h */,
+				18BDEAAB16A2FE6500690B7D /* EditFillLabel.m */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -1242,6 +1303,8 @@
 				18FE12A216983C7B00C52A6D /* CommentInfoView.m */,
 				6A6E15E316994E9500748513 /* DateView.h */,
 				6A6E15E416994E9500748513 /* DateView.m */,
+				18BDEAA716A2FDC300690B7D /* EditFillLabelView.h */,
+				18BDEAA816A2FDC300690B7D /* EditFillLabelView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1358,6 +1421,8 @@
 				188936571695511500694FF3 /* SettingViewController.h */,
 				188936581695511500694FF3 /* SettingViewController.m */,
 				188936591695511500694FF3 /* SettingViewController.xib */,
+				18BDEA8816A2694B00690B7D /* AboutViewController.h */,
+				18BDEA8916A2694B00690B7D /* AboutViewController.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1447,6 +1512,15 @@
 			path = ../../lib/GoogleOAuth2;
 			sourceTree = "<group>";
 		};
+		18BDEA8316A264C700690B7D /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				18BDEA8416A264C700690B7D /* about_bg.png */,
+				18BDEA8516A264C700690B7D /* about_bg@2x.png */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		18E2F89D15F4D9050062E57F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1458,6 +1532,7 @@
 		18EDFAFC1695ED1A00F61A8A /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				18BDEA8B16A2C55F00690B7D /* login_bg-568h@2x.png */,
 				6A6E15FD16995BB700748513 /* login_selectedDomain@2x.png */,
 				6A6E15F716995BA600748513 /* login_domainButtom@2x.png */,
 				6A6E15F816995BA600748513 /* login_domainCenter@2x.png */,
@@ -1558,6 +1633,7 @@
 		EE87F78C15A3F50100DA8E7F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				18508A8B16A32A170091F008 /* KTPhotoBrowser */,
 				188932101695452900694FF3 /* SBJSON */,
 				188932091695450E00694FF3 /* JASidePanel */,
 				18A61B1D16875ACA00FD04C2 /* lame */,
@@ -1866,6 +1942,10 @@
 				6AA73701169A77A00060D21A /* detail_priority2Flag2.png in Resources */,
 				6AA73702169A77A00060D21A /* detail_priority2Flag2@2x.png in Resources */,
 				6ABA2F79169BDF7B00498C50 /* Default-568h@2x.png in Resources */,
+				18BDEA8616A264C700690B7D /* about_bg.png in Resources */,
+				18BDEA8716A264C700690B7D /* about_bg@2x.png in Resources */,
+				18BDEA8C16A2C55F00690B7D /* login_bg-568h@2x.png in Resources */,
+				18508A9A16A32A170091F008 /* KTPhotoBrowser.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1982,6 +2062,15 @@
 				18FE12D5169878C600C52A6D /* TaskCommentCreateViewController.m in Sources */,
 				6A6E15E516994E9500748513 /* DateView.m in Sources */,
 				6A6E165916999F5600748513 /* DateButton.m in Sources */,
+				18BDEA8A16A2694B00690B7D /* AboutViewController.m in Sources */,
+				18BDEAA916A2FDC300690B7D /* EditFillLabelView.m in Sources */,
+				18BDEAAC16A2FE6500690B7D /* EditFillLabel.m in Sources */,
+				18508A9B16A32A170091F008 /* KTPhotoBrowserGlobal.m in Sources */,
+				18508A9C16A32A170091F008 /* KTPhotoScrollViewController.m in Sources */,
+				18508A9D16A32A170091F008 /* KTPhotoView.m in Sources */,
+				18508A9E16A32A170091F008 /* KTThumbsView.m in Sources */,
+				18508A9F16A32A170091F008 /* KTThumbsViewController.m in Sources */,
+				18508AA016A32A170091F008 /* KTThumbView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2092,7 +2181,7 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CAED0B46-663D-4A8F-BD50-EBEDD1A26D07";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8B6BD206-EF00-42E1-860B-4373CA962F86";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR) \"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts\"";
 				WRAPPER_EXTENSION = app;

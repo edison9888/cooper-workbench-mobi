@@ -6,10 +6,12 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-#import "BaseTableViewController.h"
+#import "Base2TableViewController.h"
 
-@interface SettingViewController : BaseTableViewController<UITextFieldDelegate>
-
+@interface SettingViewController : Base2TableViewController<UITextFieldDelegate>
+{
+    UILabel *textTitleLabel;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil 
                bundle:(NSBundle *)nibBundleOrNil 
              setTitle:(NSString *)title 

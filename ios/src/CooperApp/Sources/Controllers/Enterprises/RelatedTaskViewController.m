@@ -542,23 +542,32 @@
 //图像选取器的委托方法，选完图片后回调该方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
 
-    
     if (image != nil) {
+        
+        NSLog(@"【图片尺寸】width:%f,height:%f", image.size.width, image.size.height);
         
         NSData *data;
         NSString *fileName;
-
-        //TODO:优化图片尺寸算法
-        UIImage *bigImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(320.0, 480.0)];
         
-        if (UIImagePNGRepresentation(bigImage)) {
+        //TODO:优化图片尺寸算法
+        UIImage *realImage;
+        if(image.size.width >= 640.0) {
+            CGFloat realWidth = 640.0;
+            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
+            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
+        }
+        else {
+            realImage = image;
+        }
+        
+        if (UIImagePNGRepresentation(realImage)) {
             //返回为png图像
-            data = UIImagePNGRepresentation(bigImage);
+            data = UIImagePNGRepresentation(realImage);
             fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
         }
         else {
             //返回为JPEG图像
-            data = UIImageJPEGRepresentation(bigImage, 1.0);
+            data = UIImageJPEGRepresentation(realImage, 1.0);
             fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
         }
         //保存到阿里云盘

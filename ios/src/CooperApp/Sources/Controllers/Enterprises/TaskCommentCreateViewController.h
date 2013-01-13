@@ -10,6 +10,7 @@
 #import "Base2ViewController.h"
 #import "CooperService/EnterpriseService.h"
 #import "GCPlaceholderTextView.h"
+#import "SearchUserViewController.h"
 
 @protocol TaskCommentCreateDelegate <NSObject>
 
@@ -17,7 +18,7 @@
 
 @end
 
-@interface TaskCommentCreateViewController : Base2ViewController
+@interface TaskCommentCreateViewController : Base2ViewController<UITextViewDelegate, EnterpriseTaskCreateDelegate>
 {
     GCPlaceholderTextView *commentTextView;
     

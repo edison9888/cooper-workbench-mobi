@@ -160,6 +160,7 @@
         subjectTextView.frame = CGRectMake(10, 10, 279, 85);
         subjectTextView.font = [UIFont systemFontOfSize:16.0f];
         subjectTextView.placeholder = @"写点什么";
+        subjectTextView.delegate = self;
         subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
         subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
         subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -180,6 +181,7 @@
             subjectTextView.frame = CGRectMake(105, 10, 185, 85);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
             subjectTextView.placeholder = @"写点什么";
+            subjectTextView.delegate = self;
             subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
             subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -207,6 +209,7 @@
             subjectTextView.frame = CGRectMake(105, 10, 185, 85);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
             subjectTextView.placeholder = @"写点什么";
+            subjectTextView.delegate = self;
             subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
             subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -333,6 +336,24 @@
     CGFloat labelsizeHeight = labelsize.height + 10;
     assigneeBtn.frame = CGRectMake(10, 8, labelsize.width + 40, labelsizeHeight);
 }
+- (void)modifyRelated:(NSMutableDictionary*)related
+{
+    
+}
+- (void)writeName:(NSString*)displayname
+{
+    NSArray *array = [displayname componentsSeparatedByString: @"-"];
+    NSString *name;
+    if(array.count == 0) {
+        name = displayname;
+    }
+    else {
+        name = [array objectAtIndex: 0];
+    }
+    
+    NSString *subject = subjectTextView.text;
+    subjectTextView.text = [NSString stringWithFormat:@"%@%@", subject, name];
+}
 
 - (void)viewClick:(id)sender
 {
@@ -384,10 +405,11 @@
 
 - (void)chooseUser:(id)sender
 {
-    NSLog(@"chooseUser");
+    NSLog(@"chooseAssigneeUser");
 
     SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
     searchUserController.delegate = self;
+    searchUserController.type = 0;
     [Tools layerTransition:self.navigationController.view from:@"right"];
     [self.navigationController pushViewController:searchUserController animated:NO];
 
@@ -458,6 +480,16 @@
     picker.allowsEditing = YES;
     [self presentModalViewController:picker animated:YES];
     [picker release];
+}
+
+#pragma mark - TextViewDelegate
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"@"]) {
+        [self performSelector:@selector(searchUser:) withObject:nil afterDelay:0.5];
+    }
+    return YES;
 }
 
 #pragma mark - TableView 事件源
@@ -1078,7 +1110,16 @@
         }
     }
 }
-//
+
+- (void)searchUser:(id)sender
+{
+    SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
+    searchUserController.delegate = self;
+    searchUserController.type = 2;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:searchUserController animated:NO];
+}
+
 //#pragma mark - 私有方法
 //
 //- (void)initContentView

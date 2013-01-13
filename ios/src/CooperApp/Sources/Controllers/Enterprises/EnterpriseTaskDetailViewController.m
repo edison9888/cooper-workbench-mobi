@@ -136,7 +136,7 @@
     [recognizer release];
     
     priorityFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 23, 23)] autorelease];
-    priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag.png"]];
+    priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag2.png"]];
     
     [priorityView addSubview:priorityFlagView];
     
@@ -254,6 +254,70 @@
                                 delegate:self];
 }
 
+#pragma mark - EditFillLabelViewDelegate接口
+- (void)deleteTag:(NSString *)tag
+{
+    NSLog(@"deleteTag");
+    
+    NSMutableArray *relatedUserArray = [taskDetailDict objectForKey:@"relatedUserArray"];
+    NSInteger index = 0;
+    for (NSMutableDictionary *dict in relatedUserArray) {
+        NSString *displayTag = [NSString stringWithFormat:@"%@  ×", [dict objectForKey:@"displayName"]];
+        if ([tag isEqualToString:displayTag]) {
+            [relatedUserArray removeObjectAtIndex:index];
+            break;
+        }
+        index++;
+    }
+    
+    [taskDetailDict setObject:relatedUserArray forKey:@"relatedUserArray"];
+    
+    NSString *subject = [taskDetailDict objectForKey:@"subject"];
+    NSString *body = [taskDetailDict objectForKey:@"body"];
+    NSString *dueTime = [taskDetailDict objectForKey:@"dueTime"];
+    NSNumber *priority = [taskDetailDict objectForKey:@"priority"];
+    NSNumber *isCompleted = [taskDetailDict objectForKey:@"isCompleted"];
+    NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
+    
+    NSString *attachmentsStr = @"";
+    NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
+    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+    NSMutableArray *attachmentIds = [NSMutableArray array];
+    for (NSMutableDictionary *dict in attachments) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    for (NSMutableDictionary *dict in pictures) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    attachmentsStr = [attachmentIds componentsJoinedByString:@"||"];
+    
+    NSMutableArray *workIdsArray = [NSMutableArray array];
+    for (NSMutableDictionary *userDict in relatedUserArray) {
+        [workIdsArray addObject:[userDict objectForKey:@"workId"]];
+    }
+    NSString *relatedUserWorkIds = [workIdsArray componentsJoinedByString:@"||"];
+    
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.HUD];
+    [self.HUD show:YES];
+    self.HUD.labelText = @"正在提交";
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:@"UpdateTaskRelated" forKey:REQUEST_TYPE];
+    //[context setObject:assigneeWorkId forKey:@"assigneeWorkId"];
+    //[context setObject:name forKey:@"assigneeName"];
+    [enterpriseService updateTask:currentTaskId
+                          subject:subject
+                             body:body
+                          dueTime:dueTime
+                   assigneeWorkId:assigneeWorkId
+               relatedUserWorkIds:relatedUserWorkIds
+                         priority:priority
+                      isCompleted:isCompleted
+                    attachmentIds:attachmentsStr
+                          context:context
+                         delegate:self];
+}
+
 #pragma mark - ASIHTTPRequest
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -285,7 +349,16 @@
                     NSMutableDictionary *assigneeDict = [data objectForKey:@"assignee"];
                     NSString *assigneeName = [assigneeDict objectForKey:@"displayName"];
                     NSString *assigneeWorkId = [assigneeDict objectForKey:@"workId"];
-                    //                    NSMutableDictionary *related = [data objectForKey:@"related"];
+                    
+                    NSMutableArray *related = [data objectForKey:@"related"];
+                    NSMutableArray *relatedUserArray = [NSMutableArray array];
+                    for (NSMutableDictionary *relatedDict in related) {
+                        NSMutableDictionary *userDict = [NSMutableDictionary dictionary];
+                        [userDict setObject:[relatedDict objectForKey:@"workId"] forKey:@"workId"];
+                        [userDict setObject:[relatedDict objectForKey:@"displayName"] forKey:@"displayName"];
+                        [relatedUserArray addObject:userDict];
+                    }
+                    
                     NSString *dueTime = [data objectForKey:@"dueTime"] == [NSNull null] ? @"" : [data objectForKey:@"dueTime"];
                     NSNumber *priority = [data objectForKey:@"priority"] == [NSNull null] ? [NSNumber numberWithInt:99] : [data objectForKey:@"priority"];
                     NSNumber *isCompleted = [data objectForKey:@"isCompleted"];
@@ -314,6 +387,7 @@
                     [taskDetailDict setObject:isCompleted forKey:@"isCompleted"];
                     [taskDetailDict setObject:assigneeName forKey:@"assigneeName"];
                     [taskDetailDict setObject:assigneeWorkId forKey:@"assigneeWorkId"];
+                    [taskDetailDict setObject:relatedUserArray forKey:@"relatedUserArray"];
                     [taskDetailDict setObject:attachments forKey:@"attachments"];
                     [taskDetailDict setObject:pictures forKey:@"pictures"];
                     [taskDetailDict setObject:comments forKey:@"comments"];
@@ -352,6 +426,7 @@
             }
 
             if([self.view.subviews containsObject:showPanelView]) {
+                [centerPanelView removeFromSuperview];
                 [showPanelView removeFromSuperview];
                 [arrowImageView removeFromSuperview];
                 navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
@@ -385,13 +460,14 @@
             //绑定优先级
             priorityFlagLabel.text = [self getPriorityValue:priority];
             if([priority isEqualToNumber:[NSNumber numberWithInt:99]]) {
-                priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag.png"]];
+                priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag2.png"]];
             }
             else {
                 priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[NSString stringWithFormat:@"detail_priority%@Flag2.png", [priority stringValue]]]];
             }
 
             if([self.view.subviews containsObject:showPanelView]) {
+                [centerPanelView removeFromSuperview];
                 [showPanelView removeFromSuperview];
                 [arrowImageView removeFromSuperview];
                 navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
@@ -410,6 +486,18 @@
 
             [taskDetailDict setObject:assigneeWorkId forKey:@"assigneeWorkId"];
             [taskDetailDict setObject:assigneeName forKey:@"assigneeName"];
+        }
+        else
+        {
+            [Tools failed:self.HUD];
+        }
+    }
+    else if([requestType isEqualToString:@"UpdateTaskRelated"]) {
+        if(request.responseStatusCode == 200) {
+            [Tools close:self.HUD];
+            currentIndex = -1;;
+            [self showUserPanel:nil];
+            //[self bindData];
         }
         else
         {
@@ -648,7 +736,7 @@
     //绑定优先级
     priorityFlagLabel.text = [self getPriorityValue:priority];
     if([priority isEqualToNumber:[NSNumber numberWithInt:99]]) {
-        priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag.png"]];
+        priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag2.png"]];
     }
     else {
         priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[NSString stringWithFormat:@"detail_priority%@Flag2.png", [priority stringValue]]]];
@@ -673,6 +761,11 @@
     controller.url = url;
     [Tools layerTransition:self.navigationController.view from:@"right"];
     [self.navigationController pushViewController:controller animated:NO];
+    
+//    KTPhotoScrollViewController *controller = [[KTPhotoScrollViewController alloc] initWithDataSource:self andStartWithPhotoAtIndex:0];
+//    //controller.url = url;
+//    [Tools layerTransition:self.navigationController.view from:@"right"];
+//    [self.navigationController pushViewController:controller animated:NO];
 }
 
 - (void)getAudioUrl:(id)sender
@@ -741,6 +834,7 @@
     [dueTimeView resignFirstResponder];
     
     if([self.view.subviews containsObject:showPanelView]) {
+        [centerPanelView removeFromSuperview];
         [showPanelView removeFromSuperview];
         [arrowImageView removeFromSuperview];
         navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
@@ -820,6 +914,7 @@
     NSLog(@"showDueTimePanel");
 
     if([self.view.subviews containsObject:showPanelView]) {
+        [centerPanelView removeFromSuperview];
         [showPanelView removeFromSuperview];
         [arrowImageView removeFromSuperview];
         navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
@@ -856,6 +951,7 @@
     [dueTimeView resignFirstResponder];
     
     if([self.view.subviews containsObject:showPanelView]) {
+        [centerPanelView removeFromSuperview];
         [showPanelView removeFromSuperview];
         [arrowImageView removeFromSuperview];
         navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
@@ -962,6 +1058,7 @@
     
     if([self.view.subviews containsObject:showPanelView]) {
         [showPanelView removeFromSuperview];
+        [centerPanelView removeFromSuperview];
         [arrowImageView removeFromSuperview];
         navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
     }
@@ -974,72 +1071,29 @@
         currentIndex = 3;
     }
 
-//    centerPanelView = [[UIView alloc] init];
-//    centerPanelView.frame = CGRectMake(0, 56, 320, 44);
-//    centerPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_centerPanel.png"]];
-//
-//    UILabel *assigneeTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 10, 90, 17)] autorelease];
-//    assigneeTitleLabel.text = @"转交他人：";
-//    assigneeTitleLabel.font = [UIFont systemFontOfSize:17];
-//    assigneeTitleLabel.backgroundColor = [UIColor clearColor];
-//    assigneeTitleLabel.textColor = [UIColor whiteColor];
-//    [centerPanelView addSubview:assigneeTitleLabel];
-//
-//    NSString *assigneeName = [taskDetailDict objectForKey:@"assigneeName"];
-//    NSMutableArray *assignMembers = [NSMutableArray array];
-//    [assignMembers addObject:assigneeName];
-//
-//    assgineesView = [[FillLabelView alloc] initWithFrame:CGRectMake(102, 3, 188, 0)];
-//    [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
-//    [centerPanelView addSubview:assgineesView];
-//
-//    UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 8, 18, 18)] autorelease];
-//    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
-//    [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
-//    UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
-//    [assigenChooseView addGestureRecognizer:chooseRecognizer];
-//    [chooseRecognizer release];
-//
-//    [assigenChooseView addSubview:assigneeChooseBtn];
-//
-//    [centerPanelView addSubview:assigenChooseView];
-//
-//    [self.view addSubview:centerPanelView];
+    centerPanelView = [[UIView alloc] init];
+    //centerPanelView.userInteractionEnabled = NO;
+    centerPanelView.frame = CGRectMake(0, 56, 320, 44);
+    centerPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_centerPanel.png"]];
 
-
-//    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, 320, 1)];
-//    lineView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_shiline.png"]];
-//    [self.view addSubview:lineView];
-//    [lineView release];
-
-    showPanelView = [[UIView alloc] init];
-    showPanelView.frame = CGRectMake(0, 56, 320, 46);
-    showPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
-    
-    navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
-    arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
-    [navPanelView addSubview:arrowImageView];
-    arrowImageView.frame = CGRectMake(274, 50, 12, 6);
-
-    UILabel *assigneeTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 15, 90, 17)] autorelease];
+    UILabel *assigneeTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 12, 90, 17)] autorelease];
     assigneeTitleLabel.text = @"转交他人：";
     assigneeTitleLabel.font = [UIFont systemFontOfSize:17];
     assigneeTitleLabel.backgroundColor = [UIColor clearColor];
     assigneeTitleLabel.textColor = [UIColor whiteColor];
-    [showPanelView addSubview:assigneeTitleLabel];
+    [centerPanelView addSubview:assigneeTitleLabel];
 
     NSString *assigneeName = [taskDetailDict objectForKey:@"assigneeName"];
     NSMutableArray *assignMembers = [NSMutableArray array];
     [assignMembers addObject:assigneeName];
 
-    assgineesView = [[FillLabelView alloc] initWithFrame:CGRectMake(102, 8, 188, 0)];
+    assgineesView = [[FillLabelView alloc] initWithFrame:CGRectMake(92, 7, 188, 0)];
     [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
-    [showPanelView addSubview:assgineesView];
+    [centerPanelView addSubview:assgineesView];
 
     NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
     if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
-        UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 13, 18, 18)] autorelease];
-        assigenChooseView.userInteractionEnabled = YES;
+        UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 12, 18, 18)] autorelease];
         UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
         assigneeChooseBtn.userInteractionEnabled = NO;
         [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
@@ -1049,7 +1103,81 @@
 
         [assigenChooseView addSubview:assigneeChooseBtn];
 
-        [showPanelView addSubview:assigenChooseView];
+        [centerPanelView addSubview:assigenChooseView];
+    }
+
+    [self.view addSubview:centerPanelView];
+
+//    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, 320, 1)];
+//    lineView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_shiline.png"]];
+//    [self.view addSubview:lineView];
+//    [lineView release];
+
+    showPanelView = [[UIView alloc] init];
+//    showPanelView.frame = CGRectMake(0, 100, 320, 46);
+    
+    navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
+    arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
+    [navPanelView addSubview:arrowImageView];
+    arrowImageView.frame = CGRectMake(274, 50, 12, 6);
+
+    NSMutableArray *relatedUserArray = [taskDetailDict objectForKey:@"relatedUserArray"];
+    NSMutableArray *relevantMembers = [NSMutableArray array];
+    for (NSMutableDictionary *relevantDict in relatedUserArray) {
+        [relevantMembers addObject:[relevantDict objectForKey:@"displayName"]];
+    }
+    
+    EditFillLabelView *relevantLabelView = [[EditFillLabelView alloc] initWithFrame:CGRectMake(92, 7, 140, 0)];
+    if(relevantMembers.count > 0) {
+        [relevantLabelView bindTags:relevantMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
+    }
+    relevantLabelView.delegate = self;
+    [showPanelView addSubview:relevantLabelView];
+    
+    int lines = relevantMembers.count == 0 ? 1 : ((relevantMembers.count - 1) / 2 + 1);
+    
+    int tempHeight = 0;
+    for (int index = 0; index < lines - 1; index++) {
+        UIView *bgView = [[[UIView alloc] initWithFrame:CGRectMake(0, tempHeight, 320, 44)] autorelease];
+        bgView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_centerPanel.png"]];
+        [showPanelView insertSubview:bgView atIndex:0];
+        tempHeight += 44;
+    }
+    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, tempHeight, 320, 46)];
+    footView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
+    [showPanelView insertSubview:footView atIndex:0];
+    
+    showPanelView.frame = CGRectMake(0, 100, 320, tempHeight + 46);
+    
+    UILabel *relevantTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 12, 90, 17)] autorelease];
+    relevantTitleLabel.text = @"相关人员：";
+    relevantTitleLabel.font = [UIFont systemFontOfSize:17];
+    relevantTitleLabel.backgroundColor = [UIColor clearColor];
+    relevantTitleLabel.textColor = [UIColor whiteColor];
+    [showPanelView addSubview:relevantTitleLabel];
+
+//    NSString *assigneeName = [taskDetailDict objectForKey:@"assigneeName"];
+//    NSMutableArray *assignMembers = [NSMutableArray array];
+//    [assignMembers addObject:assigneeName];
+//
+//    assgineesView = [[FillLabelView alloc] initWithFrame:CGRectMake(102, 8, 188, 0)];
+//    [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
+//    [showPanelView addSubview:assgineesView];
+//
+//    NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        UIView *relevantChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 13, 18, 18)] autorelease];
+        relevantChooseView.userInteractionEnabled = YES;
+        UIButton *relevantChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+        relevantChooseBtn.userInteractionEnabled = NO;
+        [relevantChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
+        UITapGestureRecognizer *relevantRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseRelevantUser:)];
+        [relevantChooseView addGestureRecognizer:relevantRecognizer];
+        [relevantRecognizer release];
+
+        [relevantChooseView addSubview:relevantChooseBtn];
+
+        [showPanelView addSubview:relevantChooseView];
     }
     
     [self.view addSubview:showPanelView];
@@ -1081,14 +1209,24 @@
 
 - (void)chooseUser:(id)sender
 {
-    NSLog(@"chooseUser");
+    NSLog(@"chooseAssigneeUser");
 
     SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
     searchUserController.delegate = self;
+    searchUserController.type = 0;
     [Tools layerTransition:self.navigationController.view from:@"right"];
     [self.navigationController pushViewController:searchUserController animated:NO];
 
     //[searchUserController release];
+}
+
+- (void)chooseRelevantUser:(id)sender
+{
+    SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
+    searchUserController.delegate = self;
+    searchUserController.type = 1;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:searchUserController animated:NO];
 }
 
 - (void)modifyAssignee:(NSMutableDictionary*)assignee
@@ -1096,10 +1234,18 @@
     NSString *workId = [assignee objectForKey:@"workId"];
     [taskDetailDict setObject:workId forKey:@"assigneeWorkId"];
     NSString *name = [assignee objectForKey:@"name"];
+    NSArray *array = [name componentsSeparatedByString: @"-"];
+    NSString *displayName;
+    if(array.count == 0) {
+        displayName = name;
+    }
+    else {
+        displayName = [array objectAtIndex: 0];
+    }
     NSString *assigneeWorkId = [assignee objectForKey:@"workId"];
 
     NSMutableArray *assignMembers = [NSMutableArray array];
-    [assignMembers addObject:name];
+    [assignMembers addObject:displayName];
 
     [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
 
@@ -1120,7 +1266,14 @@
         [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
     }
     attachmentsStr = [attachmentIds componentsJoinedByString:@"||"];
-
+    
+    NSMutableArray *relatedUserArray = [taskDetailDict objectForKey:@"relatedUserArray"];
+    NSMutableArray *workIdsArray = [NSMutableArray array];
+    for (NSMutableDictionary *userDict in relatedUserArray) {
+        [workIdsArray addObject:[userDict objectForKey:@"workId"]];
+    }
+    NSString *relatedUserWorkIds = [workIdsArray componentsJoinedByString:@"||"];
+    
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.HUD];
     [self.HUD show:YES];
@@ -1134,12 +1287,92 @@
                              body:body
                           dueTime:dueTime
                    assigneeWorkId:assigneeWorkId
-                  relatedUserJson:@""
+               relatedUserWorkIds:relatedUserWorkIds
                          priority:priority
                       isCompleted:isCompleted
                     attachmentIds:attachmentsStr
                           context:context
                          delegate:self];
+}
+- (void)modifyRelated:(NSMutableDictionary*)related
+{
+    NSString *workId = [related objectForKey:@"workId"];
+    NSString *name = [related objectForKey:@"name"];
+    NSArray *array = [name componentsSeparatedByString: @"-"];
+    NSString *displayName;
+    if(array.count == 0) {
+        displayName = name;
+    }
+    else {
+        displayName = [array objectAtIndex: 0];
+    }
+    
+    NSMutableArray *relatedUserArray = [taskDetailDict objectForKey:@"relatedUserArray"];
+    for (NSMutableDictionary *dict in relatedUserArray) {
+        if([workId isEqualToString:[dict objectForKey:@"workId"]]) {
+            return;
+        }
+    }
+    
+    NSMutableDictionary *userDict = [NSMutableDictionary dictionary];
+    [userDict setObject:workId forKey:@"workId"];
+    [userDict setObject:displayName forKey:@"displayName"];
+    [relatedUserArray addObject:userDict];
+    [taskDetailDict setObject:relatedUserArray forKey:@"relatedUserArray"];
+    
+//    NSMutableArray *assignMembers = [NSMutableArray array];
+//    [assignMembers addObject:displayName];
+//    
+//    [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
+    
+    NSString *subject = [taskDetailDict objectForKey:@"subject"];
+    NSString *body = [taskDetailDict objectForKey:@"body"];
+    NSString *dueTime = [taskDetailDict objectForKey:@"dueTime"];
+    NSNumber *priority = [taskDetailDict objectForKey:@"priority"];
+    NSNumber *isCompleted = [taskDetailDict objectForKey:@"isCompleted"];
+    NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
+    
+    NSString *attachmentsStr = @"";
+    NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
+    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+    NSMutableArray *attachmentIds = [NSMutableArray array];
+    for (NSMutableDictionary *dict in attachments) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    for (NSMutableDictionary *dict in pictures) {
+        [attachmentIds addObject:[dict objectForKey:@"attachmentId"]];
+    }
+    attachmentsStr = [attachmentIds componentsJoinedByString:@"||"];
+    
+    NSMutableArray *workIdsArray = [NSMutableArray array];
+    for (NSMutableDictionary *userDict in relatedUserArray) {
+        [workIdsArray addObject:[userDict objectForKey:@"workId"]];
+    }
+    NSString *relatedUserWorkIds = [workIdsArray componentsJoinedByString:@"||"];
+    
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.HUD];
+    [self.HUD show:YES];
+    self.HUD.labelText = @"正在提交";
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:@"UpdateTaskRelated" forKey:REQUEST_TYPE];
+    //[context setObject:assigneeWorkId forKey:@"assigneeWorkId"];
+    //[context setObject:name forKey:@"assigneeName"];
+    [enterpriseService updateTask:currentTaskId
+                          subject:subject
+                             body:body
+                          dueTime:dueTime
+                   assigneeWorkId:assigneeWorkId
+                  relatedUserWorkIds:relatedUserWorkIds
+                         priority:priority
+                      isCompleted:isCompleted
+                    attachmentIds:attachmentsStr
+                          context:context
+                         delegate:self];
+}
+- (void)writeName:(NSString*)displayname
+{
+    
 }
 
 - (void)setPriority0:(id)sender

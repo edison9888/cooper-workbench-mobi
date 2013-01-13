@@ -360,7 +360,6 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
             NSMutableDictionary *context = [NSMutableDictionary dictionary];
             if(IS_ENTVERSION) {
                 [context setObject:@"WORKBENCHLOGIN" forKey:REQUEST_TYPE];
-                
             }
             else {
                 [context setObject:@"LOGIN" forKey:REQUEST_TYPE];
@@ -447,7 +446,7 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
         }
     }
     else if([requestType isEqualToString:@"WORKBENCHLOGIN"]) {
-        if(request.responseStatusCode == 200) {
+        if(request.responseStatusCode == 200 && [request.responseString rangeOfString:@"抱歉，您访问的网页发生了错误，请您稍后再试"].length == 0) {
             NSArray* array = request.responseCookies;
             NSLog(@"【Cookies的数组个数】%d",  array.count);
             
@@ -474,9 +473,10 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
             [delegate loginFinish];
         }
         else {
-            [Tools alert:[NSString stringWithFormat:@"返回验证码错误:%d,返回错误信息:%@"
-                          , request.responseStatusCode
-                          , request.responseString]];
+//            [Tools alert:[NSString stringWithFormat:@"返回验证码错误:%d,返回错误信息:%@"
+//                          , request.responseStatusCode
+//                          , request.responseString]];
+            [Tools alert:@"域账号和密码输入不正确"];
         }
     }
     else if([requestType isEqualToString:@"GOOGLELOGIN"]) {

@@ -570,7 +570,7 @@
                              body:body
                           dueTime:dueTime
                    assigneeWorkId:assigneeWorkId
-                  relatedUserJson:@""
+                relatedUserWorkIds:@""
                          priority:priority
                       isCompleted:isCompleted
                     attachmentIds:attachmentsStr
@@ -610,7 +610,7 @@
                              body:body
                           dueTime:dueTime
                    assigneeWorkId:assigneeWorkId
-                  relatedUserJson:@""
+                relatedUserWorkIds:@""
                          priority:priority
                       isCompleted:isCompleted
                     attachmentIds:attachmentsStr

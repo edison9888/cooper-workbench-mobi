@@ -79,6 +79,7 @@
     commentTextView.frame = CGRectMake(10, 10, 279, 85);
     commentTextView.font = [UIFont systemFontOfSize:16.0f];
     commentTextView.placeholder = @"写点什么";
+    commentTextView.delegate = self;
     commentTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
     commentTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
     commentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -109,6 +110,16 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - TextViewDelegate
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"@"]) {
+        [self performSelector:@selector(searchUser:) withObject:nil afterDelay:0.5];
+    }
+    return YES;
 }
 
 #pragma mark - ASIHTTPRequest
@@ -172,6 +183,38 @@
                                     delegate:self];
     
     [commentTextView resignFirstResponder];
+}
+
+- (void)searchUser:(id)sender
+{
+    SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
+    searchUserController.delegate = self;
+    searchUserController.type = 2;
+    [Tools layerTransition:self.navigationController.view from:@"right"];
+    [self.navigationController pushViewController:searchUserController animated:NO];
+}
+
+- (void)modifyAssignee:(NSMutableDictionary*)assignee
+{
+    
+}
+- (void)modifyRelated:(NSMutableDictionary*)related
+{
+    
+}
+- (void)writeName:(NSString*)displayname
+{
+    NSArray *array = [displayname componentsSeparatedByString: @"-"];
+    NSString *name;
+    if(array.count == 0) {
+        name = displayname;
+    }
+    else {
+        name = [array objectAtIndex: 0];
+    }
+    
+    NSString *comment = commentTextView.text;
+    commentTextView.text = [NSString stringWithFormat:@"%@%@", comment, name];
 }
 
 @end

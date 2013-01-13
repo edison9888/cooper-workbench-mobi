@@ -23,5 +23,6 @@
 
 @property (nonatomic, assign) id<EnterpriseTaskCreateDelegate> delegate;
 @property (nonatomic, retain) NSMutableArray *filterOptionArray;
+@property (nonatomic, assign) NSInteger type;
 
 @end

@@ -10,4 +10,6 @@
 
 @protocol EnterpriseTaskCreateDelegate
 - (void)modifyAssignee:(NSMutableDictionary*)assignee;
+- (void)modifyRelated:(NSMutableDictionary*)related;
+- (void)writeName:(NSString*)displayname;
 @end

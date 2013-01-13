@@ -107,7 +107,7 @@
               body:(NSString*)body
            dueTime:(NSString*)dueTime
     assigneeWorkId:(NSString*)assigneeWorkId
-   relatedUserJson:(NSString*)relatedUserJson
+relatedUserWorkIds:(NSString*)relatedUserWorkIds
           priority:(NSNumber*)priority
        isCompleted:(NSNumber*)isCompleted
      attachmentIds:(NSString*)attachmentIds
@@ -123,7 +123,7 @@
     [params setObject:body forKey:@"body"];
     [params setObject:dueTime forKey:@"dueTime"];
     [params setObject:assigneeWorkId forKey:@"assigneeWorkId"];
-    [params setObject:relatedUserJson forKey:@"relatedUserJson"];
+    [params setObject:relatedUserWorkIds forKey:@"relatedUserWorkIds"];
     [params setObject:priority forKey:@"priority"];
     [params setObject:isCompleted forKey:@"isCompleted"];
     [params setObject:attachmentIds forKey:@"attachmentIds"];

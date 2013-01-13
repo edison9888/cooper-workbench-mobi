@@ -10,6 +10,7 @@
 #import "Base2ViewController.h"
 #import "CooperService/EnterpriseService.h"
 #import "GCPlaceholderTextView.h"
+#import "SearchUserViewController.h"
 
 @protocol TaskContentEditDelegate <NSObject>
 
@@ -17,7 +18,7 @@
 
 @end
 
-@interface TaskContentEditViewController : Base2ViewController
+@interface TaskContentEditViewController : Base2ViewController<UITextViewDelegate, EnterpriseTaskCreateDelegate>
 {
     GCPlaceholderTextView *subjectTextView;
     

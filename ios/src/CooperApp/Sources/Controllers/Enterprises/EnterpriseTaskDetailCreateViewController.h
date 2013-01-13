@@ -26,7 +26,7 @@
 #import "SearchUserViewController.h"
 //#import "CodesharpSDK/JSCoreTextView.h"
 
-@interface EnterpriseTaskDetailCreateViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DatePickerLabelDelegate, EnterpriseTaskCreateDelegate>
+@interface EnterpriseTaskDetailCreateViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DatePickerLabelDelegate, EnterpriseTaskCreateDelegate>
 {
     GCPlaceholderTextView *subjectTextView;
     PriorityOptionView *priorityOptionView;

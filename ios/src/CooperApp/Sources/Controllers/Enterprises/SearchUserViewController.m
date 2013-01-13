@@ -8,14 +8,11 @@
 
 #import "SearchUserViewController.h"
 
-@interface SearchUserViewController ()
-
-@end
-
 @implementation SearchUserViewController
 
 @synthesize filterOptionArray;
 @synthesize delegate;
+@synthesize type;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -91,6 +88,8 @@
         NSMutableDictionary *user = [filterOptionArray objectAtIndex:indexPath.row];
         NSString *name = [user objectForKey:@"name"];
         cell.textLabel.text = name;
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+        cell.textLabel.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
     }
 
     return cell;
@@ -123,33 +122,16 @@
 
         NSMutableDictionary *user = [[filterOptionArray objectAtIndex:indexPath.row] copy];
 
-        [delegate modifyAssignee:user];
-
+        if(type == 0) {
+            [delegate modifyAssignee:user];
+        }
+        else if(type == 1) {
+            [delegate modifyRelated:user];
+        }
+        else if(type == 2) {
+            [delegate writeName:[user objectForKey:@"name"]];
+        }
         [self goBack:nil];
-//        if([idObject isKindOfClass:[TeamMember class]])
-//        {
-//            TeamMember *teamMember = (TeamMember*)idObject;
-//
-//            currentProjectId = nil;
-//            currentMemberId = teamMember.id;
-//            currentTag = nil;
-//        }
-//        else if([idObject isKindOfClass:[Project class]])
-//        {
-//            Project *project = (Project*)idObject;
-//
-//            currentProjectId = project.id;
-//            currentMemberId = nil;
-//            currentTag = nil;
-//        }
-//        else if([idObject isKindOfClass:[Tag class]])
-//        {
-//            Tag *tag = (Tag*)idObject;
-//
-//            currentProjectId = nil;
-//            currentMemberId = nil;
-//            currentTag = tag.name;
-//        }
     }
 }
 
@@ -185,7 +167,7 @@
 
     searchText = [[[UITextField alloc] initWithFrame:CGRectMake(10, 13, 250, 20)] autorelease];
     searchText.font = [UIFont systemFontOfSize:16.0f];
-    searchText.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:102.0/255];
+    searchText.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
     searchText.backgroundColor = [UIColor clearColor];
     searchText.keyboardType = UIKeyboardTypeDefault;
     searchText.keyboardAppearance = UIKeyboardAppearanceDefault;
@@ -196,8 +178,8 @@
 
     [searchText becomeFirstResponder];
 
-    UIView *assigneeChooseView = [[[UIView alloc] initWithFrame:CGRectMake(290, 24, 18, 18)] autorelease];
-    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+    UIView *assigneeChooseView = [[[UIView alloc] initWithFrame:CGRectMake(284, 11, 36, 44)] autorelease];
+    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(6, 12, 18, 18)];
     assigneeChooseBtn.userInteractionEnabled = NO;
     [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
     UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchUser:)];
