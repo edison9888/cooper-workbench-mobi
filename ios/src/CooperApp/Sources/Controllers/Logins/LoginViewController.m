@@ -446,37 +446,53 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
         }
     }
     else if([requestType isEqualToString:@"WORKBENCHLOGIN"]) {
-        if(request.responseStatusCode == 200 && [request.responseString rangeOfString:@"抱歉，您访问的网页发生了错误，请您稍后再试"].length == 0) {
-            NSArray* array = request.responseCookies;
-            NSLog(@"【Cookies的数组个数】%d",  array.count);
-            
-            NSDictionary *dict = [NSHTTPCookie requestHeaderFieldsWithCookies:array];
-            NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:dict];
-            NSHTTPCookieStorage *sharedHTTPCookie = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-            
-            [sharedHTTPCookie setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
-            [sharedHTTPCookie setCookie:cookie];
-            
-            [[Constant instance] setDomain:domainTextField.text];
-            [[Constant instance] setUsername:userNameTextField.text];
-            [[Constant instance] setLoginType:@"normal"];
+        if(request.responseStatusCode == 200
+           //&& [request.responseString rangeOfString:@"抱歉，您访问的网页发生了错误，请您稍后再试"].length == 0
+           )
+        {
+            NSDictionary *dict = [[request responseString] JSONValue];
+            if(dict)
+            {
+                NSNumber *state = [dict objectForKey:@"state"];
 
-            NSMutableDictionary *result = [request.responseString JSONValue];
-            NSMutableDictionary *data = [result objectForKey:@"data"];
-            NSString *workId = [data objectForKey:@"workId"];
-                [[Constant instance] setWorkId:workId];
+                if(state == [NSNumber numberWithInt:0]) {
 
-            [Constant saveToCache];
-            
-            [self dismissModalViewControllerAnimated:NO];
-            
-            [delegate loginFinish];
+                    NSArray* array = request.responseCookies;
+                    NSLog(@"【Cookies的数组个数】%d",  array.count);
+                    
+                    NSDictionary *dict = [NSHTTPCookie requestHeaderFieldsWithCookies:array];
+                    NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:dict];
+                    NSHTTPCookieStorage *sharedHTTPCookie = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                    
+                    [sharedHTTPCookie setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+                    [sharedHTTPCookie setCookie:cookie];
+                    
+                    [[Constant instance] setDomain:domainTextField.text];
+                    [[Constant instance] setUsername:userNameTextField.text];
+                    [[Constant instance] setLoginType:@"normal"];
+
+                    NSMutableDictionary *result = [request.responseString JSONValue];
+                    NSMutableDictionary *data = [result objectForKey:@"data"];
+                    NSString *workId = [data objectForKey:@"workId"];
+                        [[Constant instance] setWorkId:workId];
+
+                    [Constant saveToCache];
+                    
+                    [self dismissModalViewControllerAnimated:NO];
+                    
+                    [delegate loginFinish];
+
+                }
+                else {
+                    [Tools alert:[dict objectForKey:@"errorMsg"]];
+                }
+            }
         }
         else {
-//            [Tools alert:[NSString stringWithFormat:@"返回验证码错误:%d,返回错误信息:%@"
-//                          , request.responseStatusCode
-//                          , request.responseString]];
-            [Tools alert:@"域账号和密码输入不正确"];
+            [Tools alert:[NSString stringWithFormat:@"返回验证码错误:%d,返回错误信息:%@"
+                          , request.responseStatusCode
+                          , request.responseString]];
+            //[Tools alert:@"域账号和密码输入不正确"];
         }
     }
     else if([requestType isEqualToString:@"GOOGLELOGIN"]) {

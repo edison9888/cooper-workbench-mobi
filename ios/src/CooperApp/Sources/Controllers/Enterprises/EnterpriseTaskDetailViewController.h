@@ -20,9 +20,12 @@
 #import "EditFillLabelView.h"
 #import "SearchUserViewController.h"
 #import "EnterpriseTaskCreateDelegate.h"
-#import "KTPhotoScrollViewController.h"
+#import "MWPhotoBrowser.h"
+#import <AVFoundation/AVFoundation.h>
+#import <AudioToolbox/AudioToolbox.h>
+#include "lame.h"
 
-@interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate, DateButtonDelegate, EnterpriseTaskCreateDelegate, EditFillLabelViewDelegate>
+@interface EnterpriseTaskDetailViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, AVAudioPlayerDelegate, TaskContentEditDelegate, TaskCommentCreateDelegate, CommentInfoDelegate, DateButtonDelegate, EnterpriseTaskCreateDelegate, EditFillLabelViewDelegate, MWPhotoBrowserDelegate>
 {
     UILabel *textTitleLabel;
     
@@ -74,6 +77,11 @@
     UILabel *label2;
 
     FillLabelView *assgineesView;
+
+    UIImageView *audio_ImageView;
+
+    NSMutableArray *photos;
+    AVAudioPlayer *mp3Player;
 }
 
 @property (retain, nonatomic) NSString *currentTaskId;

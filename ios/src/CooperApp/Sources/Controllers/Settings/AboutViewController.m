@@ -52,22 +52,22 @@
     [backButtonItem release];
     [backView release];
     
-    UITextView *textView1 = [[UITextView alloc] initWithFrame:CGRectMake(0, 140, 320, 80)];
+    UITextView *textView1 = [[UITextView alloc] initWithFrame:CGRectMake(0, 138, 320, 85)];
     textView1.userInteractionEnabled = NO;
     textView1.textAlignment = UITextAlignmentCenter;
     textView1.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
     textView1.backgroundColor = [UIColor clearColor];
-    textView1.font = [UIFont boldSystemFontOfSize:13];
+    textView1.font = [UIFont systemFontOfSize:13];
     textView1.text = @"COOPER\r\n取Cooperation，协作、协同之意\r\n也可以理解为Cool Person\r\n--Cool Person use COOPER！";
     [self.view addSubview:textView1];
     [textView1 release];
     
-    UITextView *textView2 = [[UITextView alloc] initWithFrame:CGRectMake(0, 225, 320, 80)];
+    UITextView *textView2 = [[UITextView alloc] initWithFrame:CGRectMake(0, 220, 320, 85)];
     textView2.userInteractionEnabled = NO;
     textView2.textAlignment = UITextAlignmentCenter;
     textView2.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
     textView2.backgroundColor = [UIColor clearColor];
-    textView2.font = [UIFont boldSystemFontOfSize:11];
+    textView2.font = [UIFont systemFontOfSize:11];
     textView2.text = @"Powered By Workflow & IT Team\r\nAITA、COOPER Inside\r\nPD：谢逊、舒儿 | UED：铭秋 | 开发：萧玄\r\n其他贡献人员：侯昆、鼎天、无名...";
     [self.view addSubview:textView2];
     [textView2 release];
@@ -77,7 +77,7 @@
     textView3.textAlignment = UITextAlignmentCenter;
     textView3.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
     textView3.backgroundColor = [UIColor clearColor];
-    textView3.font = [UIFont boldSystemFontOfSize:12];
+    textView3.font = [UIFont systemFontOfSize:12];
     textView3.text = @"更多信息请登陆PC版任务中心：";
     [self.view addSubview:textView3];
     [textView3 release];

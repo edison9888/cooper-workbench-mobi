@@ -318,6 +318,20 @@
                          delegate:self];
 }
 
+#pragma mark - MWPhotoBrowserDelegate
+
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
+{
+    return photos.count;
+}
+
+- (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
+{
+    if (index < photos.count)
+        return [photos objectAtIndex:index];
+    return nil;
+}
+
 #pragma mark - ASIHTTPRequest
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -504,6 +518,25 @@
             [Tools failed:self.HUD];
         }
     }
+    else if([requestType isEqualToString:@"DownloadAudio"]) {
+        if (mp3Player == nil)
+        {
+            NSString *mp3FileName = @"Mp3File_temp";
+            mp3FileName = [mp3FileName stringByAppendingString:@".mp3"];
+            NSString *mp3FilePath = [[NSHomeDirectory() stringByAppendingFormat:@"/Documents/"] stringByAppendingPathComponent:mp3FileName];
+
+            NSError *playerError;
+            mp3Player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:mp3FilePath]
+                                                               error:&playerError];
+            mp3Player.meteringEnabled = YES;
+            if (mp3Player == nil)
+            {
+                NSLog(@"Error creating player: %@", [playerError description]);
+            }
+            mp3Player.delegate = self;
+        }
+        [mp3Player play];
+    }
 }
 
 #pragma mark - 私有方法
@@ -637,6 +670,12 @@
             NSMutableDictionary *pictureDict = [pictures objectAtIndex:0];
             
             NSString *thumbUrl = [pictureDict objectForKey:@"thumbUrl"];
+            NSString *url = [pictureDict objectForKey:@"url"];
+
+            MWPhoto *photo = [MWPhoto photoWithURL:[NSURL URLWithString:url]];
+            photos = [[NSMutableArray alloc] init];
+            [photos addObject:photo];
+                              
             
             UIImageView *imageView = [[[UIImageView alloc] init] autorelease];
             //imageView.tag = [dict objectForKey:@"url"];
@@ -658,15 +697,15 @@
                 
                 if([fileName.pathExtension isEqualToString:@"mp3"]) {
                     
-                    UIImageView *imageView = [[[UIImageView alloc] init] autorelease];
+                    audio_ImageView = [[[UIImageView alloc] init] autorelease];
                     //imageView.tag = [dict objectForKey:@"url"];
-                    imageView.image = [UIImage imageNamed:@"detail_audio.png"];
-                    imageView.frame = CGRectMake(tempLeft, totalHeight + 16, 50, 50);
+                    audio_ImageView.image = [UIImage imageNamed:@"detail_audio.png"];
+                    audio_ImageView.frame = CGRectMake(tempLeft, totalHeight + 16, 50, 50);
                     //                            imageView.tag = count;
-                    imageView.userInteractionEnabled = YES;
+                    audio_ImageView.userInteractionEnabled = YES;
                     UITapGestureRecognizer *recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(getAudioUrl:)] autorelease];
-                    [imageView addGestureRecognizer:recognizer];
-                    [contentView addSubview:imageView];
+                    [audio_ImageView addGestureRecognizer:recognizer];
+                    [contentView addSubview:audio_ImageView];
                     tempLeft += 56;
                     
                     break;
@@ -745,7 +784,12 @@
 
 - (void)goBack:(id)sender
 {
-    [Tools layerTransition:self.navigationController.view from:@"left"]; 
+    if (mp3Player != nil)
+    {
+        [mp3Player stop];
+        mp3Player = nil;
+    }
+    [Tools layerTransition:self.navigationController.view from:@"left"];
     [self.navigationController popViewControllerAnimated:NO];
 }
 
@@ -753,27 +797,45 @@
 {
     NSLog("getPicUrl");
     //UITapGestureRecognizer *imageView = (UITapGestureRecognizer*)sender;
-    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
-    NSMutableDictionary *dict = [pictures objectAtIndex:0];
-    NSString *url = [dict objectForKey:@"url"];
-    
-    ImagePreviewViewController *controller = [[[ImagePreviewViewController alloc] init] autorelease];
-    controller.url = url;
-    [Tools layerTransition:self.navigationController.view from:@"right"];
-    [self.navigationController pushViewController:controller animated:NO];
-    
+//    NSMutableArray *pictures = [taskDetailDict objectForKey:@"pictures"];
+//    NSMutableDictionary *dict = [pictures objectAtIndex:0];
+//    NSString *url = [dict objectForKey:@"url"];
+
+//    ImagePreviewViewController *controller = [[[ImagePreviewViewController alloc] init] autorelease];
+//    controller.url = url;
+//    [Tools layerTransition:self.navigationController.view from:@"right"];
+//    [self.navigationController pushViewController:controller animated:NO];
+
 //    KTPhotoScrollViewController *controller = [[KTPhotoScrollViewController alloc] initWithDataSource:self andStartWithPhotoAtIndex:0];
 //    //controller.url = url;
 //    [Tools layerTransition:self.navigationController.view from:@"right"];
 //    [self.navigationController pushViewController:controller animated:NO];
+
+    MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+    browser.displayActionButton = YES;
+
+    UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:browser] autorelease];
+    nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:nc animated:YES];
 }
 
 - (void)getAudioUrl:(id)sender
 {
+    if (mp3Player != nil)
+    {
+        [mp3Player stop];
+        mp3Player = nil;
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(change1:) object:nil];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(change2:) object:nil];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(change3:) object:nil];
+        return;
+    }
+    [self performSelector:@selector(change1:) withObject:nil afterDelay:0.5];
+
     NSLog("getAudioUrl");
-    UITapGestureRecognizer *recognizer = (UITapGestureRecognizer*)sender;
-    UIImageView *imageView = (UIImageView*)recognizer.view;
-    imageView.image = [UIImage imageNamed:@"detail_audio_sel.png"];
+    //UITapGestureRecognizer *recognizer = (UITapGestureRecognizer*)sender;
+    //UIImageView *imageView = (UIImageView*)recognizer.view;
+    //imageView.image = [UIImage imageNamed:@"detail_audio_sel.png"];
     NSMutableArray *attachments = [taskDetailDict objectForKey:@"attachments"];
     for (NSMutableDictionary *dict in attachments) {
         NSString *fileName = [dict objectForKey:@"fileName"];
@@ -782,10 +844,23 @@
             NSLog("url:%@", url);
             
             if([fileName.pathExtension isEqualToString:@"mp3"]) {
-                AudioPreviewViewController *controller = [[[AudioPreviewViewController alloc] init] autorelease];
-                controller.url = url;
-                [Tools layerTransition:self.navigationController.view from:@"right"];
-                [self.navigationController pushViewController:controller animated:NO];
+//                AudioPreviewViewController *controller = [[[AudioPreviewViewController alloc] init] autorelease];
+//                controller.url = url;
+//                [Tools layerTransition:self.navigationController.view from:@"right"];
+//                [self.navigationController pushViewController:controller animated:NO];
+
+                ASIHTTPRequest *request=[[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
+
+                NSString *mp3FileName = @"Mp3File_temp";
+                mp3FileName = [mp3FileName stringByAppendingString:@".mp3"];
+                NSString *mp3FilePath = [[NSHomeDirectory() stringByAppendingFormat:@"/Documents/"] stringByAppendingPathComponent:mp3FileName];
+                request.delegate = self;
+                NSMutableDictionary *context = [NSMutableDictionary dictionary];
+                [context setObject:@"DownloadAudio" forKey:REQUEST_TYPE];
+                [request setUserInfo:[NSDictionary dictionaryWithDictionary:context]];
+                [request setDownloadDestinationPath:mp3FilePath];
+                
+                [request startAsynchronous];
                 
                 break;
             }
@@ -793,6 +868,32 @@
           //  break;
         //}
     }
+}
+
+- (void)change1:(id)sender
+{
+    audio_ImageView.image = [UIImage imageNamed:@"detail_audio1.png"];
+    [self performSelector:@selector(change2:) withObject:nil afterDelay:0.5];
+}
+- (void)change2:(id)sender
+{
+    audio_ImageView.image = [UIImage imageNamed:@"detail_audio2.png"];
+    [self performSelector:@selector(change3:) withObject:nil afterDelay:0.5];
+}
+- (void)change3:(id)sender
+{
+    audio_ImageView.image = [UIImage imageNamed:@"detail_audio3.png"];
+    [self performSelector:@selector(change1:) withObject:nil afterDelay:0.5];
+}
+
+- (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    [mp3Player stop];
+    mp3Player = nil;
+
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(change1:) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(change2:) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(change3:) object:nil];
 }
 
 - (void)editContent:(id)sender
