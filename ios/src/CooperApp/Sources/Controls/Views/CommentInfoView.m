@@ -71,12 +71,15 @@
     contentLabel.numberOfLines = contentlines;
     contentLabel.frame = CGRectMake(6, totalHeight, 280, contentLabelHeight);
     [self addSubview:contentLabel];
-    
-    UIButton *replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [replyButton setBackgroundImage:[UIImage imageNamed:@"detail_replyComment.png"] forState:UIControlStateNormal];
-    replyButton.frame = CGRectMake(290, totalHeight, 23, 20);
-    [replyButton addTarget:self action:@selector(replyComment:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:replyButton];
+
+    NSString *type = [commentDict objectForKey:@"type"];
+    if([type isEqualToString:@"CommentFeedback"]) {
+        UIButton *replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [replyButton setBackgroundImage:[UIImage imageNamed:@"detail_replyComment.png"] forState:UIControlStateNormal];
+        replyButton.frame = CGRectMake(290, totalHeight, 23, 20);
+        [replyButton addTarget:self action:@selector(replyComment:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:replyButton];
+    }
     
     totalHeight += contentLabelHeight + 12;
     

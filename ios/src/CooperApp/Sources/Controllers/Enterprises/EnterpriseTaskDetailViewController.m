@@ -387,10 +387,10 @@
                     
                     NSMutableArray *feedbacks = [[data objectForKey:@"feedbacks"] copy];
                     for (NSMutableDictionary *feedbackDict in feedbacks) {
-                        NSString *type = [feedbackDict objectForKey:@"type"];
-                        if([type isEqualToString:@"CommentFeedback"]) {
+                        //NSString *type = [feedbackDict objectForKey:@"type"];
+                        //if([type isEqualToString:@"CommentFeedback"]) {
                             [comments addObject:feedbackDict];
-                        }
+                        //}
                     }
                     
                     [taskDetailDict setObject:taskId forKey:@"taskId"];
