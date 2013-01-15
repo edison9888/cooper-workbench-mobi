@@ -52,7 +52,7 @@
 #define MODEL_VERSION                   [[[UIDevice currentDevice] systemVersion] floatValue]
 
 //app下载地址
-#define APP_DOWNLOAD_URL                @"http://xyj.im"
+#define APP_DOWNLOAD_URL                @"http://xyj.im/xyj.download.m.html#cooper"
 
 //获取任务列表路径
 #define GETTASKLISTS_URL                @"/Personal/GetTaskFolders"

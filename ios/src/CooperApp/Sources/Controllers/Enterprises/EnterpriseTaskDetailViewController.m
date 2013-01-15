@@ -56,7 +56,6 @@
     [backView release];
     
     rightView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)] autorelease];
-    rightView.hidden = YES;
     UIView *splitView = [[UIView alloc] initWithFrame:CGRectMake(0, 9, 1, 26)];
     splitView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"split.png"]];
     [rightView addSubview:splitView];
@@ -716,9 +715,9 @@
         totalHeight += 62;
     }
     
-    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
+    //if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
         
-        rightView.hidden = NO;
+        //rightView.hidden = NO;
         
         UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [editButton setBackgroundImage:[UIImage imageNamed:@"detail_editContent.png"] forState:UIControlStateNormal];
@@ -728,7 +727,7 @@
         [contentView addSubview:editButton];
         
         totalHeight += 16;
-    }
+    //}
     
     contentView.frame = CGRectMake(0, 0, 320, totalHeight + 16);
     

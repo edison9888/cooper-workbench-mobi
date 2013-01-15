@@ -63,7 +63,7 @@
     textTitleLabel.textAlignment = UITextAlignmentCenter;
     textTitleLabel.textColor = APP_TITLECOLOR;
     textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    textTitleLabel.text = @"系统设置";
+    textTitleLabel.text = @"设置";
     self.navigationItem.titleView = textTitleLabel;
 }
 

@@ -1606,7 +1606,6 @@
 		EE396256159D34380018B9EC = {
 			isa = PBXGroup;
 			children = (
-				6A82DC4116A3979D00EBBFA7 /* MessageUI.framework */,
 				EE87F78C15A3F50100DA8E7F /* Libraries */,
 				1891ABD315D2D58600C7E8DA /* Dependencies */,
 				1889313D169529E100694FF3 /* Images */,
@@ -1629,6 +1628,7 @@
 		EE396264159D343B0018B9EC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6A82DC4116A3979D00EBBFA7 /* MessageUI.framework */,
 				18A61B1B16875A7500FD04C2 /* AudioToolbox.framework */,
 				18A61B1916875A2F00FD04C2 /* AVFoundation.framework */,
 				6AD180EA168020B20064FA10 /* ImageIO.framework */,

@@ -10,6 +10,7 @@
 #import "TodoTasksViewController.h"
 #import "RelatedTaskViewController.h"
 #import "SettingViewController.h"
+#import "AboutViewController.h"
 
 //#define AUDIO_OPTION    @"随口记"
 //#define IMAGE_OPTION     @"随手派"
@@ -119,9 +120,6 @@
     else if(indexPath.row == 2) {
         cell.textLabel.text = @"设置";
     }
-    else if(indexPath.row == 3) {
-        cell.textLabel.text = @"关于";
-    }
     return cell;
 }
 
@@ -141,10 +139,15 @@
         [taskViewController release];
     }
     else if(indexPath.row == 2) {
-        SettingViewController *settingViewController = [[SettingViewController alloc] initWithNibName:@"SettingViewController" bundle:nil];
-        Base2NavigationController *settingNavController = [[Base2NavigationController alloc] initWithRootViewController:settingViewController];
-        self.sidePanelController.centerPanel = settingNavController;
-        [settingViewController release];
+//        SettingViewController *settingViewController = [[SettingViewController alloc] initWithNibName:@"SettingViewController" bundle:nil];
+//        Base2NavigationController *settingNavController = [[Base2NavigationController alloc] initWithRootViewController:settingViewController];
+//        self.sidePanelController.centerPanel = settingNavController;
+//        [settingViewController release];
+
+        AboutViewController *aboutViewController = [[AboutViewController alloc] init];
+        Base2NavigationController *aboutNavController = [[Base2NavigationController alloc] initWithRootViewController:aboutViewController];
+        self.sidePanelController.centerPanel = aboutNavController;
+        [aboutViewController release];
     }
     else if(indexPath.row == 3) {
         

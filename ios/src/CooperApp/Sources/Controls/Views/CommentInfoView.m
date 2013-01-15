@@ -54,9 +54,9 @@
     
     totalHeight += 9 + 6;
     
-    NSString *replaceStr = @"对任务添加了评论：";
+    //NSString *replaceStr = @"对任务添加了评论：";
     NSString *content = [commentDict objectForKey:@"content"];
-    content = [content stringByReplacingOccurrencesOfString:replaceStr withString:@""];
+    //content = [content stringByReplacingOccurrencesOfString:replaceStr withString:@""];
     
     contentLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     contentLabel.backgroundColor = [UIColor clearColor];

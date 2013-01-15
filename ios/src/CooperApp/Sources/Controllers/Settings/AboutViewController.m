@@ -37,21 +37,21 @@
     self.navigationItem.titleView = textTitleLabel;
     [textTitleLabel release];
     
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.userInteractionEnabled = NO;
-    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
-    [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
-    [backView addSubview:backBtn];
-    backView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *backRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
-    [backView addGestureRecognizer:backRecognizer];
-    [backRecognizer release];
-    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backView];
-    self.navigationItem.leftBarButtonItem = backButtonItem;
-    [backButtonItem release];
-    [backView release];
-    
+//    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
+//    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    backBtn.userInteractionEnabled = NO;
+//    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+//    [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+//    [backView addSubview:backBtn];
+//    backView.userInteractionEnabled = YES;
+//    UITapGestureRecognizer *backRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
+//    [backView addGestureRecognizer:backRecognizer];
+//    [backRecognizer release];
+//    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backView];
+//    self.navigationItem.leftBarButtonItem = backButtonItem;
+//    [backButtonItem release];
+//    [backView release];
+
     UITextView *textView1 = [[UITextView alloc] initWithFrame:CGRectMake(0, 138, 320, 85)];
     textView1.userInteractionEnabled = NO;
     textView1.textAlignment = UITextAlignmentCenter;
@@ -87,7 +87,7 @@
     textView4.textAlignment = UITextAlignmentCenter;
     textView4.textColor = APP_TITLECOLOR;
     textView4.backgroundColor = [UIColor clearColor];
-    textView4.font = [UIFont boldSystemFontOfSize:12];
+    textView4.font = [UIFont systemFontOfSize:12];
     textView4.text = @"http://aita.alibaba-inc.com";
     [self.view addSubview:textView4];
     [textView4 release];
