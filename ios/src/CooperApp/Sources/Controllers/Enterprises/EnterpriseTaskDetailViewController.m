@@ -32,38 +32,38 @@
     
     enterpriseService = [[EnterpriseService alloc] init];
 	
-    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
     textTitleLabel.textColor = APP_TITLECOLOR;
     textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     self.navigationItem.titleView = textTitleLabel;
-    textTitleLabel.text = @"详情";
+    textTitleLabel.text = @"任务详情";
     
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.userInteractionEnabled = NO;
-    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+    [backBtn setFrame:CGRectMake(9, 17, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
     backView.userInteractionEnabled = YES;
-    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
-    [backView addGestureRecognizer:recognizer];
-    [recognizer release];
+    UITapGestureRecognizer *backRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
+    [backView addGestureRecognizer:backRecognizer];
+    [backRecognizer release];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backView];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     [backButtonItem release];
     [backView release];
     
     rightView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)] autorelease];
-    UIView *splitView = [[UIView alloc] initWithFrame:CGRectMake(0, 9, 1, 26)];
+    UIView *splitView = [[UIView alloc] initWithFrame:CGRectMake(5, 9, 1, 26)];
     splitView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"split.png"]];
     [rightView addSubview:splitView];
     UIButton *saveTaskBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveTaskBtn setTitleColor:APP_TITLECOLOR forState:UIControlStateNormal];
-    saveTaskBtn.frame = CGRectMake(1, 6, 54, 30);
+    saveTaskBtn.frame = CGRectMake(6, 8, 54, 30);
     [saveTaskBtn addTarget:self action:@selector(addComment:) forControlEvents:UIControlEventTouchUpInside];
-    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
     [saveTaskBtn setTitle:@"评论" forState:UIControlStateNormal];
     [rightView addSubview:saveTaskBtn];
     UIBarButtonItem *saveButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightView];

@@ -76,11 +76,11 @@
     [self.view addSubview:detailInfoView];
     
     commentTextView = [[GCPlaceholderTextView alloc] init];
-    commentTextView.frame = CGRectMake(10, 10, 279, 85);
+    commentTextView.frame = CGRectMake(0, 0, 301, 105);
     commentTextView.font = [UIFont systemFontOfSize:16.0f];
     commentTextView.placeholder = @"写点什么";
     commentTextView.delegate = self;
-    commentTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
+    commentTextView.backgroundColor = [UIColor clearColor];
     commentTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
     commentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     commentTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;

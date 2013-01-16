@@ -9,7 +9,7 @@
 #import "EnterpriseTaskTableCell.h"
 #import "FillLabelView.h"
 
-#define PADDING         5.0f
+#define PADDING         4.0f
 #define CONTENT_WIDTH   200.0f
 #define MAX_HEIGHT      10000.0f
 #define BODY_MAX_LINE   3
@@ -82,7 +82,7 @@
     subjectLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     subjectLabel.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
     subjectLabel.backgroundColor = [UIColor clearColor];
-    [subjectLabel setFont:[UIFont boldSystemFontOfSize:16]];
+    [subjectLabel setFont:[UIFont systemFontOfSize:16]];
     subjectLabel.lineBreakMode = UILineBreakModeWordWrap | UILineBreakModeTailTruncation;
     
     dueTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -112,7 +112,7 @@
     [super layoutSubviews];
   
     CGRect frame = self.imageView.frame;
-    self.imageView.frame = CGRectMake(12, frame.origin.y, frame.size.width, frame.size.height);
+    self.imageView.frame = CGRectMake(11, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void) setTaskInfo:(NSMutableDictionary*)taskInfo
@@ -188,9 +188,9 @@
     
     NSString *subject = [taskInfoDict objectForKey:@"subject"];
     subjectLabel.text = subject;
-    subjectLabel.frame = CGRectMake(textLeft, 8, textWidth, 16);
+    subjectLabel.frame = CGRectMake(textLeft, 7, textWidth, 16);
     subjectLabel.numberOfLines = 1;
-    totalHeight += 16 + 8;
+    totalHeight += 16 + 7;
 
 //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 //    [formatter setDateFormat:@"M-dd"];

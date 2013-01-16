@@ -44,6 +44,7 @@
     {
         EditFillLabel *fillLabel = [[EditFillLabel alloc] initWithFrame:CGRectMake(tagsTotalWidth, tagsTotalHeight, 0, 0)];
         fillLabel.userInteractionEnabled = YES;
+        fillLabel.font = [UIFont systemFontOfSize:12.0f];
         
         UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deleteData:)];
         recognizer.numberOfTapsRequired = 2;

@@ -74,11 +74,11 @@
     [self.view addSubview:detailInfoView];
     
     subjectTextView = [[GCPlaceholderTextView alloc] init];
-    subjectTextView.frame = CGRectMake(10, 10, 279, 85);
+    subjectTextView.frame = CGRectMake(0, 0, 301, 105);
     subjectTextView.font = [UIFont systemFontOfSize:16.0f];
     subjectTextView.placeholder = @"写点什么";
     subjectTextView.delegate = self;
-    subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
+    subjectTextView.backgroundColor = [UIColor clearColor];
     subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
     subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;

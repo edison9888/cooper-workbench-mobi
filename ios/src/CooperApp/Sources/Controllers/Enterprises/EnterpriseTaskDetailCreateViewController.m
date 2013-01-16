@@ -111,18 +111,20 @@
     [self.view addGestureRecognizer:recognizer];
     [recognizer release];
 
-    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_bg.png"]];
+
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
     textTitleLabel.textColor = APP_TITLECOLOR;
     textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     self.navigationItem.titleView = textTitleLabel;
-    textTitleLabel.text = @"编辑";
+    textTitleLabel.text = @"创建任务";
 
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.userInteractionEnabled = NO;
-    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+    [backBtn setFrame:CGRectMake(9, 17, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
     backView.userInteractionEnabled = YES;
@@ -135,14 +137,14 @@
     [backView release];
 
     UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];
-    UIView *splitView = [[UIView alloc] initWithFrame:CGRectMake(0, 9, 1, 26)];
+    UIView *splitView = [[UIView alloc] initWithFrame:CGRectMake(5, 9, 1, 26)];
     splitView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"split.png"]];
     [rightView addSubview:splitView];
     UIButton *saveTaskBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveTaskBtn setTitleColor:APP_TITLECOLOR forState:UIControlStateNormal];
-    saveTaskBtn.frame = CGRectMake(1, 6, 54, 30);
+    saveTaskBtn.frame = CGRectMake(6, 8, 54, 30);
     [saveTaskBtn addTarget:self action:@selector(newTask:) forControlEvents:UIControlEventTouchUpInside];
-    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
     [saveTaskBtn setTitle:@"确认" forState:UIControlStateNormal];
     [rightView addSubview:saveTaskBtn];
     UIBarButtonItem *saveButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightView];
@@ -157,11 +159,11 @@
 
     if(createType == 0) {
         subjectTextView = [[GCPlaceholderTextView alloc] init];
-        subjectTextView.frame = CGRectMake(10, 10, 279, 85);
+        subjectTextView.frame = CGRectMake(0, 0, 301, 105);
         subjectTextView.font = [UIFont systemFontOfSize:16.0f];
         subjectTextView.placeholder = @"写点什么";
         subjectTextView.delegate = self;
-        subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
+        subjectTextView.backgroundColor = [UIColor clearColor];
         subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
         subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
         subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -178,11 +180,11 @@
             [detailInfoView addSubview:attachmentBtn];
 
             subjectTextView = [[GCPlaceholderTextView alloc] init];
-            subjectTextView.frame = CGRectMake(105, 10, 185, 85);
+            subjectTextView.frame = CGRectMake(95, 0, 207, 105);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
             subjectTextView.placeholder = @"写点什么";
             subjectTextView.delegate = self;
-            subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
+            subjectTextView.backgroundColor = [UIColor clearColor];
             subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
             subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -206,11 +208,11 @@
             [detailInfoView addSubview:pictureImageView];
 
             subjectTextView = [[GCPlaceholderTextView alloc] init];
-            subjectTextView.frame = CGRectMake(105, 10, 185, 85);
+            subjectTextView.frame = CGRectMake(95, 0, 207, 105);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
             subjectTextView.placeholder = @"写点什么";
             subjectTextView.delegate = self;
-            subjectTextView.backgroundColor = [UIColor colorWithRed:239.0/255 green:239.0/255 blue:239.0/255 alpha:1];
+            subjectTextView.backgroundColor = [UIColor clearColor];
             subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
             subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -222,14 +224,14 @@
 
     UIView *assigneePanelView = [[UIView alloc] initWithFrame:CGRectMake(10, 126, 300, 70)];
 
-    UILabel *assigneeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 20)];
+    UILabel *assigneeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 16)];
     assigneeTitleLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
     assigneeTitleLabel.backgroundColor = [UIColor clearColor];
     assigneeTitleLabel.text = @"任务分配";
-    assigneeTitleLabel.font = [UIFont boldSystemFontOfSize:20.0f];
+    assigneeTitleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     [assigneePanelView addSubview:assigneeTitleLabel];
     
-    UIView *assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 26, 270, 44)];
+    UIView *assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 21, 270, 44)];
     assigneeView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
     
     NSMutableArray *assignMembers = [NSMutableArray array];
@@ -259,7 +261,7 @@
 
     UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(242, 12, 18, 18)] autorelease];
     assigenChooseView.userInteractionEnabled = YES;
-    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(1, 1, 18, 18)];
     assigneeChooseBtn.userInteractionEnabled = NO;
     [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
     UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
@@ -271,9 +273,9 @@
 
     [assigneePanelView addSubview:assigneeView];
 
-    UIView *assigneeMoreView = [[UIView alloc] initWithFrame:CGRectMake(284, 24, 14, 44)];
+    UIView *assigneeMoreView = [[UIView alloc] initWithFrame:CGRectMake(282, 24, 14, 44)];
     assigneeMoreView.userInteractionEnabled = YES;
-    UIButton *assigneeMoreBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 21, 14, 3)];
+    UIButton *assigneeMoreBtn = [[UIButton alloc] initWithFrame:CGRectMake(1, 17, 14, 3)];
     assigneeMoreBtn.userInteractionEnabled = NO;
     [assigneeMoreBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_more.png"] forState:UIControlStateNormal];
     
@@ -298,15 +300,17 @@
     priorityOptionView = [[PriorityOptionView alloc] initWithFrame:CGRectMake(11, 27, 278, 23)];
     [moreView addSubview:priorityOptionView];
     
-    UILabel *dueTimeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(11, 105, 120, 24)];
+    UILabel *dueTimeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 103, 120, 24)];
     dueTimeTitleLabel.backgroundColor = [UIColor clearColor];
     dueTimeTitleLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
     dueTimeTitleLabel.text = @"期望完成时间";
+    dueTimeTitleLabel.font = [UIFont systemFontOfSize:16];
     [moreView addSubview:dueTimeTitleLabel];
 
-    dueTimeLabel = [[DatePickerLabel alloc] initWithFrame:CGRectMake(200, 105, 120, 24)];
+    dueTimeLabel = [[DatePickerLabel alloc] initWithFrame:CGRectMake(208, 104, 120, 24)];
     dueTimeLabel.backgroundColor = [UIColor clearColor];
     dueTimeLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
+    dueTimeLabel.font = [UIFont systemFontOfSize:16];
     //dueTimeLabel.text = @"2012-12-21";
     dueTimeLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *dueTimeRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectDueTime:)];
