@@ -682,8 +682,8 @@
         case JASidePanelCenterVisible: {
             frame.origin.x = 0.0f;
             if(!_isLoaded && MODEL_VERSION >= 6.0) {
-                CGFloat y = frame.origin.y - 19.9f;
-                CGFloat height = frame.size.height + 19.9f;
+//                CGFloat y = frame.origin.y - 19.9f;
+//                CGFloat height = frame.size.height + 19.9f;
 //                frame.origin.y = -19.9f;
 //                frame.size.height += 19.0f;
             }

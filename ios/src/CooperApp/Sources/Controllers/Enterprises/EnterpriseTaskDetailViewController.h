@@ -38,6 +38,9 @@
     UIView *completeFlagView;
     UILabel *completeFlagLabel;
     
+    UIButton *incompleteButton;
+    UIButton *completeButton;
+    
     UIView *dueTimeFlagView;
     UILabel *dueTimeFlagLabel;
     DateButton *dueTimeView;

@@ -11,9 +11,10 @@
 #import "EnterpriseTaskCreateDelegate.h"
 #import "CooperService/EnterpriseService.h"
 
-@interface SearchUserViewController : Base2ViewController<UITableViewDataSource, UITableViewDelegate>
+@interface SearchUserViewController : Base2ViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 {
     UITextField *searchText;
+    UISearchBar *searchBarText;
     
     UITableView *filterView;
     NSInteger currentIndex;

@@ -25,6 +25,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_bg.png"]];
 
     currentIndex = -1;
     
@@ -178,7 +180,7 @@
     [self.view addSubview:navPanelView];
     
     //添加滚动
-    scrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 56, 320, self.view.bounds.size.height - 56)] autorelease];
+    scrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 58, self.view.bounds.size.width, self.view.bounds.size.height - 58)] autorelease];
     //scrollView.backgroundColor = [UIColor redColor];
     //scrollView.contentSize = CGSizeMake(320, 50);
     [self.view addSubview:scrollView];
@@ -432,10 +434,14 @@
             if([isCompleted isEqualToNumber:[NSNumber numberWithInt:0]]) {
                 completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_incomplete_sel.png"]];
                 completeFlagLabel.text = @"未完成";
+                [incompleteButton setBackgroundImage:[UIImage imageNamed:@"detail_incomplete.png"] forState:UIControlStateNormal];
+                [completeButton setBackgroundImage:[UIImage imageNamed:@"detail_notsetcomplete.png"] forState:UIControlStateNormal];
             }
             else {
                 completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_complete_sel.png"]];
                 completeFlagLabel.text = @"已完成";
+                [incompleteButton setBackgroundImage:[UIImage imageNamed:@"detail_notsetcomplete.png"] forState:UIControlStateNormal];
+                [completeButton setBackgroundImage:[UIImage imageNamed:@"detail_complete.png"] forState:UIControlStateNormal];
             }
 
             if([self.view.subviews containsObject:showPanelView]) {
@@ -559,7 +565,7 @@
     }
     
     //添加内容
-    contentView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 0)] autorelease];
+    contentView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 0)] autorelease];
     contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_contentBg.png"]];
     
     subjectLabel = [[[UILabel alloc] init] autorelease];
@@ -958,13 +964,20 @@
     iscompleteTitleLabel.backgroundColor = [UIColor clearColor];
     iscompleteTitleLabel.textColor = [UIColor whiteColor];
     [showPanelView addSubview:iscompleteTitleLabel];
+    
+    NSNumber *isCompeleted = [taskDetailDict objectForKey:@"isCompleted"];
 
     UIView *incompleteSelView = [[[UIView alloc] initWithFrame:CGRectMake(105, 0, 80, 46)] autorelease];
     incompleteSelView.userInteractionEnabled = YES;
-    UIButton *incompleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    incompleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     incompleteButton.userInteractionEnabled = NO;
     incompleteButton.frame = CGRectMake(0, 12, 22, 22);
-    [incompleteButton setBackgroundImage:[UIImage imageNamed:@"detail_incomplete.png"] forState:UIControlStateNormal];
+    if([isCompeleted isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        [incompleteButton setBackgroundImage:[UIImage imageNamed:@"detail_incomplete.png"] forState:UIControlStateNormal];
+    }
+    else {
+       [incompleteButton setBackgroundImage:[UIImage imageNamed:@"detail_notsetcomplete.png"] forState:UIControlStateNormal];
+    }
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeFalseIsCompleted:)];
     [incompleteSelView addGestureRecognizer:recognizer];
     [recognizer release];
@@ -980,10 +993,15 @@
 
     UIView *completeSelView = [[[UIView alloc] initWithFrame:CGRectMake(180, 0, 80, 46)] autorelease];
     completeSelView.userInteractionEnabled = YES;
-    UIButton *completeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    completeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     completeButton.userInteractionEnabled = NO;
     completeButton.frame = CGRectMake(0, 12, 22, 22);
-    [completeButton setBackgroundImage:[UIImage imageNamed:@"detail_complete.png"] forState:UIControlStateNormal];
+    if([isCompeleted isEqualToNumber:[NSNumber numberWithInt:1]]) {
+        [completeButton setBackgroundImage:[UIImage imageNamed:@"detail_complete.png"] forState:UIControlStateNormal];
+    }
+    else {
+      [completeButton setBackgroundImage:[UIImage imageNamed:@"detail_notsetcomplete.png"] forState:UIControlStateNormal];
+    }
 
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeTrueIsCompleted:)];
     [completeSelView addGestureRecognizer:recognizer];
@@ -1178,7 +1196,7 @@
 
     UILabel *assigneeTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 12, 90, 17)] autorelease];
     assigneeTitleLabel.text = @"转交他人：";
-    assigneeTitleLabel.font = [UIFont systemFontOfSize:17];
+    assigneeTitleLabel.font = [UIFont systemFontOfSize:16];
     assigneeTitleLabel.backgroundColor = [UIColor clearColor];
     assigneeTitleLabel.textColor = [UIColor whiteColor];
     [centerPanelView addSubview:assigneeTitleLabel];
@@ -1187,7 +1205,7 @@
     NSMutableArray *assignMembers = [NSMutableArray array];
     [assignMembers addObject:assigneeName];
 
-    assgineesView = [[FillLabelView alloc] initWithFrame:CGRectMake(92, 7, 188, 0)];
+    assgineesView = [[FillLabelView alloc] initWithFrame:CGRectMake(92, 9, 188, 0)];
     [assgineesView bindTags:assignMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
     [centerPanelView addSubview:assgineesView];
 
@@ -1227,7 +1245,7 @@
         [relevantMembers addObject:[relevantDict objectForKey:@"displayName"]];
     }
     
-    EditFillLabelView *relevantLabelView = [[EditFillLabelView alloc] initWithFrame:CGRectMake(92, 7, 140, 0)];
+    EditFillLabelView *relevantLabelView = [[EditFillLabelView alloc] initWithFrame:CGRectMake(92, 9, 140, 0)];
     if(relevantMembers.count > 0) {
         [relevantLabelView bindTags:relevantMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
     }
@@ -1251,7 +1269,7 @@
     
     UILabel *relevantTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 12, 90, 17)] autorelease];
     relevantTitleLabel.text = @"相关人员：";
-    relevantTitleLabel.font = [UIFont systemFontOfSize:17];
+    relevantTitleLabel.font = [UIFont systemFontOfSize:16];
     relevantTitleLabel.backgroundColor = [UIColor clearColor];
     relevantTitleLabel.textColor = [UIColor whiteColor];
     [showPanelView addSubview:relevantTitleLabel];

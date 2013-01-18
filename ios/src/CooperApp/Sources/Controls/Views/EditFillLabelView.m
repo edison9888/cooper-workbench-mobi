@@ -9,7 +9,7 @@
 #import "EditFillLabelView.h"
 #import "EditFillLabel.h"
 
-#define LINE_INTERVAL   14
+#define LINE_INTERVAL   18
 
 @implementation EditFillLabelView
 
@@ -64,8 +64,8 @@
         }
         fillLabel.text = tag;
         //fillLabel.frame = CGRectMake(0, 0, fillLabel.frame.size.width + 42, 0);
-        CGFloat labelWidth = fillLabel.frame.size.width + 20;
-        CGFloat labelHeight = fillLabel.frame.size.height + 10;
+        CGFloat labelWidth = fillLabel.frame.size.width + 16;
+        CGFloat labelHeight = fillLabel.frame.size.height + 6;
         //        tagsTotalWidth += labelWidth + 2;
         tagHeight = labelHeight;
         

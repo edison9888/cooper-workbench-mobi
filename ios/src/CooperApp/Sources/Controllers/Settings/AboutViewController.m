@@ -53,20 +53,20 @@
 //    [backButtonItem release];
 //    [backView release];
 
-    UITextView *textView1 = [[UITextView alloc] initWithFrame:CGRectMake(0, 138, 320, 85)];
+    UITextView *textView1 = [[UITextView alloc] initWithFrame:CGRectMake(0, 146, 320, 85)];
     textView1.userInteractionEnabled = NO;
     textView1.textAlignment = UITextAlignmentCenter;
-    textView1.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
+    textView1.textColor = [UIColor colorWithRed:172.0/255 green:164.0/255 blue:157.0/255 alpha:1];
     textView1.backgroundColor = [UIColor clearColor];
-    textView1.font = [UIFont systemFontOfSize:13];
+    textView1.font = [UIFont systemFontOfSize:12];
     textView1.text = @"COOPER\r\n取Cooperation，协作、协同之意\r\n也可以理解为Cool Person\r\n--Cool Person use COOPER！";
     [aboutView addSubview:textView1];
     [textView1 release];
     
-    UITextView *textView2 = [[UITextView alloc] initWithFrame:CGRectMake(0, 220, 320, 85)];
+    UITextView *textView2 = [[UITextView alloc] initWithFrame:CGRectMake(0, 226, 320, 85)];
     textView2.userInteractionEnabled = NO;
     textView2.textAlignment = UITextAlignmentCenter;
-    textView2.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
+    textView2.textColor = [UIColor colorWithRed:172.0/255 green:164.0/255 blue:157.0/255 alpha:1];
     textView2.backgroundColor = [UIColor clearColor];
     textView2.font = [UIFont systemFontOfSize:11];
     textView2.text = @"Powered By Workflow & IT Team\r\nAITA、COOPER Inside\r\nPD：谢逊、舒儿 | UED：铭秋 | 开发：萧玄\r\n其他贡献人员：侯昆、鼎天、无名...";
@@ -76,20 +76,24 @@
     UITextView *textView3 = [[UITextView alloc] initWithFrame:CGRectMake(0, 295, 320, 50)];
     textView1.userInteractionEnabled = NO;
     textView3.textAlignment = UITextAlignmentCenter;
-    textView3.textColor = [UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1];
+    textView3.textColor = [UIColor colorWithRed:172.0/255 green:164.0/255 blue:157.0/255 alpha:1];
     textView3.backgroundColor = [UIColor clearColor];
     textView3.font = [UIFont systemFontOfSize:12];
     textView3.text = @"更多信息请登陆PC版任务中心：";
     [aboutView addSubview:textView3];
     [textView3 release];
     
-    UITextView *textView4 = [[UITextView alloc] initWithFrame:CGRectMake(0, 315, 320, 50)];
+    UILabel *textView4 = [[UILabel alloc] initWithFrame:CGRectMake(0, 305, 320, 50)];
     textView4.userInteractionEnabled = NO;
     textView4.textAlignment = UITextAlignmentCenter;
-    textView4.textColor = APP_TITLECOLOR;
+    textView4.textColor = [UIColor colorWithRed:59.0/255 green:118.0/255 blue:163.0/255 alpha:1];
     textView4.backgroundColor = [UIColor clearColor];
     textView4.font = [UIFont systemFontOfSize:12];
     textView4.text = @"http://aita.alibaba-inc.com";
+    textView4.userInteractionEnabled = YES;
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goLinkUrl:)];
+    [textView4 addGestureRecognizer:recognizer];
+    [recognizer release];
     [aboutView addSubview:textView4];
     [textView4 release];
     
@@ -138,6 +142,13 @@
         
         [accountService logout:context delegate:self];
     }
+}
+
+- (void)goLinkUrl:(id)sender
+{
+    UITapGestureRecognizer *recognizer = (UITapGestureRecognizer*)sender;
+    UILabel *label = (UILabel*)recognizer.view;
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:label.text]];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request

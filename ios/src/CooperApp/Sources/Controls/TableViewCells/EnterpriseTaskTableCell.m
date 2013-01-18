@@ -24,6 +24,7 @@
 
 @synthesize leftView;
 @synthesize delegate;
+@synthesize disableCompleted;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -52,6 +53,9 @@
 
 - (void)setCompletedAction:(id)sender
 {
+    if(disableCompleted == YES) {
+        return;
+    }
     NSNumber *isExternal = [taskInfoDict objectForKey:@"isExternal"];
     NSNumber *isCompleted = [taskInfoDict objectForKey:@"isCompleted"];
     NSString *taskId = [taskInfoDict objectForKey:@"id"];
@@ -79,6 +83,7 @@
 
 - (void)initContentView
 {
+    disableCompleted = YES;
     subjectLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     subjectLabel.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
     subjectLabel.backgroundColor = [UIColor clearColor];

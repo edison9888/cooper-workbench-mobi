@@ -33,5 +33,6 @@
 @property (nonatomic, retain) UIView *leftView;
 
 @property (nonatomic, assign) id<EnterpriseTaskTableCellDelegate> delegate;
+@property (nonatomic, assign) BOOL disableCompleted;
 
 @end

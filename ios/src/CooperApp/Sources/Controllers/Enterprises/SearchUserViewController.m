@@ -162,39 +162,56 @@
     [backButtonItem release];
     [backView release];
 
-    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(10, 12, 270, 44)];
-    searchView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
+    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 270, 40)];
+    //searchView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
 
-    searchText = [[[UITextField alloc] initWithFrame:CGRectMake(10, 13, 250, 20)] autorelease];
-    searchText.font = [UIFont systemFontOfSize:16.0f];
-    searchText.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
-    searchText.backgroundColor = [UIColor clearColor];
-    searchText.keyboardType = UIKeyboardTypeDefault;
-    searchText.keyboardAppearance = UIKeyboardAppearanceDefault;
-    searchText.autocorrectionType = UITextAutocorrectionTypeNo;
-    searchText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-
-    [searchView addSubview:searchText];
+    searchBarText = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 00, self.view.bounds.size.width, 40)] autorelease];
+    searchBarText.delegate = self;
+    searchBarText.barStyle = UIBarStyleBlack;
+    searchBarText.autocorrectionType = UITextAutocorrectionTypeNo;
+    searchBarText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    searchBarText.placeholder = @"搜索";
+    searchBarText.keyboardType =  UIKeyboardTypeDefault;
+    searchBarText.tintColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
+    [searchView addSubview:searchBarText];
+    
+//    for (UIView *subview in searchBarText.subviews) {
+//        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
+//            [subview removeFromSuperview];
+//            break;
+//        }  
+//    }
+    
+//    searchText = [[[UITextField alloc] initWithFrame:CGRectMake(10, 13, 250, 20)] autorelease];
+//    searchText.font = [UIFont systemFontOfSize:16.0f];
+//    searchText.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
+//    searchText.backgroundColor = [UIColor clearColor];
+//    searchText.keyboardType = UIKeyboardTypeDefault;
+//    searchText.keyboardAppearance = UIKeyboardAppearanceDefault;
+//    searchText.autocorrectionType = UITextAutocorrectionTypeNo;
+//    searchText.returnKeyType = UIReturnKeySearch;
+//    searchText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+//    [searchText addTarget:self action:@selector(textFieldDoneEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
+//
+//    [searchView addSubview:searchText];
 
     [searchText becomeFirstResponder];
 
-    UIView *assigneeChooseView = [[[UIView alloc] initWithFrame:CGRectMake(284, 11, 36, 44)] autorelease];
-    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(6, 12, 18, 18)];
-    assigneeChooseBtn.userInteractionEnabled = NO;
-    [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
-    UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchUser:)];
-    [assigneeChooseView addGestureRecognizer:chooseRecognizer];
-    [chooseRecognizer release];
-
-    [assigneeChooseView addSubview:assigneeChooseBtn];
+//    UIView *assigneeChooseView = [[[UIView alloc] initWithFrame:CGRectMake(284, 11, 36, 44)] autorelease];
+//    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(6, 12, 18, 18)];
+//    assigneeChooseBtn.userInteractionEnabled = NO;
+//    [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
+//    UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchUser:)];
+//    [assigneeChooseView addGestureRecognizer:chooseRecognizer];
+//    [chooseRecognizer release];
+//
+//    [assigneeChooseView addSubview:assigneeChooseBtn];
     
     [self.view addSubview:searchView];
-    [self.view addSubview:assigneeChooseView];
 
-    [assigneeChooseBtn release];
     [searchView release];
 
-    filterView = [[[UITableView alloc] initWithFrame:CGRectMake(0, 60, [Tools screenMaxWidth], [Tools screenMaxHeight] - 60) style:UITableViewStylePlain] autorelease];
+    filterView = [[[UITableView alloc] initWithFrame:CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height - 40) style:UITableViewStylePlain] autorelease];
     filterView.backgroundColor = [UIColor clearColor];
     filterView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     filterView.delegate = self;
@@ -205,19 +222,33 @@
     [self.view addSubview: filterView];
 }
 
+-(void)textFieldDoneEditing:(id)sender
+{
+    [sender resignFirstResponder];
+    
+    [self searchUser:nil];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    
+    [self searchUser:nil];
+}
+
 - (void)searchUser:(id)sender
 {
-    [searchText resignFirstResponder];
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch:) object:nil];
+//    [self performSelector:@selector(startSearch:) withObject:nil afterDelay:0.5];
 
     filterOptionArray = [[NSMutableArray alloc] init];
-
+    
     self.HUD = [Tools process:@"用户搜索" view:self.view];
-
+    
     NSString *workId = [[Constant instance] workId];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"FindUsers" forKey:REQUEST_TYPE];
-    [enterpriseService findUsers:workId key:searchText.text context:context delegate:self];
-//    [enterpriseService getTaskDetail:currentTaskId context:context delegate:self];
+    [enterpriseService findUsers:workId key:searchBarText.text context:context delegate:self];
 }
 
 - (void)goBack:(id)sender

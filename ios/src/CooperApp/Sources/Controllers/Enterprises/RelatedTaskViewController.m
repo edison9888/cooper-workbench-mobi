@@ -121,6 +121,7 @@
     NSMutableDictionary *taskInfoDict = [taskInfos objectAtIndex:indexPath.row];
     [cell setTaskInfo:taskInfoDict];
     cell.delegate = self;
+    cell.disableCompleted = YES;
     
     //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     

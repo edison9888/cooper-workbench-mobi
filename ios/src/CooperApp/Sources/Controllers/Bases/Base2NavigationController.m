@@ -22,7 +22,7 @@
     }
     else {
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_background.png"]];
-        [imageView setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], 44)];
+        [imageView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
         [self.navigationBar addSubview:imageView];
         [imageView release];
     }
