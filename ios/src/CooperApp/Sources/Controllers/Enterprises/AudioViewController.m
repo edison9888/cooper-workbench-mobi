@@ -36,7 +36,7 @@
     self.navigationController.navigationBarHidden = YES;
 
     //底部
-    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 96 - 23, [Tools screenMaxWidth], 96)];
+    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 96 + 20, self.view.bounds.size.width, 96)];
     tabbarView.backgroundColor = [UIColor colorWithRed:228.0/255 green:227.0/255 blue:227.0/255 alpha:1];
     [self.view addSubview:tabbarView];
 

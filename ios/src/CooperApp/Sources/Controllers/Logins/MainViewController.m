@@ -102,12 +102,14 @@
     else
     {
         if (IS_ENTVERSION) {
+            Base2NavigationController *taskNavController = nil;
+            TodoTasksViewController *taskViewController = nil;
             if(panelController == nil) {
 
                 EnterpriseOptionViewController *optionViewController = [[EnterpriseOptionViewController alloc] init];
                 Base2NavigationController *optionNavController = [[Base2NavigationController alloc] initWithRootViewController:optionViewController];
-                TodoTasksViewController *taskViewController = [[TodoTasksViewController alloc] init];
-                Base2NavigationController *taskNavController = [[Base2NavigationController alloc] initWithRootViewController:taskViewController];
+                taskViewController = [[TodoTasksViewController alloc] init];
+                taskNavController = [[Base2NavigationController alloc] initWithRootViewController:taskViewController];
                 panelController = [[JASidePanelController alloc] init];
                 panelController.leftPanel = optionNavController;
                 panelController.centerPanel = taskNavController;

@@ -30,6 +30,7 @@
 @interface JASidePanelController() {
     CGRect _centerPanelRestingFrame;		
     CGPoint _locationBeforePan;
+    BOOL _isLoaded;
 }
 
 @property (nonatomic, readwrite) JASidePanelState state;
@@ -145,6 +146,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _isLoaded = NO;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     self.centerPanelContainer = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -679,6 +681,12 @@
     switch (self.state) {
         case JASidePanelCenterVisible: {
             frame.origin.x = 0.0f;
+            if(!_isLoaded && MODEL_VERSION >= 6.0) {
+                CGFloat y = frame.origin.y - 19.9f;
+                CGFloat height = frame.size.height + 19.9f;
+//                frame.origin.y = -19.9f;
+//                frame.size.height += 19.0f;
+            }
             if (self.style == JASidePanelMultipleActive) {
                 frame.size.width = self.view.bounds.size.width;	
             }
@@ -686,6 +694,11 @@
 		}
         case JASidePanelLeftVisible: {
             frame.origin.x = self.leftVisibleWidth;
+            if(!_isLoaded && MODEL_VERSION >= 6.0) {
+//                frame.origin.y -= 19.9f;
+//                frame.size.height += 19.9f;
+                _isLoaded = YES;
+            }
             if (self.style == JASidePanelMultipleActive) {
                 frame.size.width = self.view.bounds.size.width - self.leftVisibleWidth;
             }

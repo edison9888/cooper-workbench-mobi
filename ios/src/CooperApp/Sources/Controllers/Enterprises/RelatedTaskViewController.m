@@ -189,7 +189,7 @@
     NSLog(@"【初始化待办任务列表】");
     
     //任务列表
-    taskView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [Tools screenMaxWidth], [Tools screenMaxHeight] - 49 - 64) style:UITableViewStylePlain];
+    taskView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     taskView.separatorStyle = UITableViewCellSeparatorStyleNone;
     taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background.png"]];
     //去掉底部空白
@@ -206,7 +206,7 @@
     //    [tabbarLineView release];
     
     //底部
-    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, [Tools screenMaxHeight] - 49 - 63, [Tools screenMaxWidth], 49)];
+    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 49 - 44, [Tools screenMaxWidth], 49)];
     tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background.png"]];
     [self.view addSubview:tabbarView];
     //底部添加音频按钮

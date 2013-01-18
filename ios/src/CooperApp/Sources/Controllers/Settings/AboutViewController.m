@@ -25,9 +25,10 @@
     [super viewDidLoad];
     
     accountService = [[AccountService alloc] init];
-    
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"about_bg.png"]];
-	
+
+    UIView *aboutView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 416)];
+    aboutView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"about_bg.png"]];
+    [self.view addSubview:aboutView];
     UILabel *textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
@@ -59,7 +60,7 @@
     textView1.backgroundColor = [UIColor clearColor];
     textView1.font = [UIFont systemFontOfSize:13];
     textView1.text = @"COOPER\r\n取Cooperation，协作、协同之意\r\n也可以理解为Cool Person\r\n--Cool Person use COOPER！";
-    [self.view addSubview:textView1];
+    [aboutView addSubview:textView1];
     [textView1 release];
     
     UITextView *textView2 = [[UITextView alloc] initWithFrame:CGRectMake(0, 220, 320, 85)];
@@ -69,7 +70,7 @@
     textView2.backgroundColor = [UIColor clearColor];
     textView2.font = [UIFont systemFontOfSize:11];
     textView2.text = @"Powered By Workflow & IT Team\r\nAITA、COOPER Inside\r\nPD：谢逊、舒儿 | UED：铭秋 | 开发：萧玄\r\n其他贡献人员：侯昆、鼎天、无名...";
-    [self.view addSubview:textView2];
+    [aboutView addSubview:textView2];
     [textView2 release];
     
     UITextView *textView3 = [[UITextView alloc] initWithFrame:CGRectMake(0, 295, 320, 50)];
@@ -79,7 +80,7 @@
     textView3.backgroundColor = [UIColor clearColor];
     textView3.font = [UIFont systemFontOfSize:12];
     textView3.text = @"更多信息请登陆PC版任务中心：";
-    [self.view addSubview:textView3];
+    [aboutView addSubview:textView3];
     [textView3 release];
     
     UITextView *textView4 = [[UITextView alloc] initWithFrame:CGRectMake(0, 315, 320, 50)];
@@ -89,7 +90,7 @@
     textView4.backgroundColor = [UIColor clearColor];
     textView4.font = [UIFont systemFontOfSize:12];
     textView4.text = @"http://aita.alibaba-inc.com";
-    [self.view addSubview:textView4];
+    [aboutView addSubview:textView4];
     [textView4 release];
     
     CustomButton *logoutBtn = [[CustomButton alloc] initWithFrame:CGRectMake(40, 355, 240, 40) color:[UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1]];
@@ -97,8 +98,10 @@
     [logoutBtn.layer setMasksToBounds:YES];
     [logoutBtn addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
     [logoutBtn setTitle:@"注销" forState:UIControlStateNormal];
-    [self.view addSubview:logoutBtn];
+    [aboutView addSubview:logoutBtn];
     [logoutBtn release];
+
+    [aboutView release];
 }
 
 - (void)viewDidUnload
