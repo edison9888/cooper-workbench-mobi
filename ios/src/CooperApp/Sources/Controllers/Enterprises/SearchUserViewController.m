@@ -139,6 +139,8 @@
 
 - (void)initContentView
 {
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_bg.png"]];
+    
     UILabel *textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
@@ -150,7 +152,7 @@
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.userInteractionEnabled = NO;
-    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+    [backBtn setFrame:CGRectMake(9, 17, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
     backView.userInteractionEnabled = YES;
@@ -162,7 +164,7 @@
     [backButtonItem release];
     [backView release];
 
-    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 270, 40)];
+    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 50, 40)];
     //searchView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
 
     searchBarText = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 00, self.view.bounds.size.width, 40)] autorelease];

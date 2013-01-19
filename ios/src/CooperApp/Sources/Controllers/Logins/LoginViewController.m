@@ -37,14 +37,17 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_bg.png"]];
     
     //LogoImageView
-    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 164)];
+    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 164)];
+    logoImageView.contentMode = UIViewContentModeCenter;
     UIImage *logoImage = [UIImage imageNamed:@"login_logo.png"];
     logoImageView.image = logoImage;
+    logoImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:logoImageView];
     [logoImageView release];
     
     //域账号View
-    UIView *domainView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 193, 176, 35)];
+    UIView *domainView = [[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 176) / 2.0, 193, 176, 35)];
+    domainView.contentMode = UIViewContentModeCenter;
     domainView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
     
     domainTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 170, 35)];
@@ -76,11 +79,13 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     [domainView release];
     
     //域账号选择框
-    selectedDomainView = [[SelectedDomainView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 239, 176, 107)];
+    selectedDomainView = [[SelectedDomainView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 176) / 2.0, 239, 176, 107)];
+    selectedDomainView.contentMode = UIViewContentModeCenter;
     selectedDomainView.delegate = self;
     
     //用户名TextField
-    UIView *userNameView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 239, 176, 35)];
+    UIView *userNameView = [[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 176) / 2.0, 239, 176, 35)];
+    userNameView.contentMode = UIViewContentModeCenter;
     userNameView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
     
     userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 170, 35)];
@@ -103,7 +108,8 @@ static NSString *const kKeychainItemName = @"CooperKeychain";
     [userNameView release];
     
     //密码TextField
-    UIView *passwordView = [[UIView alloc] initWithFrame:CGRectMake((320 - 176) / 2.0, 285, 176, 35)];
+    UIView *passwordView = [[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 176) / 2.0, 285, 176, 35)];
+    passwordView.contentMode = UIViewContentModeCenter;
     passwordView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_input.png"]];
     
     passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(8, 0, 170, 35)];

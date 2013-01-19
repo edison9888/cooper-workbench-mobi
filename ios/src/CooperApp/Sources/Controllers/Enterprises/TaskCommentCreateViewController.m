@@ -28,10 +28,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_bg.png"]];
 	
     enterpriseService = [[EnterpriseService alloc] init];
     
-    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
     textTitleLabel.textColor = APP_TITLECOLOR;
@@ -42,7 +44,7 @@
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.userInteractionEnabled = NO;
-    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+    [backBtn setFrame:CGRectMake(9, 17, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
     backView.userInteractionEnabled = YES;
@@ -60,9 +62,9 @@
     [rightView addSubview:splitView];
     UIButton *saveTaskBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveTaskBtn setTitleColor:APP_TITLECOLOR forState:UIControlStateNormal];
-    saveTaskBtn.frame = CGRectMake(1, 6, 54, 30);
+    saveTaskBtn.frame = CGRectMake(6, 8, 54, 30);
     [saveTaskBtn addTarget:self action:@selector(addComment:) forControlEvents:UIControlEventTouchUpInside];
-    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
     [saveTaskBtn setTitle:@"确认" forState:UIControlStateNormal];
     [rightView addSubview:saveTaskBtn];
     UIBarButtonItem *saveButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightView];
@@ -71,12 +73,12 @@
     [splitView release];
     [rightView release];
     
-    UIView *detailInfoView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 106)];
+    UIView *detailInfoView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, self.view.bounds.size.width - 20, 106)];
     detailInfoView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_panel.png"]];
     [self.view addSubview:detailInfoView];
     
     commentTextView = [[GCPlaceholderTextView alloc] init];
-    commentTextView.frame = CGRectMake(0, 0, 301, 105);
+    commentTextView.frame = CGRectMake(0, 0, self.view.bounds.size.width - 19, 105);
     commentTextView.font = [UIFont systemFontOfSize:16.0f];
     commentTextView.placeholder = @"写点什么";
     commentTextView.delegate = self;

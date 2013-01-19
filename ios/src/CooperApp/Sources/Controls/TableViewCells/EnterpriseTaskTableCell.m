@@ -186,7 +186,7 @@
         [self.contentView addSubview:iconsView];
     }
     
-    CGFloat textWidth = self.bounds.size.width - 120;
+    CGFloat textWidth = [Tools screenMaxWidth] - 120;
     CGFloat textLeft = 60;
 
     CGFloat totalHeight = 0;
@@ -245,14 +245,14 @@
 //
 //    totalHeight += PADDING;
     
-    UIView *seperatorView = [[UIView alloc] initWithFrame:CGRectMake(0, totalHeight, self.bounds.size.width, 1)];
+    UIView *seperatorView = [[UIView alloc] initWithFrame:CGRectMake(0, totalHeight, [Tools screenMaxWidth], 1)];
     seperatorView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_separator.png"]];
     [self.contentView addSubview:seperatorView];
     [seperatorView release];
     
     totalHeight += 1;
     
-    [self setFrame:CGRectMake(0, 0, self.bounds.size.width, totalHeight)];
+    [self setFrame:CGRectMake(0, 0, [Tools screenMaxWidth], totalHeight)];
     [leftView setFrame:CGRectMake(0, 0, 40, totalHeight)];
 
     

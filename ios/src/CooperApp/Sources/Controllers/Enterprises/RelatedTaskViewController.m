@@ -59,15 +59,6 @@
     //    self.HUD = [Tools process:LOADING_TITLE view:self.view];
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.HUD];
-
-    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-    textTitleLabel.backgroundColor = [UIColor clearColor];
-    textTitleLabel.textAlignment = UITextAlignmentCenter;
-    textTitleLabel.textColor = APP_TITLECOLOR;
-    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    
-    self.navigationItem.titleView = textTitleLabel;
-    textTitleLabel.text = @"Loading...";
     
     NSString *workId = [[Constant instance] workId];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
@@ -174,6 +165,7 @@
     NSMutableDictionary *taskInfoDict = [self.taskInfos objectAtIndex:indexPath.row];
     NSString *taskId = [taskInfoDict objectForKey:@"id"];
     taskDetailViewController.currentTaskId = taskId;
+    taskDetailViewController.editable = NO;
     
     taskDetailViewController.hidesBottomBarWhenPushed = YES;
     
@@ -189,6 +181,15 @@
 {
     NSLog(@"【初始化待办任务列表】");
     
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel.backgroundColor = [UIColor clearColor];
+    textTitleLabel.textAlignment = UITextAlignmentCenter;
+    textTitleLabel.textColor = APP_TITLECOLOR;
+    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    textTitleLabel.text = @"相关任务";
+    
+    self.navigationItem.titleView = textTitleLabel;
+    
     //任务列表
     taskView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     taskView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -199,6 +200,14 @@
     taskView.delegate = self;
     taskView.dataSource = self;
     [self.view addSubview: taskView];
+    
+    [taskView addPullToRefreshWithActionHandler:^{
+        [self getRelatedTasks];
+    }];
+    [taskView addInfiniteScrollingWithActionHandler:^{
+        [self getRelatedTasks];
+    }];
+    //    [taskView triggerPullToRefresh];
     
     //    //底部分割线
     //    TabbarLineView *tabbarLineView = [[TabbarLineView alloc] init];
@@ -299,8 +308,6 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    textTitleLabel.text = @"相关任务";
-    
     NSLog(@"【请求任务响应数据】%@\n【返回状态码】%d", request.responseString, request.responseStatusCode);
     
     NSDictionary *userInfo = request.userInfo;
@@ -308,6 +315,9 @@
     
     if([requestType isEqualToString:@"GetRelevantTasks"])
     {
+        [taskView.pullToRefreshView stopAnimating];
+        [taskView.infiniteScrollingView stopAnimating];
+        
         if(request.responseStatusCode == 200)
         {
             NSDictionary *dict = [[request responseString] JSONValue];

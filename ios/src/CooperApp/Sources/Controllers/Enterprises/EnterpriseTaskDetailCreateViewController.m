@@ -153,13 +153,13 @@
     [splitView release];
     [rightView release];
 
-    UIView *detailInfoView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 106)];
+    UIView *detailInfoView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, self.view.bounds.size.width - 20, 106)];
     detailInfoView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_panel.png"]];
     [self.view addSubview:detailInfoView];
 
     if(createType == 0) {
         subjectTextView = [[GCPlaceholderTextView alloc] init];
-        subjectTextView.frame = CGRectMake(0, 0, 301, 105);
+        subjectTextView.frame = CGRectMake(0, 0, self.view.bounds.size.width - 19, 105);
         subjectTextView.font = [UIFont systemFontOfSize:16.0f];
         subjectTextView.placeholder = @"写点什么";
         subjectTextView.delegate = self;
@@ -180,7 +180,7 @@
             [detailInfoView addSubview:attachmentBtn];
 
             subjectTextView = [[GCPlaceholderTextView alloc] init];
-            subjectTextView.frame = CGRectMake(95, 0, 207, 105);
+            subjectTextView.frame = CGRectMake(95, 0, self.view.bounds.size.width - 113, 105);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
             subjectTextView.placeholder = @"写点什么";
             subjectTextView.delegate = self;
@@ -208,7 +208,7 @@
             [detailInfoView addSubview:pictureImageView];
 
             subjectTextView = [[GCPlaceholderTextView alloc] init];
-            subjectTextView.frame = CGRectMake(95, 0, 207, 105);
+            subjectTextView.frame = CGRectMake(95, 0, self.view.bounds.size.width - 113, 105);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
             subjectTextView.placeholder = @"写点什么";
             subjectTextView.delegate = self;
@@ -222,24 +222,17 @@
         }
     }
 
-    UIView *assigneePanelView = [[UIView alloc] initWithFrame:CGRectMake(10, 126, 300, 70)];
+    UIView *assigneePanelView = [[UIView alloc] initWithFrame:CGRectMake(10, 126, self.view.bounds.size.width - 20, 70)];
 
-    UILabel *assigneeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 16)];
+    UILabel *assigneeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 20, 16)];
     assigneeTitleLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
     assigneeTitleLabel.backgroundColor = [UIColor clearColor];
     assigneeTitleLabel.text = @"任务分配";
     assigneeTitleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     [assigneePanelView addSubview:assigneeTitleLabel];
     
-    UIView *assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 21, 270, 44)];
+    UIView *assigneeView = [[UIView alloc] initWithFrame:CGRectMake(0, 21, self.view.bounds.size.width - 50, 44)];
     assigneeView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_assignee.png"]];
-    
-    NSMutableArray *assignMembers = [NSMutableArray array];
-    [assignMembers addObject:@"萧玄"];
-    [assignMembers addObject:@"何望"];
-    [assignMembers addObject:@"何望"];
-    [assignMembers addObject:@"何望"];
-    [assignMembers addObject:@"何望"];
     
 //    FillLabelView *fillLabelView = [[FillLabelView alloc] initWithFrame:CGRectMake(10, 7, 232, 0)];
 //    //fillLabelView.layer.borderWidth = 1.0f;
@@ -251,6 +244,7 @@
     assigneeBtn.userInteractionEnabled = NO;
     assigneeBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     [assigneeBtn setTitleColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] forState:UIControlStateNormal];
+    
 //    [assigneeBtn setTitle:@"萧玄" forState:UIControlStateNormal];
 //    CGSize size = CGSizeMake([Tools screenMaxWidth], 10000);
 //    CGSize labelsize = [assigneeBtn.titleLabel.text sizeWithFont:assigneeBtn.titleLabel.font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
@@ -259,13 +253,13 @@
 
     [assigneeView addSubview:assigneeBtn];
 
-    UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(242, 12, 18, 18)] autorelease];
+    UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 78, 12, 18, 18)] autorelease];
     assigenChooseView.userInteractionEnabled = YES;
     UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(1, 1, 18, 18)];
     assigneeChooseBtn.userInteractionEnabled = NO;
     [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
     UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
-    [assigenChooseView addGestureRecognizer:chooseRecognizer];
+    [assigneePanelView addGestureRecognizer:chooseRecognizer];
     [chooseRecognizer release];
 
     [assigenChooseView addSubview:assigneeChooseBtn];
@@ -273,7 +267,7 @@
 
     [assigneePanelView addSubview:assigneeView];
 
-    UIView *assigneeMoreView = [[UIView alloc] initWithFrame:CGRectMake(282, 24, 14, 44)];
+    UIView *assigneeMoreView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 38, 24, 14, 44)];
     assigneeMoreView.userInteractionEnabled = YES;
     UIButton *assigneeMoreBtn = [[UIButton alloc] initWithFrame:CGRectMake(1, 17, 14, 3)];
     assigneeMoreBtn.userInteractionEnabled = NO;
@@ -294,7 +288,7 @@
     [assigneeTitleLabel release];
     [assigneePanelView release];
 
-    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(10, 206, 300, 154)];
+    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(10, 206, self.view.bounds.size.width - 20, 154)];
     moreView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_duetime.png"]];
 
     priorityOptionView = [[PriorityOptionView alloc] initWithFrame:CGRectMake(11, 27, 278, 23)];
@@ -305,6 +299,11 @@
     dueTimeTitleLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
     dueTimeTitleLabel.text = @"期望完成时间";
     dueTimeTitleLabel.font = [UIFont systemFontOfSize:16];
+    dueTimeTitleLabel.userInteractionEnabled = YES;
+    recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectDueTime:)];
+    [dueTimeTitleLabel addGestureRecognizer:recognizer];
+    dueTimeLabel.delegate = self;
+    [recognizer release];
     [moreView addSubview:dueTimeTitleLabel];
 
     dueTimeLabel = [[DatePickerLabel alloc] initWithFrame:CGRectMake(208, 104, 120, 24)];

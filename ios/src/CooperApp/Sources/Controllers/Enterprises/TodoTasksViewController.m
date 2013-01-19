@@ -62,14 +62,14 @@
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.HUD];
 
-    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-    textTitleLabel.backgroundColor = [UIColor clearColor];
-    textTitleLabel.textAlignment = UITextAlignmentCenter;
-    textTitleLabel.textColor = APP_TITLECOLOR;
-    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    self.navigationItem.titleView = textTitleLabel;
+//    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+//    textTitleLabel.backgroundColor = [UIColor clearColor];
+//    textTitleLabel.textAlignment = UITextAlignmentCenter;
+//    textTitleLabel.textColor = APP_TITLECOLOR;
+//    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+//    self.navigationItem.titleView = textTitleLabel;
     
-    textTitleLabel.text = @"Loading...";
+    //textTitleLabel.text = @"Loading...";
     NSString *workId = [[Constant instance] workId];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"GetTodoTasks" forKey:REQUEST_TYPE];
@@ -178,6 +178,7 @@
     NSMutableDictionary *taskInfoDict = [self.taskInfos objectAtIndex:indexPath.row];
     NSString *taskId = [taskInfoDict objectForKey:@"id"];
     taskDetailViewController.currentTaskId = taskId;
+    taskDetailViewController.editable = YES;
 
     taskDetailViewController.hidesBottomBarWhenPushed = YES;
     
@@ -192,17 +193,39 @@
 - (void)initContentView
 {
     NSLog(@"【初始化待办任务列表】");
+    
+    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    textTitleLabel.backgroundColor = [UIColor clearColor];
+    textTitleLabel.textAlignment = UITextAlignmentCenter;
+    textTitleLabel.textColor = APP_TITLECOLOR;
+    textTitleLabel.text = @"我的任务";
+    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    self.navigationItem.titleView = textTitleLabel;
 
     //任务列表
     taskView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     taskView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background.png"]];
+//    if(![Tools isPad]) {
+        taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background.png"]];
+//    }
+//    else {
+//        taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background@2x.png"]];
+//    }
+    
     //去掉底部空白
     UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     taskView.tableFooterView = footer;
     taskView.delegate = self;
     taskView.dataSource = self;
     [self.view addSubview: taskView];
+    
+    [taskView addPullToRefreshWithActionHandler:^{
+        [self getTodoTasks];
+    }];
+    [taskView addInfiniteScrollingWithActionHandler:^{
+        [self getTodoTasks];
+    }];
+//    [taskView triggerPullToRefresh];
 
 //    //底部分割线
 //    TabbarLineView *tabbarLineView = [[TabbarLineView alloc] init];
@@ -303,7 +326,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    textTitleLabel.text = @"我的任务";
+    //textTitleLabel.text = @"我的任务";
     
     NSLog(@"【请求任务响应数据】%@\n【返回状态码】%d", request.responseString, request.responseStatusCode);
 
@@ -312,6 +335,9 @@
 
     if([requestType isEqualToString:@"GetTodoTasks"])
     {
+        [taskView.pullToRefreshView stopAnimating];
+        [taskView.infiniteScrollingView stopAnimating];
+        
         if(request.responseStatusCode == 200)
         {  
             NSDictionary *dict = [[request responseString] JSONValue];

@@ -27,6 +27,12 @@
 {
     [super viewDidLoad];
     
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewClick:)];
+    [self.view addGestureRecognizer:recognizer];
+    [recognizer release];
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_bg.png"]];
+    
     enterpriseService = [[EnterpriseService alloc] init];
     
     textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
@@ -40,7 +46,7 @@
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.userInteractionEnabled = NO;
-    [backBtn setFrame:CGRectMake(14, 16, 15, 10)];
+    [backBtn setFrame:CGRectMake(9, 17, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
     backView.userInteractionEnabled = YES;
@@ -58,9 +64,9 @@
     [rightView addSubview:splitView];
     UIButton *saveTaskBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveTaskBtn setTitleColor:APP_TITLECOLOR forState:UIControlStateNormal];
-    saveTaskBtn.frame = CGRectMake(1, 6, 54, 30);
+    saveTaskBtn.frame = CGRectMake(6, 8, 54, 30);
     [saveTaskBtn addTarget:self action:@selector(editContent:) forControlEvents:UIControlEventTouchUpInside];
-    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+    saveTaskBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
     [saveTaskBtn setTitle:@"确认" forState:UIControlStateNormal];
     [rightView addSubview:saveTaskBtn];
     UIBarButtonItem *saveButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightView];
@@ -69,12 +75,20 @@
     [splitView release];
     [rightView release];
     
-    UIView *detailInfoView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, 300, 106)];
-    detailInfoView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_panel.png"]];
-    [self.view addSubview:detailInfoView];
+    UILabel *subjectTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.bounds.size.width - 20, 16)];
+    subjectTitleLabel.font = [UIFont boldSystemFontOfSize:16];
+    subjectTitleLabel.backgroundColor = [UIColor clearColor];
+    subjectTitleLabel.textColor = [UIColor colorWithRed:160.0/255 green:153.0/255 blue:147.0/255 alpha:1];
+    subjectTitleLabel.text = @"任务描述";
+    [self.view addSubview:subjectTitleLabel];
+    [subjectTitleLabel release];
+    
+    UIView *subjectInfoView = [[UIView alloc] initWithFrame:CGRectMake(10, 36, self.view.bounds.size.width - 20, 106)];
+    subjectInfoView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_panel.png"]];
+    [self.view addSubview:subjectInfoView];
     
     subjectTextView = [[GCPlaceholderTextView alloc] init];
-    subjectTextView.frame = CGRectMake(0, 0, 301, 105);
+    subjectTextView.frame = CGRectMake(0, 0, self.view.bounds.size.width - 19, 105);
     subjectTextView.font = [UIFont systemFontOfSize:16.0f];
     subjectTextView.placeholder = @"写点什么";
     subjectTextView.delegate = self;
@@ -82,7 +96,30 @@
     subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
     subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [detailInfoView addSubview:subjectTextView];
+    [subjectInfoView addSubview:subjectTextView];
+    
+    UILabel *bodyTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 150, self.view.bounds.size.width - 20, 16)];
+    bodyTitleLabel.font = [UIFont boldSystemFontOfSize:16];
+    bodyTitleLabel.backgroundColor = [UIColor clearColor];
+    bodyTitleLabel.textColor = [UIColor colorWithRed:160.0/255 green:153.0/255 blue:147.0/255 alpha:1];
+    bodyTitleLabel.text = @"补充信息";
+    [self.view addSubview:bodyTitleLabel];
+    [bodyTitleLabel release];
+    
+    UIView *bodyInfoView = [[UIView alloc] initWithFrame:CGRectMake(10, 176, self.view.bounds.size.width - 20, 106)];
+    bodyInfoView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_panel.png"]];
+    [self.view addSubview:bodyInfoView];
+    
+    bodyTextView = [[GCPlaceholderTextView alloc] init];
+    bodyTextView.frame = CGRectMake(0, 0, self.view.bounds.size.width - 19, 105);
+    bodyTextView.font = [UIFont systemFontOfSize:16.0f];
+    bodyTextView.placeholder = @"写点什么";
+    bodyTextView.delegate = self;
+    bodyTextView.backgroundColor = [UIColor clearColor];
+    bodyTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
+    bodyTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+    bodyTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [bodyInfoView addSubview:bodyTextView];
     
     if(taskDetailDict != nil) {
         subjectTextView.text = [taskDetailDict objectForKey:@"subject"];
@@ -101,6 +138,7 @@
 {
     [enterpriseService release];
     [subjectTextView release];
+    [bodyTextView release];
     [super dealloc];
 }
 
@@ -155,13 +193,14 @@
 - (void)editContent:(id)sender
 {
     NSString *subject = subjectTextView.text;
+    NSString *body = bodyTextView.text;
     if([subject isEqualToString:@""]) {
         [Tools alert:@"请填写任务描述"];
         return;
     }
     [taskDetailDict setObject:subject forKey:@"subject"];
+    [taskDetailDict setObject:body forKey:@"body"];
     
-    NSString *body = [taskDetailDict objectForKey:@"body"];
     NSString *dueTime = [taskDetailDict objectForKey:@"dueTime"];
     NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
     NSNumber *priority = [taskDetailDict objectForKey:@"priority"];
@@ -179,8 +218,12 @@
     }
     attachmentsStr = [attachmentIds componentsJoinedByString:@"||"];
     
-    NSMutableArray *relatedWorkIdArray = [taskDetailDict objectForKey:@"relatedWorkIdArray"];
-    NSString *relatedUserWorkIds = [relatedWorkIdArray componentsJoinedByString:@"||"];
+    NSMutableArray *relatedUserArray = [taskDetailDict objectForKey:@"relatedUserArray"];
+    NSMutableArray *workIdsArray = [NSMutableArray array];
+    for (NSMutableDictionary *userDict in relatedUserArray) {
+        [workIdsArray addObject:[userDict objectForKey:@"workId"]];
+    }
+    NSString *relatedUserWorkIds = [workIdsArray componentsJoinedByString:@"||"];
     
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.HUD];
@@ -233,6 +276,13 @@
     
     NSString *subject = subjectTextView.text;
     subjectTextView.text = [NSString stringWithFormat:@"%@%@", subject, name];
+}
+
+- (void)viewClick:(id)sender
+{
+    NSLog(@"viewClick");
+    [subjectTextView resignFirstResponder];
+    [bodyTextView resignFirstResponder];
 }
 
 @end

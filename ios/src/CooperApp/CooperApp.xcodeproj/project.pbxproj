@@ -207,6 +207,8 @@
 		18C5FBE81698176300ADBAFA /* detail_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C5FBE71698176300ADBAFA /* detail_audio.png */; };
 		18C5FBEA169818B100ADBAFA /* detail_editContent.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C5FBE9169818B100ADBAFA /* detail_editContent.png */; };
 		18C5FBEC16981F3800ADBAFA /* detail_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C5FBEB16981F3800ADBAFA /* detail_line.png */; };
+		18CC92CF16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CC92CC16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.m */; };
+		18CC92D016AAE64100249440 /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CC92CE16AAE64100249440 /* UIScrollView+SVPullToRefresh.m */; };
 		18EDFAFE1695ED1A00F61A8A /* login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 18EDFAFD1695ED1A00F61A8A /* login_bg.png */; };
 		18F5D48215F8A5FE004C5771 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18F5D48115F8A5FD004C5771 /* CoreText.framework */; };
 		18FE12A316983C7B00C52A6D /* CommentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FE12A216983C7B00C52A6D /* CommentInfoView.m */; };
@@ -696,6 +698,11 @@
 		18C5FBE71698176300ADBAFA /* detail_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detail_audio.png; sourceTree = "<group>"; };
 		18C5FBE9169818B100ADBAFA /* detail_editContent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detail_editContent.png; sourceTree = "<group>"; };
 		18C5FBEB16981F3800ADBAFA /* detail_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detail_line.png; sourceTree = "<group>"; };
+		18CC92CA16AAE64100249440 /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
+		18CC92CB16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
+		18CC92CC16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
+		18CC92CD16AAE64100249440 /* UIScrollView+SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVPullToRefresh.h"; sourceTree = "<group>"; };
+		18CC92CE16AAE64100249440 /* UIScrollView+SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVPullToRefresh.m"; sourceTree = "<group>"; };
 		18E2F89C15F4D9050062E57F /* CodesharpSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodesharpSDK.xcodeproj; path = ../../lib/CodesharpSDK/CodesharpSDK.xcodeproj; sourceTree = "<group>"; };
 		18EDFAFD1695ED1A00F61A8A /* login_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_bg.png; sourceTree = "<group>"; };
 		18F5D48115F8A5FD004C5771 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -1542,6 +1549,19 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
+		18CC92C916AAE64100249440 /* SVPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				18CC92CA16AAE64100249440 /* SVPullToRefresh.h */,
+				18CC92CB16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.h */,
+				18CC92CC16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.m */,
+				18CC92CD16AAE64100249440 /* UIScrollView+SVPullToRefresh.h */,
+				18CC92CE16AAE64100249440 /* UIScrollView+SVPullToRefresh.m */,
+			);
+			name = SVPullToRefresh;
+			path = ../../lib/SVPullToRefresh;
+			sourceTree = "<group>";
+		};
 		18E2F89D15F4D9050062E57F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1676,6 +1696,7 @@
 		EE87F78C15A3F50100DA8E7F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				18CC92C916AAE64100249440 /* SVPullToRefresh */,
 				6A82DC2716A3972900EBBFA7 /* MWPhotoBrowser */,
 				188932101695452900694FF3 /* SBJSON */,
 				188932091695450E00694FF3 /* JASidePanel */,
@@ -2127,6 +2148,8 @@
 				6A82DC3816A3972900EBBFA7 /* MWTapDetectingImageView.m in Sources */,
 				6A82DC3916A3972900EBBFA7 /* MWTapDetectingView.m in Sources */,
 				6A82DC3A16A3972900EBBFA7 /* MWZoomingScrollView.m in Sources */,
+				18CC92CF16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
+				18CC92D016AAE64100249440 /* UIScrollView+SVPullToRefresh.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

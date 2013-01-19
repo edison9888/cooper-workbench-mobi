@@ -45,7 +45,7 @@
     
     totalHeight += 13 + 6;
     
-    createTimeLabel = [[[UILabel alloc] initWithFrame:CGRectMake(230, 10, 90, 9)] autorelease];
+    createTimeLabel = [[[UILabel alloc] initWithFrame:CGRectMake(self.bounds.size.width - 90, 10, 90, 9)] autorelease];
     createTimeLabel.backgroundColor = [UIColor clearColor];
     createTimeLabel.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
     createTimeLabel.font = [UIFont systemFontOfSize:9];
@@ -64,26 +64,26 @@
     contentLabel.text = content;
     contentLabel.font = [UIFont boldSystemFontOfSize:13];
     CGSize contentLabelSize = [contentLabel.text sizeWithFont:contentLabel.font
-                                            constrainedToSize:CGSizeMake(280, 10000)
+                                            constrainedToSize:CGSizeMake(self.bounds.size.width - 40, 10000)
                                                 lineBreakMode:UILineBreakModeWordWrap];
     CGFloat contentLabelHeight = contentLabelSize.height;
     int contentlines = contentLabelHeight / 13;
     contentLabel.numberOfLines = contentlines;
-    contentLabel.frame = CGRectMake(6, totalHeight, 280, contentLabelHeight);
+    contentLabel.frame = CGRectMake(6, totalHeight, self.bounds.size.width - 40, contentLabelHeight);
     [self addSubview:contentLabel];
 
     NSString *type = [commentDict objectForKey:@"type"];
     if([type isEqualToString:@"CommentFeedback"]) {
         UIButton *replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [replyButton setBackgroundImage:[UIImage imageNamed:@"detail_replyComment.png"] forState:UIControlStateNormal];
-        replyButton.frame = CGRectMake(290, totalHeight, 23, 20);
+        replyButton.frame = CGRectMake(self.bounds.size.width - 30, totalHeight, 23, 20);
         [replyButton addTarget:self action:@selector(replyComment:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:replyButton];
     }
     
     totalHeight += contentLabelHeight + 12;
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, totalHeight, 320, 1)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, totalHeight, self.bounds.size.width, 1)];
     lineView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_line.png"]];
     [self addSubview:lineView];
     [lineView release];

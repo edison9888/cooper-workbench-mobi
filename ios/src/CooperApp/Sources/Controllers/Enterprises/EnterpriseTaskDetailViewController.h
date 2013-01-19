@@ -85,9 +85,12 @@
 
     NSMutableArray *photos;
     AVAudioPlayer *mp3Player;
+    
+    CGFloat adjuctScrollHeight;
 }
 
 @property (retain, nonatomic) NSString *currentTaskId;
 @property (retain, nonatomic) NSMutableDictionary *taskDetailDict;
+@property (assign, nonatomic) BOOL editable;
 
 @end

@@ -55,7 +55,7 @@
     [tabbarView addSubview:closeView];
     
     //添加录音开始按钮
-    UIView *startView = [[[UIView alloc] initWithFrame:CGRectMake((320 - 75) / 2.0, 10, 75, 75)] autorelease];
+    UIView *startView = [[[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 75) / 2.0, 10, 75, 75)] autorelease];
     startButton = [UIButton buttonWithType:UIButtonTypeCustom];
     startButton.frame = CGRectMake(0, 0, 75, 75);
     [startButton setBackgroundImage:[UIImage imageNamed:@"audio_start.png"] forState:UIControlStateNormal];
@@ -68,7 +68,7 @@
     [tabbarView addSubview:startView];
     
     //添加提交按钮
-    submitView = [[[UIView alloc] initWithFrame:CGRectMake(269, 32, 32, 32)] autorelease];
+    submitView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 51, 32, 32, 32)] autorelease];
     submitView.backgroundColor = [UIColor clearColor];
     UIButton *submitButton = [UIButton buttonWithType:UIButtonTypeCustom];
     submitButton.userInteractionEnabled = NO;
@@ -83,7 +83,7 @@
     submitView.hidden = YES;
 
     recordingView = [[[UIView alloc] init] autorelease];
-    recordingView.frame = CGRectMake(0, 56, 320, 300);
+    recordingView.frame = CGRectMake(0, 56, self.view.bounds.size.width, 300);
     [self.view addSubview:recordingView];
 
     durationLabel = [[[UILabel alloc] init] autorelease];
@@ -92,11 +92,11 @@
     durationLabel.text = @"00:00";
     durationLabel.backgroundColor = [UIColor clearColor];
     durationLabel.textAlignment = UITextAlignmentCenter;
-    durationLabel.frame = CGRectMake(0, 0, 320, 90);
+    durationLabel.frame = CGRectMake(0, 0, self.view.bounds.size.width, 90);
     [recordingView addSubview:durationLabel];
 
     startAudioImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_inhuatong.png"]] autorelease];
-    startAudioImageView.frame = CGRectMake(([Tools screenMaxWidth] - 157) / 2.0, 123, 157, 113);
+    startAudioImageView.frame = CGRectMake((self.view.bounds.size.width - 157) / 2.0, 123, 157, 113);
     [recordingView addSubview:startAudioImageView];
 //
 //    //停止录音后UI

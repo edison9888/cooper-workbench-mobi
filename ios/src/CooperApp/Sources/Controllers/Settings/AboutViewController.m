@@ -26,7 +26,8 @@
     
     accountService = [[AccountService alloc] init];
 
-    UIView *aboutView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 416)];
+    UIView *aboutView = [[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 320.0) / 2, 0, 320, 416)];
+    aboutView.contentMode = UIViewContentModeCenter;
     aboutView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"about_bg.png"]];
     [self.view addSubview:aboutView];
     UILabel *textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
@@ -54,6 +55,7 @@
 //    [backView release];
 
     UITextView *textView1 = [[UITextView alloc] initWithFrame:CGRectMake(0, 146, 320, 85)];
+    textView1.contentMode = UIViewContentModeCenter;
     textView1.userInteractionEnabled = NO;
     textView1.textAlignment = UITextAlignmentCenter;
     textView1.textColor = [UIColor colorWithRed:172.0/255 green:164.0/255 blue:157.0/255 alpha:1];
@@ -97,7 +99,8 @@
     [aboutView addSubview:textView4];
     [textView4 release];
     
-    CustomButton *logoutBtn = [[CustomButton alloc] initWithFrame:CGRectMake(40, 355, 240, 40) color:[UIColor colorWithRed:187.0/255 green:187.0/255 blue:187.0/255 alpha:1]];
+    CustomButton *logoutBtn = [[CustomButton alloc] initWithFrame:CGRectMake(40, 355, 240, 40) color:[UIColor colorWithRed:172.0/255 green:164.0/255 blue:157.0/255 alpha:1]];
+    logoutBtn.titleLabel.font = [UIFont systemFontOfSize:16.0f];
     logoutBtn.layer.cornerRadius = 1.0f;
     [logoutBtn.layer setMasksToBounds:YES];
     [logoutBtn addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
@@ -133,15 +136,15 @@
 
 - (void)logout:(id)sender
 {
-    if([[Constant instance] username].length > 0)
-    {
+    //if([[Constant instance] username].length > 0)
+    //{
         self.HUD = [Tools process:@"注销中" view:self.view];
         
         NSMutableDictionary *context = [NSMutableDictionary dictionary];
         [context setObject:@"Logout" forKey:REQUEST_TYPE];
         
         [accountService logout:context delegate:self];
-    }
+    //}
 }
 
 - (void)goLinkUrl:(id)sender

@@ -21,6 +21,7 @@
 @interface TaskContentEditViewController : Base2ViewController<UITextViewDelegate, EnterpriseTaskCreateDelegate>
 {
     GCPlaceholderTextView *subjectTextView;
+    GCPlaceholderTextView *bodyTextView;
     
     UILabel *textTitleLabel;
     

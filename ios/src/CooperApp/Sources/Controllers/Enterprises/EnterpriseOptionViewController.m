@@ -105,7 +105,7 @@
          cell.selectedBackgroundView = selectedView;
          
          UIImageView *arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow.png"]];
-         arrowView.frame = CGRectMake(253, 15, 11, 17);
+         arrowView.frame = CGRectMake(self.view.bounds.size.width - 67, 15, 11, 17);
          [cell.contentView addSubview:arrowView];
          [arrowView release];
          [selectedView release];

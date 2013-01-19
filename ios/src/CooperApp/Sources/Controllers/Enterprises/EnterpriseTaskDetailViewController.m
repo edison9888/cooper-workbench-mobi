@@ -12,6 +12,7 @@
 
 @synthesize currentTaskId;
 @synthesize taskDetailDict;
+@synthesize editable;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -74,21 +75,21 @@
     [splitView release];
     
     //选择属性面板
-    navPanelView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 59)] autorelease];
+    navPanelView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 59)] autorelease];
     navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
     
     //完成面板
-    completeView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 39)] autorelease];
+    completeView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width / 4, 39)] autorelease];
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showCompletePanel:)];
     [completeView addGestureRecognizer:recognizer];
     [recognizer release];
     
-    completeFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 22, 22)] autorelease];
+    completeFlagView = [[[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 4 - 22) / 2, 8, 22, 22)] autorelease];
     completeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_notsetcomplete.png"]];
     
     [completeView addSubview:completeFlagView];
     
-    completeFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, 80, 12)] autorelease];
+    completeFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, self.view.bounds.size.width / 4, 12)] autorelease];
     completeFlagLabel.text = @"未设置";
     completeFlagLabel.backgroundColor = [UIColor clearColor];
     completeFlagLabel.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
@@ -106,19 +107,24 @@
 //    [UIView commitAnimations];
 
     //完成时间面板
-    dueTimeView = [[DateButton alloc] initWithFrame:CGRectMake(80, 0, 80, 39)];
+    dueTimeView = [[DateButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 4 , 0, self.view.bounds.size.width / 4, 39)];
     dueTimeView.delegate = self;
-    dueTimeView.userInteractionEnabled = YES;
+    if(editable == NO) {
+        dueTimeView.userInteractionEnabled = NO;
+    }
+    else {
+        dueTimeView.userInteractionEnabled = YES;
+    }
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showDueTimePanel:)];
     [dueTimeView addGestureRecognizer:recognizer];
     [recognizer release];
 
-    dueTimeFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 23, 23)] autorelease];
+    dueTimeFlagView = [[[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 4 - 23) / 2, 8, 23, 23)] autorelease];
     dueTimeFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_dueTime.png"]];
     
     [dueTimeView addSubview:dueTimeFlagView];
     
-    dueTimeFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, 80, 12)] autorelease];
+    dueTimeFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, self.view.bounds.size.width / 4, 12)] autorelease];
     dueTimeFlagLabel.text = @"未设置";
     dueTimeFlagLabel.backgroundColor = [UIColor clearColor];
     dueTimeFlagLabel.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
@@ -130,18 +136,23 @@
     [navPanelView addSubview:dueTimeView];
     
     //优先级面板
-    UIView *priorityView = [[UIView alloc] initWithFrame:CGRectMake(160, 0, 80, 39)];
-    priorityView.userInteractionEnabled = YES;
+    UIView *priorityView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 2, 0, self.view.bounds.size.width / 4, 39)];
+    if(editable == NO) {
+        priorityView.userInteractionEnabled = NO;
+    }
+    else {
+        priorityView.userInteractionEnabled = YES;
+    }
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPriorityPanel:)];
     [priorityView addGestureRecognizer:recognizer];
     [recognizer release];
     
-    priorityFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 23, 23)] autorelease];
+    priorityFlagView = [[[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 4 - 23) / 2, 8, 23, 23)] autorelease];
     priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_priority0Flag2.png"]];
     
     [priorityView addSubview:priorityFlagView];
     
-    priorityFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, 80, 12)] autorelease];
+    priorityFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, self.view.bounds.size.width / 4, 12)] autorelease];
     priorityFlagLabel.text = @"未设置";
     priorityFlagLabel.backgroundColor = [UIColor clearColor];
     priorityFlagLabel.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
@@ -154,18 +165,18 @@
     [priorityView release];
     
     //人员面板
-    UIView *userView = [[UIView alloc] initWithFrame:CGRectMake(240, 0, 80, 39)];
+    UIView *userView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 4 * 3, 0, self.view.bounds.size.width / 4, 39)];
     userView.userInteractionEnabled = YES;
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showUserPanel:)];
     [userView addGestureRecognizer:recognizer];
     [recognizer release];
     
-    UIView *userFlagView = [[[UIView alloc] initWithFrame:CGRectMake(28, 8, 26, 23)] autorelease];
+    UIView *userFlagView = [[[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 4 - 26) / 2, 8, 26, 23)] autorelease];
     userFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_userFlag.png"]];
     
     [userView addSubview:userFlagView];
     
-    UILabel *userFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, 80, 12)] autorelease];
+    UILabel *userFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, self.view.bounds.size.width / 4, 12)] autorelease];
     userFlagLabel.text = @"相关人员";
     userFlagLabel.backgroundColor = [UIColor clearColor];
     userFlagLabel.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
@@ -449,6 +460,7 @@
                 [showPanelView removeFromSuperview];
                 [arrowImageView removeFromSuperview];
                 navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+                [self adjuctScrollView:-adjuctScrollHeight];
             }
         }
         else
@@ -490,6 +502,7 @@
                 [showPanelView removeFromSuperview];
                 [arrowImageView removeFromSuperview];
                 navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+                [self adjuctScrollView:-adjuctScrollHeight];
             }
         }
         else
@@ -587,9 +600,9 @@
     [scrollView addSubview:contentView];
     
     //添加进展信息
-    commentTitleView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 28)] autorelease];
+    commentTitleView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 28)] autorelease];
     
-    UILabel *commentTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(6, 6, 320, 16)];
+    UILabel *commentTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(6, 6, self.view.bounds.size.width, 16)];
     commentTitleLabel.font = [UIFont boldSystemFontOfSize:16];
     commentTitleLabel.backgroundColor = [UIColor clearColor];
     commentTitleLabel.textColor = [UIColor colorWithRed:160.0/255 green:153.0/255 blue:147.0/255 alpha:1];
@@ -598,7 +611,7 @@
     [commentTitleView addSubview:commentTitleLabel];
     [commentTitleLabel release];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 27, 320, 1)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 27, self.view.bounds.size.width, 1)];
     lineView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_line.png"]];
     [commentTitleView addSubview:lineView];
     [lineView release];
@@ -621,7 +634,7 @@
             iconLeft -= 20;
         }
         
-        UIView *iconsView = [[UIView alloc] initWithFrame:CGRectMake(iconLeft, 5, [Tools screenMaxWidth] - iconLeft, 15)];
+        UIView *iconsView = [[UIView alloc] initWithFrame:CGRectMake(iconLeft, 5, self.view.bounds.size.width - iconLeft, 15)];
         
         CGFloat tempFlagLeft = 5;
         if([attachmentCount intValue] > 0) {
@@ -648,20 +661,20 @@
     CGFloat totalHeight = 0;
     //绑定标题
     subjectLabel.text = subject;
-    CGSize subjectLabelSize = [subjectLabel.text sizeWithFont:subjectLabel.font constrainedToSize:CGSizeMake(270, 10000) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize subjectLabelSize = [subjectLabel.text sizeWithFont:subjectLabel.font constrainedToSize:CGSizeMake(self.view.bounds.size.width - 50, 10000) lineBreakMode:UILineBreakModeWordWrap];
     CGFloat subjectLabelHeight = subjectLabelSize.height;
     int subjectlines = subjectLabelHeight / 17;
-    subjectLabel.frame = CGRectMake(6, 8, 270, subjectLabelHeight);
+    subjectLabel.frame = CGRectMake(6, 8, self.view.bounds.size.width - 50, subjectLabelHeight);
     subjectLabel.numberOfLines = subjectlines;
     totalHeight += subjectLabelHeight;
     
     //绑定备注
     bodyLabel.text = body;
     if(![bodyLabel.text isEqualToString:@""]) {
-        CGSize bodyLabelSize = [subjectLabel.text sizeWithFont:bodyLabel.font constrainedToSize:CGSizeMake(308, 10000) lineBreakMode:UILineBreakModeWordWrap];
+        CGSize bodyLabelSize = [subjectLabel.text sizeWithFont:bodyLabel.font constrainedToSize:CGSizeMake(self.view.bounds.size.width - 12, 10000) lineBreakMode:UILineBreakModeWordWrap];
         CGFloat bodyLabelHeight = bodyLabelSize.height;
         int bodylines = bodyLabelHeight / 14;
-        bodyLabel.frame = CGRectMake(6, totalHeight + 8, 308, bodyLabelHeight);
+        bodyLabel.frame = CGRectMake(6, totalHeight + 8, self.view.bounds.size.width - 12, bodyLabelHeight);
         bodyLabel.numberOfLines = bodylines;
         totalHeight += bodyLabelHeight;
     }
@@ -721,29 +734,29 @@
         totalHeight += 62;
     }
     
-    //if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && editable == YES) {
         
         //rightView.hidden = NO;
         
         UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [editButton setBackgroundImage:[UIImage imageNamed:@"detail_editContent.png"] forState:UIControlStateNormal];
         [editButton addTarget:self action:@selector(editContent:) forControlEvents:UIControlEventTouchUpInside];
-        editButton.frame = CGRectMake(296, totalHeight + 8, 16, 16);
+        editButton.frame = CGRectMake(self.view.bounds.size.width - 24, totalHeight + 8, 16, 16);
         
         [contentView addSubview:editButton];
         
         totalHeight += 16;
-    //}
+    }
     
-    contentView.frame = CGRectMake(0, 0, 320, totalHeight + 16);
+    contentView.frame = CGRectMake(0, 0, self.view.bounds.size.width, totalHeight + 16);
     
-    commentTitleView.frame = CGRectMake(0, totalHeight + 16, 320, 28);
+    commentTitleView.frame = CGRectMake(0, totalHeight + 16, self.view.bounds.size.width, 28);
     
     totalHeight += 28;
     
     CGFloat tempCommentHeight = 0.0f;
     for (NSMutableDictionary *commentDict in comments) {
-        CommentInfoView *commentInfoView = [[CommentInfoView alloc] initWithFrame:CGRectMake(0, tempCommentHeight, 320, 0)];
+        CommentInfoView *commentInfoView = [[CommentInfoView alloc] initWithFrame:CGRectMake(0, tempCommentHeight, self.view.bounds.size.width, 0)];
         commentInfoView.delegate = self;
         //commentInfoView.backgroundColor = [UIColor redColor];
         [commentInfoView setCommentInfo:commentDict];
@@ -751,17 +764,17 @@
         tempCommentHeight += commentInfoView.frame.size.height;
         [commentInfoView release];
     }
-    commentView.frame = CGRectMake(0, totalHeight + 16, 320, tempCommentHeight);
+    commentView.frame = CGRectMake(0, totalHeight + 16, self.view.bounds.size.width, tempCommentHeight);
     totalHeight += tempCommentHeight;
     
     totalHeight += 16;
-    scrollView.contentSize = CGSizeMake(320, totalHeight + 44);
+    scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, totalHeight + 44);
 
-    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
-        completeView.userInteractionEnabled = YES;
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:1]] || editable == NO) {
+        completeView.userInteractionEnabled = NO;
     }
     else {
-        completeView.userInteractionEnabled = NO;
+        completeView.userInteractionEnabled = YES;
     }
     
     //绑定完成状态
@@ -944,6 +957,7 @@
         [showPanelView removeFromSuperview];
         [arrowImageView removeFromSuperview];
         navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+        [self adjuctScrollView:-adjuctScrollHeight];
     }
     
     if(currentIndex == 0) {
@@ -955,7 +969,7 @@
     }
     
     showPanelView = [[UIView alloc] init];
-    showPanelView.frame = CGRectMake(0, 56, 320, 46);
+    showPanelView.frame = CGRectMake(0, 56, self.view.bounds.size.width, 46);
     showPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
 
     UILabel *iscompleteTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 14, 100, 17)] autorelease];
@@ -1016,11 +1030,21 @@
     
     [showPanelView addSubview:completeSelView];
     
+    adjuctScrollHeight = 44;
+    [self adjuctScrollView:adjuctScrollHeight];
+    
     navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
     arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
     [navPanelView addSubview:arrowImageView];
-    arrowImageView.frame = CGRectMake(34, 50, 12, 6);
+    arrowImageView.frame = CGRectMake((self.view.bounds.size.width / 4 - 12) / 2, 50, 12, 6);
     [self.view addSubview:showPanelView];
+    
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:0.5];
+//    CGRect frame = showPanelView.frame;
+//    frame.size.height = 46;
+//    showPanelView.frame = frame;
+//    [UIView commitAnimations];
     
 //    CGRect frame = scrollView.frame;
 //    CGFloat frameY = frame.origin.y + 46;
@@ -1036,6 +1060,7 @@
         [showPanelView removeFromSuperview];
         [arrowImageView removeFromSuperview];
         navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+        [self adjuctScrollView:-adjuctScrollHeight];
     }
 
 //    UIDatePicker *datePicker = [[[UIDatePicker alloc] init] autorelease];
@@ -1073,6 +1098,7 @@
         [showPanelView removeFromSuperview];
         [arrowImageView removeFromSuperview];
         navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+        [self adjuctScrollView:-adjuctScrollHeight];
     }
 
     if(currentIndex == 2) {
@@ -1084,14 +1110,14 @@
     }
     
     showPanelView = [[UIView alloc] init];
-    showPanelView.frame = CGRectMake(0, 56, 320, 46);
+    showPanelView.frame = CGRectMake(0, 56, self.view.bounds.size.width, 46);
     showPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
     
     navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
     
     arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
     [navPanelView addSubview:arrowImageView];
-    arrowImageView.frame = CGRectMake(194, 50, 12, 6);
+    arrowImageView.frame = CGRectMake(self.view.bounds.size.width * 0.5 + (self.view.bounds.size.width / 4 - 12) / 2, 50, 12, 6);
 
     priorityView0 = [[UIView alloc] initWithFrame:CGRectMake(20, 11, 80, 23)];
     priorityView0.userInteractionEnabled = YES;
@@ -1163,6 +1189,9 @@
     
     [self.view addSubview:showPanelView];
     
+    adjuctScrollHeight = 44;
+    [self adjuctScrollView:adjuctScrollHeight];
+    
 //    CGRect frame = scrollView.frame;
 //    CGFloat frameY = frame.origin.y + 46;
 //    scrollView.frame = CGRectMake(frame.origin.x, frameY, frame.size.width, frame.size.height);
@@ -1179,6 +1208,7 @@
         [centerPanelView removeFromSuperview];
         [arrowImageView removeFromSuperview];
         navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+        [self adjuctScrollView:-adjuctScrollHeight];
     }
 
     if(currentIndex == 3) {
@@ -1191,7 +1221,7 @@
 
     centerPanelView = [[UIView alloc] init];
     //centerPanelView.userInteractionEnabled = NO;
-    centerPanelView.frame = CGRectMake(0, 56, 320, 44);
+    centerPanelView.frame = CGRectMake(0, 56, self.view.bounds.size.width, 44);
     centerPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_centerPanel.png"]];
 
     UILabel *assigneeTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 12, 90, 17)] autorelease];
@@ -1210,8 +1240,8 @@
     [centerPanelView addSubview:assgineesView];
 
     NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
-    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
-        UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 12, 18, 18)] autorelease];
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && editable == YES) {
+        UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 26, 12, 18, 18)] autorelease];
         UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
         assigneeChooseBtn.userInteractionEnabled = NO;
         [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
@@ -1237,7 +1267,7 @@
     navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanelWithShow.png"]];
     arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"detail_navArrow.png"]];
     [navPanelView addSubview:arrowImageView];
-    arrowImageView.frame = CGRectMake(274, 50, 12, 6);
+    arrowImageView.frame = CGRectMake(self.view.bounds.size.width * 0.75 + (self.view.bounds.size.width / 4 - 12) / 2, 50, 12, 6);
 
     NSMutableArray *relatedUserArray = [taskDetailDict objectForKey:@"relatedUserArray"];
     NSMutableArray *relevantMembers = [NSMutableArray array];
@@ -1249,23 +1279,25 @@
     if(relevantMembers.count > 0) {
         [relevantLabelView bindTags:relevantMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
     }
-    relevantLabelView.delegate = self;
+    if(editable == YES) {
+        relevantLabelView.delegate = self;
+    }
     [showPanelView addSubview:relevantLabelView];
     
     int lines = relevantMembers.count == 0 ? 1 : ((relevantMembers.count - 1) / 2 + 1);
     
     int tempHeight = 0;
     for (int index = 0; index < lines - 1; index++) {
-        UIView *bgView = [[[UIView alloc] initWithFrame:CGRectMake(0, tempHeight, 320, 44)] autorelease];
+        UIView *bgView = [[[UIView alloc] initWithFrame:CGRectMake(0, tempHeight, self.view.bounds.size.width, 44)] autorelease];
         bgView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_centerPanel.png"]];
         [showPanelView insertSubview:bgView atIndex:0];
         tempHeight += 44;
     }
-    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, tempHeight, 320, 46)];
+    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, tempHeight, self.view.bounds.size.width, 46)];
     footView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_showUpPanel.png"]];
     [showPanelView insertSubview:footView atIndex:0];
     
-    showPanelView.frame = CGRectMake(0, 100, 320, tempHeight + 46);
+    showPanelView.frame = CGRectMake(0, 100, self.view.bounds.size.width, tempHeight + 46);
     
     UILabel *relevantTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(6, 12, 90, 17)] autorelease];
     relevantTitleLabel.text = @"相关人员：";
@@ -1283,8 +1315,8 @@
 //    [showPanelView addSubview:assgineesView];
 //
 //    NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
-    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]]) {
-        UIView *relevantChooseView = [[[UIView alloc] initWithFrame:CGRectMake(294, 13, 18, 18)] autorelease];
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && editable == YES) {
+        UIView *relevantChooseView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 26, 13, 18, 18)] autorelease];
         relevantChooseView.userInteractionEnabled = YES;
         UIButton *relevantChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
         relevantChooseBtn.userInteractionEnabled = NO;
@@ -1299,6 +1331,20 @@
     }
     
     [self.view addSubview:showPanelView];
+    
+    adjuctScrollHeight = tempHeight + 44 + 44;
+    [self adjuctScrollView:adjuctScrollHeight];
+}
+
+- (void)adjuctScrollView:(CGFloat)top
+{
+    CGRect scrollFrame = scrollView.frame;
+    scrollFrame.origin.y += top;
+    scrollView.frame = scrollFrame;
+    
+    CGSize scrollContentSize = scrollView.contentSize;
+    scrollContentSize.height += top;
+    scrollView.contentSize = scrollContentSize;
 }
 
 - (void)changeTrueIsCompleted:(id)sender
