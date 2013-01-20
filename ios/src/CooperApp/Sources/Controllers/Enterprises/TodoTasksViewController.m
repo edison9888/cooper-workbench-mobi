@@ -56,6 +56,15 @@
     [self getTodoTasks];
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [self.currentRequest clearDelegatesAndCancel];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{  
+    [self.currentRequest clearDelegatesAndCancel];
+}
+
 - (void)getTodoTasks
 {
 //    self.HUD = [Tools process:LOADING_TITLE view:self.view];
@@ -73,7 +82,7 @@
     NSString *workId = [[Constant instance] workId];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"GetTodoTasks" forKey:REQUEST_TYPE];
-    [enterpriseService getTodoTasks:workId
+    self.currentRequest = [enterpriseService getTodoTasks:workId
                             context:context
                            delegate:self];
 }
@@ -335,6 +344,7 @@
 
     if([requestType isEqualToString:@"GetTodoTasks"])
     {
+        NSLog(@"todoTasks requestFinished!");
         [taskView.pullToRefreshView stopAnimating];
         [taskView.infiniteScrollingView stopAnimating];
         
@@ -351,6 +361,11 @@
                     
                     NSMutableArray *tasks = [dict objectForKey:@"data"];
 
+                    int todoTasksCount = 0;
+                    
+                    NSString *todayString = [Tools ShortNSDateToNSString:[NSDate date]];
+                    NSDate *today = [Tools NSStringToShortNSDate:todayString];
+                    
                     for(NSMutableDictionary *taskDict in tasks)
                     {
                         NSNumber *taskId = [taskDict objectForKey:@"id"];
@@ -386,6 +401,19 @@
                         [taskInfoDict setObject:picCount forKey:@"picCount"];
                       
                         [taskInfos addObject:taskInfoDict];
+                        
+                        if (![dueTime isEqualToString:@""]) {
+                            NSDate *dueTimeDate = [Tools NSStringToShortNSDate:dueTime];
+                            if([dueTimeDate isEqualToDate:today]) {
+                                todoTasksCount += 1;
+                            }
+                        }
+                    }
+                    
+                    if (todoTasksCount > 0) {
+                        NSLog(@"今天有%d条待办任务要处理", todoTasksCount);
+                        [[Constant instance] setTodoTasksCount:[NSNumber numberWithInt:todoTasksCount]];
+                        [Constant saveTodoTasksCountToCache];
                     }
 
                     [self loadTaskData];

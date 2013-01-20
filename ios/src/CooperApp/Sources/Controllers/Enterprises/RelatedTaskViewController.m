@@ -64,7 +64,7 @@
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"GetRelevantTasks" forKey:REQUEST_TYPE];
     
-    [enterpriseService getRelevantTasks:workId
+    self.currentRequest = [enterpriseService getRelevantTasks:workId
                                 context:context
                                delegate:self];
 }
@@ -72,6 +72,15 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [self.currentRequest clearDelegatesAndCancel];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self.currentRequest clearDelegatesAndCancel];
 }
 
 - (void)dealloc

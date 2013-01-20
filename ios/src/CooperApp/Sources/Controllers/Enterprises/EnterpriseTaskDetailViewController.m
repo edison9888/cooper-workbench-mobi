@@ -207,6 +207,15 @@
     // Release any retained subviews of the main view.
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    [self.currentRequest clearDelegatesAndCancel];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self.currentRequest clearDelegatesAndCancel];
+}
+
 - (void)dealloc
 {
     [comments release];
@@ -943,7 +952,7 @@
     
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"TaskDetail" forKey:REQUEST_TYPE];
-    [enterpriseService getTaskDetail:currentTaskId context:context delegate:self];
+    self.currentRequest = [enterpriseService getTaskDetail:currentTaskId context:context delegate:self];
 }
 
 - (void)showCompletePanel:(id)sender

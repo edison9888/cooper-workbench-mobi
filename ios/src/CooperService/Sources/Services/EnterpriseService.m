@@ -9,9 +9,9 @@
 #import "EnterpriseService.h"
 
 @implementation EnterpriseService
-- (void)getTodoTasks:(NSString*)workId
-             context:(NSMutableDictionary*)context
-            delegate:(id)delegate
+- (ASIHTTPRequest*)getTodoTasks:(NSString*)workId
+                        context:(NSMutableDictionary*)context
+                       delegate:(id)delegate
 {
     NSString *url = [[[Constant instance] rootPath] stringByAppendingFormat:ENTERPRISE_GETTODOTASKS_URL];
     NSLog(@"【GetTodoTasks服务接口路径】%@", url);
@@ -20,11 +20,12 @@
     [params setObject:workId forKey:@"workId"];
     //[params setObject:[NSNumber numberWithInt:1] forKey:@"includeCompleted"];
 
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)getRelevantTasks:(NSString*)workId
+- (ASIHTTPRequest*)getRelevantTasks:(NSString*)workId
                  context:(NSMutableDictionary*)context
                 delegate:(id)delegate
 {
@@ -34,11 +35,12 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:workId forKey:@"workId"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)getTaskDetail:(NSString*)taskId
+- (ASIHTTPRequest*)getTaskDetail:(NSString*)taskId
               context:(NSMutableDictionary*)context
              delegate:(id)delegate
 {
@@ -50,11 +52,12 @@
     [params setObject:[NSNumber numberWithInt:1] forKey:@"loadAttachment"];
     [params setObject:[NSNumber numberWithInt:1] forKey:@"loadFeedback"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)changeTaskCompleted:(NSString*)taskId
+- (ASIHTTPRequest*)changeTaskCompleted:(NSString*)taskId
                 isCompleted:(NSNumber*)isCompleted
                     context:(NSMutableDictionary*)context
                    delegate:(id)delegate
@@ -66,11 +69,12 @@
     [params setObject:taskId forKey:@"id"];
     [params setObject:isCompleted forKey:@"isCompleted"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)changeTaskDueTime:(NSString*)taskId
+- (ASIHTTPRequest*)changeTaskDueTime:(NSString*)taskId
                   dueTime:(NSString*)dueTime
                   context:(NSMutableDictionary*)context
                  delegate:(id)delegate
@@ -82,11 +86,12 @@
     [params setObject:taskId forKey:@"id"];
     [params setObject:dueTime forKey:@"dueTime"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)changeTaskPriority:(NSString*)taskId
+- (ASIHTTPRequest*)changeTaskPriority:(NSString*)taskId
                   priority:(NSNumber*)priority
                    context:(NSMutableDictionary*)context
                   delegate:(id)delegate
@@ -98,11 +103,12 @@
     [params setObject:taskId forKey:@"id"];
     [params setObject:priority forKey:@"priority"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)updateTask:(NSString*)taskId
+- (ASIHTTPRequest*)updateTask:(NSString*)taskId
            subject:(NSString*)subject
               body:(NSString*)body
            dueTime:(NSString*)dueTime
@@ -128,11 +134,12 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
     [params setObject:isCompleted forKey:@"isCompleted"];
     [params setObject:attachmentIds forKey:@"attachmentIds"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)createTask:(NSString*)userId
+- (ASIHTTPRequest*)createTask:(NSString*)userId
            subject:(NSString*)subject
               body:(NSString*)body
            dueTime:(NSString*)dueTime
@@ -154,11 +161,12 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
     [params setObject:relatedUserJson forKey:@"relatedUserJson"];
     [params setObject:priority forKey:@"priority"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)newTask:(NSString*)creatorWorkId
+- (ASIHTTPRequest*)newTask:(NSString*)creatorWorkId
         subject:(NSString*)subject
         dueTime:(NSString*)dueTime
  assigneeWorkId:(NSString*)assigneeWorkId
@@ -178,11 +186,12 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
     [params setObject:priority forKey:@"priority"];
     [params setObject:attachmentIds forKey:@"attachmentIds"];
 
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)createTaskAttach:(NSData*)attachmentData
+- (ASIHTTPRequest*)createTaskAttach:(NSData*)attachmentData
                 fileName:(NSString*)fileName
                     type:(NSString*)type
                  context:(NSMutableDictionary*)context
@@ -195,11 +204,12 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
     [params setObject:fileName forKey:@"fileName"];
     [params setObject:type forKey:@"type"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params fileData:attachmentData fileKey:@"attachment" headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params fileData:attachmentData fileKey:@"attachment" headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)createTaskComment:(NSString*)weiboId
+- (ASIHTTPRequest*)createTaskComment:(NSString*)weiboId
                    taskId:(NSString*)taskId
                    workId:(NSString*)workId
                   content:(NSString*)content
@@ -215,11 +225,12 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
     [params setObject:workId forKey:@"workId"];
     [params setObject:content forKey:@"content"];
     
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
-- (void)findUsers:(NSString*)workId
+- (ASIHTTPRequest*)findUsers:(NSString*)workId
               key:(NSString*)key
           context:(NSMutableDictionary*)context
          delegate:(id)delegate
@@ -231,9 +242,10 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
     [params setObject:workId forKey:@"workId"];
     [params setObject:key forKey:@"key"];
 
-    HttpWebRequest *request = [[HttpWebRequest alloc] init];
-    [request postAsync:url params:params headers:nil context:context delegate:delegate];
-    [request release];
+    HttpWebRequest *httpRequest = [[HttpWebRequest alloc] init];
+    ASIHTTPRequest *request = [httpRequest postAsync:url params:params headers:nil context:context delegate:delegate];
+    [httpRequest release];
+    return request;
 }
 
 @end

@@ -35,19 +35,19 @@
                              params:(NSMutableDictionary*)params
                             headers:(NSMutableDictionary*)headers
                             context:(NSMutableDictionary*)context;
-- (void)postAsync:(NSString *)url
+- (ASIHTTPRequest*)postAsync:(NSString *)url
            params:(NSMutableDictionary *)params
          fileData:(NSData*)fileData
           fileKey:(NSString*)fileKey
           headers:(NSMutableDictionary *)headers
           context:(NSMutableDictionary *)context
          delegate:(id)myDelegate;
-- (void)postAsync:(NSString*)url
+- (ASIHTTPRequest*)postAsync:(NSString*)url
            params:(NSMutableDictionary*)params
           headers:(NSMutableDictionary*)headers
           context:(NSMutableDictionary*)context
          delegate:(id)myDelegate;
-- (void)getAsync:(NSString*)url
+- (ASIHTTPRequest*)getAsync:(NSString*)url
           params:(NSMutableDictionary*)params
          headers:(NSMutableDictionary*)headers
          context:(NSMutableDictionary*)context

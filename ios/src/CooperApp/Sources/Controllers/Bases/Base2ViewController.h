@@ -9,5 +9,6 @@
 @interface Base2ViewController : UIViewController
 
 @property (nonatomic, retain) MBProgressHUD *HUD;
+@property (nonatomic, retain) ASIHTTPRequest *currentRequest;
 
 @end

@@ -57,9 +57,6 @@
     
     //[GTMHTTPFetcher setLoggingEnabled:YES];
     
-    //应用徽章数字置零
-//    application.applicationIconBadgeNumber = 0; 
-    
 //    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];  
 //    NSString *name = [infoDictionary objectForKey:@"CFBundleDisplayName"];  
 //    NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];  
@@ -106,8 +103,12 @@
         [self checkVersionForUpdate];
     }
     
-//    if([[Constant instance] isLocalPush])
-//        [self localPush];
+    //应用徽章数字置零
+    application.applicationIconBadgeNumber = 0;
+    
+    //if([[Constant instance] isLocalPush]) {
+    [self localPush];
+    //}
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -162,22 +163,25 @@
 {
     NSLog(@"【开始执行本地推送通知】");
     
-    TaskDao *taskDao = [[[TaskDao alloc] init] autorelease];
+    //TaskDao *taskDao = [[[TaskDao alloc] init] autorelease];
+    //NSMutableArray *tasks = [taskDao getTaskByToday];
     
-    NSMutableArray *tasks = [taskDao getTaskByToday];
+    NSNumber *todoTasksCount = [[Constant instance] todoTasksCount];
+    int taskCount = [todoTasksCount intValue];
     
     NSString *todayString = [Tools ShortNSDateToNSString:[NSDate date]];
     NSDate *today = [Tools NSStringToShortNSDate:todayString];
     NSLog(@"【当前日期】%@", [Tools NSDateToNSString:today]);
-    NSLog(@"今天有 %d 个未完成的任务", tasks.count);
+    NSLog(@"今天有 %d 个未完成的任务", taskCount);
     
-    if(tasks.count == 0)
+    if(taskCount == 0)
         return;
     
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
     int interval = LOCALPUSH_TIME;
-    interval = (9 * 60 * 60 + 9 * 60 + 0);
+    //TODO:设置早上9点钟进行消息提醒
+    interval = (9 * 60 * 60 + 0 * 60 + 0);
     
     NSDate *fireDate = [[NSDate alloc] initWithTimeInterval:interval
                                                   sinceDate:today];
@@ -189,10 +193,10 @@
     }
     localNotification.fireDate = fireDate;
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    localNotification.alertBody = [NSString stringWithFormat:@"您有%d条未完成的任务即将过期，请及时处理", tasks.count];
+    localNotification.alertBody = [NSString stringWithFormat:@"您有 %d 条未完成任务今天过期，请及时处理", taskCount];
     localNotification.alertAction = @"查看详情";
     localNotification.soundName = UILocalNotificationDefaultSoundName;
-    localNotification.applicationIconBadgeNumber = tasks.count;
+    localNotification.applicationIconBadgeNumber = taskCount;
     
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     [localNotification release];

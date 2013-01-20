@@ -11,6 +11,7 @@
 @implementation Base2ViewController
 
 @synthesize HUD;
+@synthesize currentRequest;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

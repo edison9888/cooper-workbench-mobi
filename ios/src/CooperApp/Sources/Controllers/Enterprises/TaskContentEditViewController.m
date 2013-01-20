@@ -97,6 +97,7 @@
     subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [subjectInfoView addSubview:subjectTextView];
+    subjectTextView.text = [taskDetailDict objectForKey:@"subject"];
     
     UILabel *bodyTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 150, self.view.bounds.size.width - 20, 16)];
     bodyTitleLabel.font = [UIFont boldSystemFontOfSize:16];
@@ -120,6 +121,7 @@
     bodyTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     bodyTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [bodyInfoView addSubview:bodyTextView];
+    bodyTextView.text = [taskDetailDict objectForKey:@"body"];
     
     if(taskDetailDict != nil) {
         subjectTextView.text = [taskDetailDict objectForKey:@"subject"];

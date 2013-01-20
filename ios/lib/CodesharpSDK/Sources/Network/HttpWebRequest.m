@@ -104,7 +104,7 @@
     [request setValidatesSecureCertificate:NO];
     return request;
 }
-- (void)postAsync:(NSString *)url
+- (ASIHTTPRequest*)postAsync:(NSString *)url
            params:(NSMutableDictionary *)params
          fileData:(NSData*)fileData
           fileKey:(NSString*)fileKey
@@ -117,7 +117,7 @@
 	[reachability startNotifier];
 	if (reachability.currentReachabilityStatus == NotReachable) {
 		[self.delegate networkNotReachable];
-        return;
+        return nil;
 	}
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
@@ -156,17 +156,18 @@
 	[request startAsynchronous];
     
     [self.delegate addRequstToPool:request];
+    return request;
 }
-- (void)postAsync:(NSString *)url
+- (ASIHTTPRequest*)postAsync:(NSString *)url
            params:(NSMutableDictionary *)params
           headers:(NSMutableDictionary *)headers
           context:(NSMutableDictionary *)context
          delegate:(id)myDelegate
 {
-    [self postAsync:url params:params fileData:nil fileKey:nil headers:headers context:context delegate:myDelegate];
+    return [self postAsync:url params:params fileData:nil fileKey:nil headers:headers context:context delegate:myDelegate];
 }
 
-- (void)getAsync:(NSString *)url
+- (ASIHTTPRequest*)getAsync:(NSString *)url
            params:(NSMutableDictionary *)params
           headers:(NSMutableDictionary *)headers
           context:(NSMutableDictionary *)context
@@ -177,7 +178,7 @@
 	[reachability startNotifier];
 	if (reachability.currentReachabilityStatus == NotReachable) {
 		[self.delegate networkNotReachable];
-        return;
+        return nil;
 	}
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
@@ -213,6 +214,7 @@
 	[request startAsynchronous];
     
     [self.delegate addRequstToPool:request];
+    return request;
 }
 
 @end

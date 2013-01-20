@@ -10,34 +10,34 @@
 
 @interface EnterpriseService : NSObject
 //获取待办任务
-- (void)getTodoTasks:(NSString*)workId
+- (ASIHTTPRequest*)getTodoTasks:(NSString*)workId
              context:(NSMutableDictionary*)context
             delegate:(id)delegate;
 //获取相关任务
-- (void)getRelevantTasks:(NSString*)workId
+- (ASIHTTPRequest*)getRelevantTasks:(NSString*)workId
                  context:(NSMutableDictionary*)context
                 delegate:(id)delegate;
 //获取任务详情信息
-- (void)getTaskDetail:(NSString*)taskId
+- (ASIHTTPRequest*)getTaskDetail:(NSString*)taskId
               context:(NSMutableDictionary*)context
              delegate:(id)delegate;
 //更新完成状态
-- (void)changeTaskCompleted:(NSString*)taskId
+- (ASIHTTPRequest*)changeTaskCompleted:(NSString*)taskId
                 isCompleted:(NSNumber*)isCompleted
                     context:(NSMutableDictionary*)context
                    delegate:(id)delegate;
 //更新期待完成时间
-- (void)changeTaskDueTime:(NSString*)taskId
+- (ASIHTTPRequest*)changeTaskDueTime:(NSString*)taskId
                   dueTime:(NSString*)dueTime
                   context:(NSMutableDictionary*)context
                  delegate:(id)delegate;
 //更新优先级
-- (void)changeTaskPriority:(NSString*)taskId
+- (ASIHTTPRequest*)changeTaskPriority:(NSString*)taskId
                   priority:(NSNumber*)priority
                    context:(NSMutableDictionary*)context
                   delegate:(id)delegate;
 //更新当前任务详情
-- (void)updateTask:(NSString*)taskId
+- (ASIHTTPRequest*)updateTask:(NSString*)taskId
            subject:(NSString*)subject
               body:(NSString*)body
            dueTime:(NSString*)dueTime
@@ -49,7 +49,7 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
            context:(NSMutableDictionary*)context
           delegate:(id)delegate;
 //创新新任务
-- (void)createTask:(NSString*)userId
+- (ASIHTTPRequest*)createTask:(NSString*)userId
            subject:(NSString*)subject
               body:(NSString*)body
            dueTime:(NSString*)dueTime
@@ -59,7 +59,7 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
            context:(NSMutableDictionary*)context
           delegate:(id)delegate;
 //创建任务
-- (void)newTask:(NSString*)creatorWorkId
+- (ASIHTTPRequest*)newTask:(NSString*)creatorWorkId
         subject:(NSString*)subject
         dueTime:(NSString*)dueTime
  assigneeWorkId:(NSString*)assigneeWorkId
@@ -68,20 +68,20 @@ relatedUserWorkIds:(NSString*)relatedUserWorkIds
         context:(NSMutableDictionary*)context
        delegate:(id)delegate;
 //创建附件
-- (void)createTaskAttach:(NSData*)attachmentData
+- (ASIHTTPRequest*)createTaskAttach:(NSData*)attachmentData
                 fileName:(NSString*)fileName
                     type:(NSString*)type
                  context:(NSMutableDictionary*)context
                 delegate:(id)delegate;
 //评价任务
-- (void)createTaskComment:(NSString*)weiboId
+- (ASIHTTPRequest*)createTaskComment:(NSString*)weiboId
                    taskId:(NSString*)taskId
                    workId:(NSString*)workId
                   content:(NSString*)content
                   context:(NSMutableDictionary*)context
                  delegate:(id)delegate;
 //搜索用户
-- (void)findUsers:(NSString*)workId
+- (ASIHTTPRequest*)findUsers:(NSString*)workId
                key:(NSString*)key
            context:(NSMutableDictionary*)context
           delegate:(id)delegate;

@@ -24,6 +24,7 @@
 @synthesize tempCreateTasklistId;
 @synthesize tempCreateTasklistName;
 @synthesize rememberVersion;
+@synthesize todoTasksCount;
 
 + (id)instance {
 	static id obj = nil;
@@ -47,6 +48,7 @@
         recentlyIds = nil;
         recentlyTeamIds = nil;
         rememberVersion = @"";
+        todoTasksCount = [NSNumber numberWithInt:0];
         return self;
 	}
 	return nil;
@@ -71,6 +73,14 @@
     if([Cache getCacheByKey:@"recentlyTeamIds"] != nil)
     {
         [[Constant instance] setRecentlyTeamIds:recentlyTeamIds];
+    }
+    
+    if([Cache getCacheByKey:@"todoTasksCount"] == nil) {
+        [[Constant instance] setTodoTasksCount:[NSNumber numberWithInt:0]];
+    }
+    else {
+        NSNumber *tasksCount = [Cache getCacheByKey:@"todoTasksCount"];
+        [[Constant instance] setTodoTasksCount:tasksCount];
     }
 }
 
@@ -108,10 +118,16 @@
 //    [Cache saveToDisk];
 //}
 //
-//+ (void)saveIsLocalPushToCache
-//{
-//    [Cache setCacheObject:[NSNumber numberWithFloat:[[Constant instance] isLocalPush]] ForKey:@"isLocalPush"];
-//    [Cache saveToDisk];
-//}
++ (void)saveIsLocalPushToCache
+{
+    [Cache setCacheObject:[NSNumber numberWithFloat:[[Constant instance] isLocalPush]] ForKey:@"isLocalPush"];
+    [Cache saveToDisk];
+}
+
++ (void)saveTodoTasksCountToCache
+{
+    [Cache setCacheObject:[[Constant instance] todoTasksCount] ForKey:@"todoTasksCount"];
+    [Cache saveToDisk];
+}
 
 @end

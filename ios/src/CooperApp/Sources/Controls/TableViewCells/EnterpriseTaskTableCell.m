@@ -213,6 +213,15 @@
         totalHeight += 11 + PADDING;
         
         lines += 1;
+        
+        NSString *todayString = [Tools ShortNSDateToNSString:[NSDate date]];
+        NSDate *today = [Tools NSStringToShortNSDate:todayString];
+        
+        NSDate *dueTimeDate = [Tools NSStringToShortNSDate:dueTime];
+        if([dueTimeDate isEqualToDate:today]) {
+            dueTimeLabel.textColor = [UIColor colorWithRed:172.0/255 green:147.0/255 blue:144.0/255 alpha:1];
+            creatorLabel.textColor = [UIColor colorWithRed:172.0/255 green:147.0/255 blue:144.0/255 alpha:1];
+        }
     }
     
     CGFloat tagHeight = totalHeight;

@@ -24,6 +24,7 @@
 @property (nonatomic,retain) NSString *tempCreateTasklistId;
 @property (nonatomic,retain) NSString *tempCreateTasklistName;
 @property (nonatomic,retain) NSString *rememberVersion;
+@property (nonatomic,assign) NSNumber *todoTasksCount;
 
 + (id)instance;
 
@@ -32,6 +33,7 @@
 + (void)savePathToCache;
 + (void)saveSortHasChangedToCache;
 //+ (void)saveRecentlyIdsToCache;
-//+ (void)saveIsLocalPushToCache;
++ (void)saveIsLocalPushToCache;
++ (void)saveTodoTasksCountToCache;
 
 @end
