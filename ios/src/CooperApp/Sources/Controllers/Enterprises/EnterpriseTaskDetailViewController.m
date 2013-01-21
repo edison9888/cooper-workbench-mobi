@@ -98,7 +98,7 @@
     [completeView addSubview:completeFlagView];
     
     completeFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, self.view.bounds.size.width / 4, 12)] autorelease];
-    completeFlagLabel.text = @"未设置";
+    completeFlagLabel.text = @"完成状态";
     completeFlagLabel.backgroundColor = [UIColor clearColor];
     completeFlagLabel.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
     completeFlagLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -133,7 +133,7 @@
     [dueTimeView addSubview:dueTimeFlagView];
     
     dueTimeFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, self.view.bounds.size.width / 4, 12)] autorelease];
-    dueTimeFlagLabel.text = @"未设置";
+    dueTimeFlagLabel.text = @"完成日期";
     dueTimeFlagLabel.backgroundColor = [UIColor clearColor];
     dueTimeFlagLabel.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
     dueTimeFlagLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -161,7 +161,7 @@
     [priorityView addSubview:priorityFlagView];
     
     priorityFlagLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 36, self.view.bounds.size.width / 4, 12)] autorelease];
-    priorityFlagLabel.text = @"未设置";
+    priorityFlagLabel.text = @"优先级";
     priorityFlagLabel.backgroundColor = [UIColor clearColor];
     priorityFlagLabel.textColor = [UIColor colorWithRed:98.0/255 green:85.0/255 blue:79.0/255 alpha:1];
     priorityFlagLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -1627,7 +1627,7 @@
         return PRIORITY_TITLE_2;
     else if([priorityKey isEqualToNumber:[NSNumber numberWithInt:2]])
         return PRIORITY_TITLE_3;
-    return @"未设置";
+    return @"优先级";
 }
 
 @end
