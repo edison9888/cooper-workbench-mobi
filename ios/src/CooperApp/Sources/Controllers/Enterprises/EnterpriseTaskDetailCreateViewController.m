@@ -273,7 +273,7 @@
     assigneeChooseBtn.userInteractionEnabled = NO;
     [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
     UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
-    [assigneePanelView addGestureRecognizer:chooseRecognizer];
+    [assigneeView addGestureRecognizer:chooseRecognizer];
     [chooseRecognizer release];
 
     [assigenChooseView addSubview:assigneeChooseBtn];
