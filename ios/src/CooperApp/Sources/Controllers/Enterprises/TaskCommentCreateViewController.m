@@ -7,6 +7,7 @@
 //
 
 #import "TaskCommentCreateViewController.h"
+#import "AppDelegate.h"
 
 @implementation TaskCommentCreateViewController
 
@@ -28,6 +29,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
+        CGRect frame = self.view.bounds;
+        frame.origin.y -= 19.9f;
+        self.view.bounds = frame;
+    }
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detailcreate_bg.png"]];
 	

@@ -26,6 +26,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "JASidePanelController.h"
+#import "AppDelegate.h"
 
 @interface JASidePanelController() {
     CGRect _centerPanelRestingFrame;		
@@ -682,10 +683,10 @@
         case JASidePanelCenterVisible: {
             frame.origin.x = 0.0f;
             if(!_isLoaded && MODEL_VERSION >= 6.0) {
-//                CGFloat y = frame.origin.y - 19.9f;
-//                CGFloat height = frame.size.height + 19.9f;
-//                frame.origin.y = -19.9f;
-//                frame.size.height += 19.0f;
+                //CGFloat y = frame.origin.y - 19.9f;
+                //CGFloat height = frame.size.height + 19.9f;
+                frame.origin.y = -19.9f;
+                frame.size.height += 19.9f;
             }
             if (self.style == JASidePanelMultipleActive) {
                 frame.size.width = self.view.bounds.size.width;	
@@ -695,8 +696,8 @@
         case JASidePanelLeftVisible: {
             frame.origin.x = self.leftVisibleWidth;
             if(!_isLoaded && MODEL_VERSION >= 6.0) {
-//                frame.origin.y -= 19.9f;
-//                frame.size.height += 19.9f;
+                frame.origin.y -= 19.9f;
+                frame.size.height += 19.9f;
                 _isLoaded = YES;
             }
             if (self.style == JASidePanelMultipleActive) {
@@ -876,6 +877,11 @@
         [self _showCenterPanel:YES bounce:NO];
     } else if (self.state == JASidePanelCenterVisible) {
         [self _showLeftPanel:YES bounce:NO];
+    }
+
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if(MODEL_VERSION >= 6.0) {
+        appDelegate.isJASideClicked = YES;
     }
 }
 

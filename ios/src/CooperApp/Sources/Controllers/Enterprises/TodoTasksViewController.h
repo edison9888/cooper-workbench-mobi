@@ -28,6 +28,8 @@
     UILabel *textTitleLabel;
     
     UIImagePickerController *pickerController;
+
+    BOOL _isLoad;
 }
 
 @property (nonatomic, retain) NSMutableArray *taskInfos;

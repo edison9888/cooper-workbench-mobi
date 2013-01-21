@@ -9,6 +9,7 @@
 #import "TodoTasksViewController.h"
 #import "CustomTabBarItem.h"
 #import "CustomToolbar.h"
+#import "AppDelegate.h"
 
 @implementation TodoTasksViewController
 
@@ -54,6 +55,14 @@
     
     [self loadTaskData];
     [self getTodoTasks];
+
+//    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+//    if(_isLoad != NO && appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
+//        CGRect frame = self.view.bounds;
+//        frame.origin.y -= 19.9f;
+//        self.view.bounds = frame;
+//    }
+//    _isLoad = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated{

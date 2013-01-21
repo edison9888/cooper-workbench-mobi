@@ -19,6 +19,7 @@
 @synthesize managedObjectModel;
 @synthesize managedObjectContext;
 @synthesize persistantStoreCoordiantor;
+@synthesize isJASideClicked;
 //@synthesize timer;
 
 #pragma mark - 应用程序生命周期
@@ -97,6 +98,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"【应用程序重新从后台载入】");
+
+    isJASideClicked = NO;
 
     if(![[[Constant instance] rememberVersion] isEqualToString:@"true"]) {
         //检测版本

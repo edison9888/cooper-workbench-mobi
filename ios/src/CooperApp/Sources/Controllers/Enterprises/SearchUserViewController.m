@@ -7,6 +7,7 @@
 //
 
 #import "SearchUserViewController.h"
+#import "AppDelegate.h"
 
 @implementation SearchUserViewController
 
@@ -26,6 +27,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
+        CGRect frame = self.view.bounds;
+        frame.origin.y -= 19.9f;
+        self.view.bounds = frame;
+    }
+    
     enterpriseService = [[EnterpriseService alloc] init];
     currentIndex = -1;
     filterOptionArray = [[NSMutableArray alloc] init];

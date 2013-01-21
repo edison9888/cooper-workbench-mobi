@@ -8,6 +8,7 @@
 
 #import "AudioViewController.h"
 #import "EnterpriseTaskDetailCreateViewController.h"
+#import "AppDelegate.h"
 
 #define AUDIO_RATE 44100
 #define AUDIO_QUALITY AVAudioQualityMedium
@@ -28,6 +29,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
+        CGRect frame = self.view.bounds;
+        frame.origin.y -= 19.9f;
+        self.view.bounds = frame;
+    }
     
     recording = 0;
     

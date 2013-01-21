@@ -114,6 +114,8 @@
                 panelController.leftPanel = optionNavController;
                 panelController.centerPanel = taskNavController;
 
+                [panelController toggleLeftPanel:nil];
+
                 [taskViewController release];
                 [optionViewController release];
             }

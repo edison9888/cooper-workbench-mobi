@@ -21,5 +21,6 @@
 @property (retain, nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 @property (retain, nonatomic, readonly) NSPersistentStoreCoordinator *persistantStoreCoordiantor;
 //@property (retain, nonatomic) NSTimer *timer;
+@property (assign, nonatomic) BOOL isJASideClicked;
 
 @end
