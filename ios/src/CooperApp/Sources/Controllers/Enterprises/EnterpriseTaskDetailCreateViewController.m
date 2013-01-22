@@ -11,13 +11,6 @@
 
 @implementation EnterpriseTaskDetailCreateViewController
 
-//@synthesize dueDateLabel;
-//@synthesize priorityButton;
-//@synthesize statusButton;
-//@synthesize subjectTextField;
-//@synthesize bodyTextView;
-//@synthesize bodyScrollView;
-//@synthesize bodyCell;
 @synthesize taskDetailDict;
 @synthesize prevViewController;
 @synthesize createType;
@@ -40,12 +33,6 @@
         frame.origin.y -= 19.9f;
         self.view.bounds = frame;
     }
-    
-//    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
-//        CGRect frame = self.view.bounds;
-//        frame.origin.y -= 19.9f;
-//        self.view.bounds = frame;
-//    }
 
     self.navigationController.navigationBarHidden = NO;
     
@@ -62,6 +49,8 @@
 
     enterpriseService = [[EnterpriseService alloc] init];
     
+    
+    
     [self initContentView];
 }
 
@@ -70,32 +59,40 @@
     [super viewDidUnload];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    viewCenter = self.view.center;
+    NSLog("viewCenter: %f, %f",self.view.center.x, self.view.center.y);
+    
+    [self performSelector:@selector(subjectTextViewClick:) withObject:nil afterDelay:0];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-        
-//    viewCenter = self.view.center;
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:UIKeyboardWillShowNotification
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillHide:)
-//                                                 name:UIKeyboardWillHideNotification
-//                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
-- (void) viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-//    [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                    name:UIKeyboardWillShowNotification
-//                                                  object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                    name:UIKeyboardWillHideNotification
-//                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 - (void)dealloc
@@ -118,6 +115,11 @@
 }
 
 #pragma mark - 私有方法
+
+-(void)subjectTextViewClick:(id)sender
+{
+    [subjectTextView becomeFirstResponder];
+}
 
 - (void)initContentView
 {
@@ -172,7 +174,7 @@
     [self.view addSubview:detailInfoView];
 
     if(createType == 0) {
-        subjectTextView = [[GCPlaceholderTextView alloc] init];
+        subjectTextView = [[[GCPlaceholderTextView alloc] init] autorelease];
         subjectTextView.frame = CGRectMake(0, 0, self.view.bounds.size.width - 19, 105);
         subjectTextView.font = [UIFont systemFontOfSize:16.0f];
         subjectTextView.placeholder = @"写点什么";
@@ -182,8 +184,6 @@
         subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
         subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
         [detailInfoView addSubview:subjectTextView];
-
-        [subjectTextView becomeFirstResponder];
     }
     else if(createType == 1) {
         NSString *attachmentId = [taskDetailDict objectForKey:@"attachmentId"];
@@ -193,7 +193,7 @@
             [attachmentBtn addTarget:self action:@selector(startPhoto:) forControlEvents:UIControlEventTouchUpInside];
             [detailInfoView addSubview:attachmentBtn];
 
-            subjectTextView = [[GCPlaceholderTextView alloc] init];
+            subjectTextView = [[[GCPlaceholderTextView alloc] init] autorelease];
             subjectTextView.frame = CGRectMake(95, 0, self.view.bounds.size.width - 113, 105);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
             subjectTextView.placeholder = @"写点什么";
@@ -203,8 +203,6 @@
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
             subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
             [detailInfoView addSubview:subjectTextView];
-
-            [subjectTextView becomeFirstResponder];
         }
     }
     else if(createType == 2) {
@@ -221,7 +219,7 @@
             [pictureImageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
             [detailInfoView addSubview:pictureImageView];
 
-            subjectTextView = [[GCPlaceholderTextView alloc] init];
+            subjectTextView = [[[GCPlaceholderTextView alloc] init] autorelease];
             subjectTextView.frame = CGRectMake(95, 0, self.view.bounds.size.width - 113, 105);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
             subjectTextView.placeholder = @"写点什么";
@@ -231,8 +229,6 @@
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
             subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
             [detailInfoView addSubview:subjectTextView];
-
-            [subjectTextView becomeFirstResponder];
         }
     }
 
@@ -267,13 +263,13 @@
 
     [assigneeView addSubview:assigneeBtn];
 
-    UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 78, 12, 18, 18)] autorelease];
+    UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 88, 0, 38, 44)] autorelease];
     assigenChooseView.userInteractionEnabled = YES;
-    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(1, 1, 18, 18)];
+    UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(11, 13, 18, 18)];
     assigneeChooseBtn.userInteractionEnabled = NO;
     [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
     UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
-    [assigneeView addGestureRecognizer:chooseRecognizer];
+    [assigenChooseView addGestureRecognizer:chooseRecognizer];
     [chooseRecognizer release];
 
     [assigenChooseView addSubview:assigneeChooseBtn];
@@ -369,14 +365,20 @@
     }
     
     NSString *subject = subjectTextView.text;
-    subjectTextView.text = [NSString stringWithFormat:@"%@%@", subject, name];
+    subjectTextView.text = [NSString stringWithFormat:@"%@%@ ", subject, name];
 }
 
 - (void)viewClick:(id)sender
 {
     NSLog(@"viewClick");
-    [subjectTextView resignFirstResponder];
+    [self performSelector:@selector(subjectTextViewBlur:) withObject:nil afterDelay:0];
+   
     [dueTimeLabel resignFirstResponder];
+}
+
+- (void)subjectTextViewBlur:(id)sender
+{
+     [subjectTextView resignFirstResponder];
 }
 
 - (void)goBack:(id)sender
@@ -423,6 +425,12 @@
 - (void)chooseUser:(id)sender
 {
     NSLog(@"chooseAssigneeUser");
+    
+    if(self.navigationController.navigationBar.hidden == YES) {
+        self.navigationController.navigationBar.hidden = NO;
+        self.view.center = viewCenter;
+    }
+    self.view.center = viewCenter;
 
     SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
     searchUserController.delegate = self;
@@ -601,6 +609,12 @@
 
 - (void)searchUser:(id)sender
 {
+    if(self.navigationController.navigationBar.hidden == YES) {
+        self.navigationController.navigationBar.hidden = NO;
+        self.view.center = viewCenter;
+    }
+    self.view.center = viewCenter;
+    
     SearchUserViewController *searchUserController = [[[SearchUserViewController alloc] init] autorelease];
     searchUserController.delegate = self;
     searchUserController.type = 2;
@@ -644,6 +658,48 @@
     }
     //关闭相册界面
     [picker dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark - keyboard
+
+- (void)keyboardWillShow:(NSNotification *)aNotification
+{
+//	CGRect keyboardRect = [[[aNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSTimeInterval animationDuration =
+	[[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    if(self.navigationController.navigationBar.hidden == NO) {
+        self.navigationController.navigationBar.hidden = YES;
+    }
+    CGPoint center = CGPointMake(viewCenter.x, viewCenter.y - 44);
+    self.view.center = center;
+    [UIView setAnimationDuration:animationDuration];
+    [UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification
+{
+    
+    NSTimeInterval animationDuration =
+	[[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    if(self.navigationController.navigationBar.hidden == YES) {
+        self.navigationController.navigationBar.hidden = NO;
+    }
+    if(viewCenter.y == (([Tools screenMaxHeight] - 20 - 44) / 2 + 22))
+    {
+        CGPoint center = CGPointMake(viewCenter.x, viewCenter.y + 44);
+        viewCenter = center;
+    }
+    self.view.center = viewCenter;
+    [UIView setAnimationDuration:animationDuration];
+    [UIView commitAnimations];
+    
+}
+
+- (void)navigationBarHidden:(id)sender
+{
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 @end

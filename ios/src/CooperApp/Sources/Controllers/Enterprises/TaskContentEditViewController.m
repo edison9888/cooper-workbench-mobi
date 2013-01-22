@@ -285,7 +285,7 @@
     }
     
     NSString *subject = subjectTextView.text;
-    subjectTextView.text = [NSString stringWithFormat:@"%@%@", subject, name];
+    subjectTextView.text = [NSString stringWithFormat:@"%@%@ ", subject, name];
 }
 
 - (void)viewClick:(id)sender

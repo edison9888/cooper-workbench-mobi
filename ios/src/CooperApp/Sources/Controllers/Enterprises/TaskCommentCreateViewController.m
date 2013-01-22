@@ -224,7 +224,7 @@
     }
     
     NSString *comment = commentTextView.text;
-    commentTextView.text = [NSString stringWithFormat:@"%@%@", comment, name];
+    commentTextView.text = [NSString stringWithFormat:@"%@%@ ", comment, name];
 }
 
 @end

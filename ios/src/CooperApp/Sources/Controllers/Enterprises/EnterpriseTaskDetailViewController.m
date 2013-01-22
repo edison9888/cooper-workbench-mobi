@@ -117,12 +117,6 @@
     //完成时间面板
     dueTimeView = [[DateButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 4 , 0, self.view.bounds.size.width / 4, 39)];
     dueTimeView.delegate = self;
-    if(editable == NO) {
-        dueTimeView.userInteractionEnabled = NO;
-    }
-    else {
-        dueTimeView.userInteractionEnabled = YES;
-    }
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showDueTimePanel:)];
     [dueTimeView addGestureRecognizer:recognizer];
     [recognizer release];
@@ -751,7 +745,7 @@
         totalHeight += 62;
     }
     
-    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && editable == YES) {
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && [self isMyTask] == YES) {
         
         //rightView.hidden = NO;
         
@@ -787,7 +781,7 @@
     totalHeight += 16;
     scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, totalHeight + 44);
 
-    if([isExternal isEqualToNumber:[NSNumber numberWithInt:1]] || editable == NO) {
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:1]] || [self isMyTask] == NO) {
         completeView.userInteractionEnabled = NO;
     }
     else {
@@ -806,6 +800,12 @@
     //绑定期待完成时间
     if(![dueTime isEqualToString:@""]) {
         dueTimeFlagLabel.text = dueTime;
+    }
+    if([self isMyTask] == NO) {
+        dueTimeView.userInteractionEnabled = NO;
+    }
+    else {
+        dueTimeView.userInteractionEnabled = YES;
     }
     //绑定优先级
     priorityFlagLabel.text = [self getPriorityValue:priority];
@@ -1257,7 +1257,7 @@
     [centerPanelView addSubview:assgineesView];
 
     NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
-    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && editable == YES) {
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && [self isMyTask] == YES) {
         UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 26, 12, 18, 18)] autorelease];
         UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
         assigneeChooseBtn.userInteractionEnabled = NO;
@@ -1296,7 +1296,7 @@
     if(relevantMembers.count > 0) {
         [relevantLabelView bindTags:relevantMembers backgroundColor:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1] textColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] font:[UIFont boldSystemFontOfSize:16.0f] radius:14];
     }
-    if(editable == YES) {
+    if([self isMyTask] == YES) {
         relevantLabelView.delegate = self;
     }
     [showPanelView addSubview:relevantLabelView];
@@ -1332,7 +1332,7 @@
 //    [showPanelView addSubview:assgineesView];
 //
 //    NSNumber *isExternal = [taskDetailDict objectForKey:@"isExternal"];
-    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && editable == YES) {
+    if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && [self isMyTask] == YES) {
         UIView *relevantChooseView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 26, 13, 18, 18)] autorelease];
         relevantChooseView.userInteractionEnabled = YES;
         UIButton *relevantChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
@@ -1628,6 +1628,14 @@
     else if([priorityKey isEqualToNumber:[NSNumber numberWithInt:2]])
         return PRIORITY_TITLE_3;
     return @"优先级";
+}
+
+- (BOOL)isMyTask
+{
+    NSString *currentWorkId = [[Constant instance] workId];
+    NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
+    
+    return [currentWorkId isEqualToString:assigneeWorkId];
 }
 
 @end

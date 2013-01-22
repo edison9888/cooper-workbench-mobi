@@ -37,6 +37,9 @@
     UILabel *textTitleLabel;
     
     EnterpriseService *enterpriseService;
+    
+    CGPoint viewCenter;
+    CGPoint viewCenter2;
 }
 
 @property (retain, nonatomic) NSMutableDictionary *taskDetailDict;
@@ -44,24 +47,3 @@
 @property (assign, nonatomic) int createType;
 
 @end
-
-//@interface EnterpriseTaskDetailCreateViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,DateLabelDelegate, PriorityButtonDelegate, UITextViewDelegate, BodyTextViewDelegate>
-//{
-//    UITableView *detailView;
-//    UIView *assigneeView;
-//    
-//    CGPoint viewCenter;
-//
-//    EnterpriseService *enterpriseService;
-//}
-//
-//@property (retain, nonatomic) NSMutableDictionary *taskDetailDict;
-//
-//@property (retain, nonatomic) DateLabel *dueDateLabel;
-//@property (retain, nonatomic) PriorityButton *priorityButton;
-//@property (retain, nonatomic) CustomButton *statusButton;
-//@property (retain, nonatomic) UITextField *subjectTextField;
-//@property (retain, nonatomic) BodyTextView *bodyTextView;
-//@property (retain, nonatomic) UIScrollView *bodyScrollView;
-//@property (retain, nonatomic) UITableViewCell *bodyCell;
-//@end
