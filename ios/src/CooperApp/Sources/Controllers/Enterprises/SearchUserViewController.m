@@ -160,7 +160,7 @@
 
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.userInteractionEnabled = NO;
+    [backBtn addTarget:self action:@selector(goBack:) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setFrame:CGRectMake(9, 17, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
@@ -185,6 +185,8 @@
     searchBarText.keyboardType =  UIKeyboardTypeDefault;
     searchBarText.tintColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
     [searchView addSubview:searchBarText];
+
+    [searchBarText becomeFirstResponder];
     
 //    for (UIView *subview in searchBarText.subviews) {
 //        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
@@ -235,14 +237,14 @@
 
 -(void)textFieldDoneEditing:(id)sender
 {
-    [sender resignFirstResponder];
+    //[sender resignFirstResponder];
     
     [self searchUser:nil];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [searchBar resignFirstResponder];
+    //[searchBar resignFirstResponder];
     
     [self searchUser:nil];
 }
@@ -264,6 +266,8 @@
 
 - (void)goBack:(id)sender
 {
+    [searchBarText resignFirstResponder];
+    
     [Tools layerTransition:self.navigationController.view from:@"left"];
     [self.navigationController popViewControllerAnimated:NO];
 }
@@ -277,6 +281,8 @@
 
     if([requestType isEqualToString:@"FindUsers"])
     {
+        [searchBarText resignFirstResponder];
+
         if(request.responseStatusCode == 200)
         {
             [Tools close:self.HUD];

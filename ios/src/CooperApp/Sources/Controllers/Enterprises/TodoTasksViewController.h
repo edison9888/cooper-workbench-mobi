@@ -15,10 +15,11 @@
 #import "TabbarLineView.h"
 #import "SVPullToRefresh.h"
 
-@interface TodoTasksViewController : Base2ViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EnterpriseTaskTableCellDelegate>
+@interface TodoTasksViewController : Base2ViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EnterpriseTaskTableCellDelegate, ASIProgressDelegate>
 {
     UIView *emptyView;
     UITableView *taskView;
+    UIView *tabbarView;
     
     UIActionSheet *photoActionSheet;
     UIActionSheet *audioActionSheet;
@@ -29,6 +30,8 @@
     
     UIImagePickerController *pickerController;
 
+    ASIHTTPRequest *uploadPicRequest;
+    
     BOOL _isLoad;
 }
 

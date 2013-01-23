@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "TasklistViewController.h"
 #import "TodoTasksViewController.h"
+#import "AppDelegate.h"
 
 @implementation MainViewController
 
@@ -111,15 +112,19 @@
                 taskViewController = [[TodoTasksViewController alloc] init];
                 taskNavController = [[Base2NavigationController alloc] initWithRootViewController:taskViewController];
                 panelController = [[JASidePanelController alloc] init];
+                panelController.shouldDelegateAutorotateToVisiblePanel = NO;
                 panelController.leftPanel = optionNavController;
                 panelController.centerPanel = taskNavController;
-
-                [panelController toggleLeftPanel:nil];
 
                 [taskViewController release];
                 [optionViewController release];
             }
 
+//            AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+//            appDelegate.window.rootViewController = panelController;
+            CGRect rect = panelController.view.frame;
+            rect.origin.y -= 19.9f;
+            panelController.centerPanel.view.frame = rect;
             [self.navigationController presentModalViewController:panelController animated:NO];
         }
         else {

@@ -24,15 +24,6 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
 - (void)dealloc
 {
     [priorityView0 release];
@@ -50,6 +41,7 @@
 - (void)initContentView
 {
     selectedIndex = -1;
+    prevSelectedIndex = -1;
     
     priorityView0 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 23)];
     priorityView0.userInteractionEnabled = YES;
@@ -120,30 +112,53 @@
 - (void)setSelectedIndex:(int)index
 {
     if(index == 0) {
-        imageView0.image = [UIImage imageNamed:@"priority_sel_0.png"];
+        if(index != prevSelectedIndex) {
+            imageView0.image = [UIImage imageNamed:@"priority_sel_0.png"];
+            label0.textColor = LABELCOLOR_SEL;
+        }
+        else {
+            imageView0.image = [UIImage imageNamed:@"priority_0.png"];
+            label0.textColor = LABELCOLOR;
+            index = -1;
+        }
         imageView1.image = [UIImage imageNamed:@"priority_1.png"];
         imageView2.image = [UIImage imageNamed:@"priority_2.png"];
-        label0.textColor = LABELCOLOR_SEL;
         label1.textColor = LABELCOLOR;
         label2.textColor = LABELCOLOR;
     }
     else if(index == 1) {
+        if(index != prevSelectedIndex) {
+            imageView1.image = [UIImage imageNamed:@"priority_sel_1.png"];
+            label1.textColor = LABELCOLOR_SEL;
+        }
+        else {
+            imageView1.image = [UIImage imageNamed:@"priority_1.png"];
+            label1.textColor = LABELCOLOR;
+            index = -1;
+        }
         imageView0.image = [UIImage imageNamed:@"priority_0.png"];
-        imageView1.image = [UIImage imageNamed:@"priority_sel_1.png"];
         imageView2.image = [UIImage imageNamed:@"priority_2.png"];
         label0.textColor = LABELCOLOR;
-        label1.textColor = LABELCOLOR_SEL;
         label2.textColor = LABELCOLOR;
     }
     else if(index == 2) {
+        if(index != prevSelectedIndex) {
+            imageView2.image = [UIImage imageNamed:@"priority_sel_2.png"];
+            label2.textColor = LABELCOLOR_SEL;
+        }
+        else {
+            imageView2.image = [UIImage imageNamed:@"priority_2.png"];
+            label2.textColor = LABELCOLOR;
+            index = -1;
+        }
         imageView0.image = [UIImage imageNamed:@"priority_0.png"];
         imageView1.image = [UIImage imageNamed:@"priority_1.png"];
-        imageView2.image = [UIImage imageNamed:@"priority_sel_2.png"];
         label0.textColor = LABELCOLOR;
         label1.textColor = LABELCOLOR;
-        label2.textColor = LABELCOLOR_SEL;
     }
     selectedIndex = index;
+
+    prevSelectedIndex = index;
 }
 
 @end

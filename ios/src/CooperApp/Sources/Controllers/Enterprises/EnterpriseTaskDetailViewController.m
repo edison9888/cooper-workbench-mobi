@@ -13,7 +13,6 @@
 
 @synthesize currentTaskId;
 @synthesize taskDetailDict;
-@synthesize editable;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,7 +52,7 @@
     
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.userInteractionEnabled = NO;
+    [backBtn addTarget:self action:@selector(goBack:) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setFrame:CGRectMake(9, 17, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
@@ -71,6 +70,7 @@
     splitView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"split.png"]];
     [rightView addSubview:splitView];
     UIButton *saveTaskBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [saveTaskBtn addTarget:self action:@selector(addComment:) forControlEvents:UIControlEventTouchUpInside];
     [saveTaskBtn setTitleColor:APP_TITLECOLOR forState:UIControlStateNormal];
     saveTaskBtn.frame = CGRectMake(6, 8, 54, 30);
     [saveTaskBtn addTarget:self action:@selector(addComment:) forControlEvents:UIControlEventTouchUpInside];
@@ -138,13 +138,8 @@
     [navPanelView addSubview:dueTimeView];
     
     //优先级面板
-    UIView *priorityView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 2, 0, self.view.bounds.size.width / 4, 39)];
-    if(editable == NO) {
-        priorityView.userInteractionEnabled = NO;
-    }
-    else {
-        priorityView.userInteractionEnabled = YES;
-    }
+    priorityView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 2, 0, self.view.bounds.size.width / 4, 39)] autorelease];
+
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPriorityPanel:)];
     [priorityView addGestureRecognizer:recognizer];
     [recognizer release];
@@ -164,7 +159,6 @@
     [priorityView addSubview:priorityFlagLabel];
     
     [navPanelView addSubview:priorityView];
-    [priorityView release];
     
     //人员面板
     UIView *userView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width / 4 * 3, 0, self.view.bounds.size.width / 4, 39)];
@@ -263,8 +257,14 @@
 #pragma mark - DateButtonDelegate接口
 - (void)returnValue:(NSDate *)value
 {
-    NSString *dueTime = [Tools ShortNSDateToNSString:value];
-
+    NSString *dueTime = nil;
+    if(value != nil) {
+        dueTime = [Tools ShortNSDateToNSString:value];
+    }
+    else {
+        dueTime = @"";
+    }
+    
     currentIndex = -1;
     self.HUD = [Tools process:@"正在提交" view:self.view];
 
@@ -485,7 +485,7 @@
             [Tools close:self.HUD];
             
             [taskDetailDict setObject:dueTime forKey:@"dueTime"];
-            dueTimeFlagLabel.text = dueTime;
+            dueTimeFlagLabel.text = [dueTime isEqualToString:@""] ? @"完成日期" : dueTime;
         }
         else
         {
@@ -682,7 +682,7 @@
     //绑定备注
     bodyLabel.text = body;
     if(![bodyLabel.text isEqualToString:@""]) {
-        CGSize bodyLabelSize = [subjectLabel.text sizeWithFont:bodyLabel.font constrainedToSize:CGSizeMake(self.view.bounds.size.width - 12, 10000) lineBreakMode:UILineBreakModeWordWrap];
+        CGSize bodyLabelSize = [bodyLabel.text sizeWithFont:bodyLabel.font constrainedToSize:CGSizeMake(self.view.bounds.size.width - 12, 10000) lineBreakMode:UILineBreakModeWordWrap];
         CGFloat bodyLabelHeight = bodyLabelSize.height;
         int bodylines = bodyLabelHeight / 14;
         bodyLabel.frame = CGRectMake(6, totalHeight + 8, self.view.bounds.size.width - 12, bodyLabelHeight);
@@ -748,13 +748,20 @@
     if([isExternal isEqualToNumber:[NSNumber numberWithInt:0]] && [self isMyTask] == YES) {
         
         //rightView.hidden = NO;
-        
+
+        UIView *editView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 36, totalHeight + 8 - 12, 40, 40)] autorelease];
+        editView.backgroundColor = [UIColor clearColor];
+        editView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editContent:)];
+        [editView addGestureRecognizer:recognizer];
+        [recognizer release];
         UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [editButton setBackgroundImage:[UIImage imageNamed:@"detail_editContent.png"] forState:UIControlStateNormal];
         [editButton addTarget:self action:@selector(editContent:) forControlEvents:UIControlEventTouchUpInside];
-        editButton.frame = CGRectMake(self.view.bounds.size.width - 24, totalHeight + 8, 16, 16);
-        
-        [contentView addSubview:editButton];
+        editButton.frame = CGRectMake(12, 12, 16, 16);
+
+        [editView addSubview:editButton];
+        [contentView addSubview:editView];
         
         totalHeight += 16;
     }
@@ -814,6 +821,12 @@
     }
     else {
         priorityFlagView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:[NSString stringWithFormat:@"detail_priority%@Flag2.png", [priority stringValue]]]];
+    }
+    if([self isMyTask] == NO) {
+        priorityView.userInteractionEnabled = NO;
+    }
+    else {
+        priorityView.userInteractionEnabled = YES;
     }
 }
 

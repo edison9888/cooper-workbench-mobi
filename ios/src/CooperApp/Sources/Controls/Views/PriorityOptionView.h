@@ -21,6 +21,8 @@
     UILabel *label0;
     UILabel *label1;
     UILabel *label2;
+
+    int prevSelectedIndex;
 }
 
 @property (assign, nonatomic) int selectedIndex;

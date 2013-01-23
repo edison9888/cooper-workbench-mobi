@@ -71,6 +71,8 @@
     UIView *priorityView1;
     UIView *priorityView2;
 
+    UIView *priorityView;
+
     UIImageView *imageView0;
     UIImageView *imageView1;
     UIImageView *imageView2;
@@ -91,6 +93,5 @@
 
 @property (retain, nonatomic) NSString *currentTaskId;
 @property (retain, nonatomic) NSMutableDictionary *taskDetailDict;
-@property (assign, nonatomic) BOOL editable;
 
 @end

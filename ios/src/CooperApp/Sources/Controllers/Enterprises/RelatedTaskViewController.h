@@ -16,7 +16,7 @@
 #import "CooperService/EnterpriseService.h"
 #import "SVPullToRefresh.h"
 
-@interface RelatedTaskViewController : Base2ViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EnterpriseTaskTableCellDelegate>
+@interface RelatedTaskViewController : Base2ViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, EnterpriseTaskTableCellDelegate, ASIProgressDelegate>
 {
     UIView *emptyView;
     UITableView *taskView;
@@ -29,6 +29,8 @@
     UILabel *textTitleLabel;
     
     UIImagePickerController *pickerController;
+
+    ASIHTTPRequest *uploadPicRequest;
 }
 
 @property (nonatomic, retain) NSMutableArray *taskInfos;

@@ -30,18 +30,19 @@
 {
     [super viewDidLoad];
 
+
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
         CGRect frame = self.view.bounds;
         frame.origin.y -= 19.9f;
         self.view.bounds = frame;
     }
-    
+
     recording = 0;
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"audio_bg.png"]];
 
-    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBar.hidden = YES;
 
     //底部
     UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 96, self.view.bounds.size.width, 96)];
@@ -52,9 +53,9 @@
     UIView *closeView = [[[UIView alloc] initWithFrame:CGRectMake(19, 32, 32, 32)] autorelease];
     closeView.backgroundColor = [UIColor clearColor];
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [closeButton addTarget:self action:@selector(goBack:) forControlEvents:UIControlEventTouchUpInside];
     closeButton.frame = CGRectMake(0, 0, 32, 32);
     [closeButton setBackgroundImage:[UIImage imageNamed:@"audio_close.png"] forState:UIControlStateNormal];
-    closeButton.userInteractionEnabled = NO;
     [closeView addSubview:closeButton];
     closeView.userInteractionEnabled = YES;
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goBack:)];
@@ -65,9 +66,9 @@
     //添加录音开始按钮
     UIView *startView = [[[UIView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 75) / 2.0, 10, 75, 75)] autorelease];
     startButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [startButton addTarget:self action:@selector(startRecord:) forControlEvents:UIControlEventTouchUpInside];
     startButton.frame = CGRectMake(0, 0, 75, 75);
     [startButton setBackgroundImage:[UIImage imageNamed:@"audio_start.png"] forState:UIControlStateNormal];
-    startButton.userInteractionEnabled = NO;
     [startView addSubview:startButton];
     startView.userInteractionEnabled = YES;
     recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startRecord:)];
@@ -79,7 +80,7 @@
     submitView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 51, 32, 32, 32)] autorelease];
     submitView.backgroundColor = [UIColor clearColor];
     UIButton *submitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    submitButton.userInteractionEnabled = NO;
+    [submitButton addTarget:self action:@selector(submitAudio:) forControlEvents:UIControlEventTouchUpInside];
     submitButton.frame = CGRectMake(0, 0, 32, 32);
     [submitButton setBackgroundImage:[UIImage imageNamed:@"audio_submit.png"] forState:UIControlStateNormal];
     [submitView addSubview:submitButton];
@@ -333,7 +334,7 @@
 {
     [self stopRecord:nil];
     
-    prevViewController.navigationController.navigationBarHidden = NO;
+    //prevViewController.navigationController.navigationBarHidden = NO;
     [Tools layerTransition:self.navigationController.view from:@"left"];
     [self.navigationController popToViewController:prevViewController animated:NO];
     //[self dismissModalViewControllerAnimated:YES];
@@ -494,7 +495,6 @@
 
     NSString *fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"mp3"];
 
-    
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
     [enterpriseService createTaskAttach:data
@@ -582,6 +582,8 @@
                     taskDetailCreateViewController.taskDetailDict = taskDetailDict;
                     taskDetailCreateViewController.prevViewController = prevViewController;
                     taskDetailCreateViewController.createType = 1;
+
+                    self.navigationController.navigationBar.hidden = NO;
 
                     [Tools layerTransition:self.navigationController.view from:@"right"];
                     [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];

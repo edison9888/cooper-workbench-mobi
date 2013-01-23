@@ -26,7 +26,7 @@
 #import "SearchUserViewController.h"
 //#import "CodesharpSDK/JSCoreTextView.h"
 
-@interface EnterpriseTaskDetailCreateViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DatePickerLabelDelegate, EnterpriseTaskCreateDelegate>
+@interface EnterpriseTaskDetailCreateViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DatePickerLabelDelegate, EnterpriseTaskCreateDelegate, ASIProgressDelegate>
 {
     GCPlaceholderTextView *subjectTextView;
     PriorityOptionView *priorityOptionView;
@@ -40,6 +40,10 @@
     
     CGPoint viewCenter;
     CGPoint viewCenter2;
+
+    UIImagePickerController *pickerController;
+
+    ASIHTTPRequest *uploadPicRequest;
 }
 
 @property (retain, nonatomic) NSMutableDictionary *taskDetailDict;

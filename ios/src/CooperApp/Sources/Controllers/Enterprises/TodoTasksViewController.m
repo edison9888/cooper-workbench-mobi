@@ -38,6 +38,8 @@
 {
     [super viewDidLoad];
 
+    _isLoad = NO;
+
     taskInfos = [[NSMutableArray alloc] init];
     
     enterpriseService = [[EnterpriseService alloc] init];
@@ -51,18 +53,27 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBar.hidden = NO;
     
     [self loadTaskData];
     [self getTodoTasks];
 
-//    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-//    if(_isLoad != NO && appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
-//        CGRect frame = self.view.bounds;
-//        frame.origin.y -= 19.9f;
-//        self.view.bounds = frame;
-//    }
-//    _isLoad = YES;
+    CGRect frame = self.view.frame;
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if(_isLoad != NO && appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
+        CGRect taskViewFrame = taskView.frame;
+        taskViewFrame.origin.y = 22.0f;
+        taskView.frame = taskViewFrame;
+        NSLog(@"【taskViewFrame】%f,%f,%f,%f", taskViewFrame.origin.x, taskViewFrame.origin.y, taskViewFrame.size.width, taskViewFrame.size.height);
+
+        CGRect tabbarViewFrame = tabbarView.frame;
+        tabbarViewFrame.origin.y = [Tools screenMaxHeight] - 44.0f - 49.0f;
+        tabbarView.frame = tabbarViewFrame;
+        NSLog(@"【tabbarViewFrame】%f,%f,%f,%f", tabbarViewFrame.origin.x, tabbarViewFrame.origin.y, tabbarViewFrame.size.width, tabbarViewFrame.size.height);
+    }
+    _isLoad = YES;
+
+    NSLog(@"【frame】%f,%f,%f,%f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -196,7 +207,6 @@
     NSMutableDictionary *taskInfoDict = [self.taskInfos objectAtIndex:indexPath.row];
     NSString *taskId = [taskInfoDict objectForKey:@"id"];
     taskDetailViewController.currentTaskId = taskId;
-    taskDetailViewController.editable = YES;
 
     taskDetailViewController.hidesBottomBarWhenPushed = YES;
     
@@ -221,7 +231,7 @@
     self.navigationItem.titleView = textTitleLabel;
 
     //任务列表
-    taskView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    taskView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height - 32) style:UITableViewStylePlain];
     taskView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    if(![Tools isPad]) {
         taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background.png"]];
@@ -252,15 +262,15 @@
 //    [tabbarLineView release];
 
     //底部
-    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 49 - 44, self.view.bounds.size.width, 49)];
+    tabbarView = [[[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 49 - 44, self.view.bounds.size.width, 49)] autorelease];
     tabbarView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background.png"]];
     [self.view addSubview:tabbarView];
     //底部添加音频按钮
     UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(9, 0, 73, 49)];
     //audioView.backgroundColor = [UIColor redColor];
     UIButton *audioImageView = [[UIButton alloc] initWithFrame:CGRectMake(30, 15, 12, 19)];
+    [audioImageView addTarget:self action:@selector(startAudio:) forControlEvents:UIControlEventTouchUpInside];
     [audioImageView setBackgroundImage:[UIImage imageNamed:@"audio.png"] forState:UIControlStateNormal];
-    audioImageView.userInteractionEnabled = NO;
     [audioView addSubview:audioImageView];
     audioView.userInteractionEnabled = YES;
     UITapGestureRecognizer *audioRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAudio:)];
@@ -273,7 +283,7 @@
     UIView *addView = [[UIView alloc] initWithFrame:CGRectMake(120, 0, 73, 49)];
 //    addView.backgroundColor = [UIColor redColor];
     UIButton *addImageView = [[UIButton alloc] init];
-    addImageView.userInteractionEnabled = NO;
+    [addImageView addTarget:self action:@selector(startAdd:) forControlEvents:UIControlEventTouchUpInside];
     addImageView.frame = CGRectMake(25, 15, 19, 19);
     [addImageView setBackgroundImage:[UIImage imageNamed:@"text.png"] forState:UIControlStateNormal];
     //[addImageView setBackgroundImage:[UIImage imageNamed:@"text_selected.png"] forState:UIControlStateSelected];
@@ -289,8 +299,8 @@
     UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake(237, 0, 73, 49)];
     //photoView.backgroundColor = [UIColor redColor];
     UIButton *photoImageView = [[UIButton alloc] initWithFrame:CGRectMake(25, 15, 19, 17)];
+    [photoImageView addTarget:self action:@selector(startPhoto:) forControlEvents:UIControlEventTouchUpInside];
     [photoImageView setBackgroundImage:[UIImage imageNamed:@"photo.png"] forState:UIControlStateNormal];
-    photoImageView.userInteractionEnabled = NO;
     [photoView addSubview:photoImageView];
     photoView.userInteractionEnabled = YES;
     UITapGestureRecognizer *photoRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
@@ -617,17 +627,22 @@
         NSData *data;
         NSString *fileName;
 
+        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
+        [pickerController.view addSubview:self.HUD];
+        [self.HUD show:YES];
+        self.HUD.labelText = @"正在上传图片";
+
         //TODO:优化图片尺寸算法
         UIImage *realImage;
-        if(image.size.width >= 640.0) {
-            CGFloat realWidth = 640.0;
-            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
-            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
-        }
-        else {
+//        if(image.size.width >= 640.0) {
+//            CGFloat realWidth = 640.0;
+//            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
+//            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
+//        }
+//        else {
             realImage = image;
-        }
-        
+//        }
+
         if (UIImagePNGRepresentation(realImage)) {
             //返回为png图像
             data = UIImagePNGRepresentation(realImage);
@@ -640,18 +655,36 @@
         }
         //保存到阿里云盘
         //self.title = @"图片上传中...";
-        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
-        [pickerController.view addSubview:self.HUD];
-        [self.HUD show:YES];
-        self.HUD.labelText = @"正在上传图片";
         NSMutableDictionary *context = [NSMutableDictionary dictionary];
         [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
-        [enterpriseService createTaskAttach:data
+        uploadPicRequest = [enterpriseService createTaskAttach:data
                                    fileName:fileName
                                        type:@"picture"
                                     context:context
                                    delegate:self];
+        uploadPicRequest.timeOutSeconds = 10000;
+        uploadPicRequest.uploadProgressDelegate = self;
     }
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    if(request == nil)
+    {
+        [Tools msg:NOT_NETWORK_MESSAGE HUD:self.HUD];
+    }
+    else
+    {
+        NSLog(@"【请求异常】%@", request.error.localizedDescription);
+        [Tools msg:request.error.localizedDescription HUD:self.HUD];
+    }
+
+//    [pickerController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)setProgress:(float)newProgress
+{
+    self.HUD.labelText = [NSString stringWithFormat:@"正在上传图片：%0.f%%", newProgress * 100];
 }
 
 - (UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize

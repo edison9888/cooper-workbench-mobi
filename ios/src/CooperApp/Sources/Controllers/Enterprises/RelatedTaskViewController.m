@@ -174,7 +174,6 @@
     NSMutableDictionary *taskInfoDict = [self.taskInfos objectAtIndex:indexPath.row];
     NSString *taskId = [taskInfoDict objectForKey:@"id"];
     taskDetailViewController.currentTaskId = taskId;
-    taskDetailViewController.editable = NO;
     
     taskDetailViewController.hidesBottomBarWhenPushed = YES;
     
@@ -232,8 +231,8 @@
     UIView *audioView = [[UIView alloc] initWithFrame:CGRectMake(9, 0, 73, 49)];
     //audioView.backgroundColor = [UIColor redColor];
     UIButton *audioImageView = [[UIButton alloc] initWithFrame:CGRectMake(30, 15, 12, 19)];
+    [audioImageView addTarget:self action:@selector(startAudio:) forControlEvents:UIControlEventTouchUpInside];
     [audioImageView setBackgroundImage:[UIImage imageNamed:@"audio.png"] forState:UIControlStateNormal];
-    audioImageView.userInteractionEnabled = NO;
     [audioView addSubview:audioImageView];
     audioView.userInteractionEnabled = YES;
     UITapGestureRecognizer *audioRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAudio:)];
@@ -246,7 +245,7 @@
     UIView *addView = [[UIView alloc] initWithFrame:CGRectMake(120, 0, 73, 49)];
     //    addView.backgroundColor = [UIColor redColor];
     UIButton *addImageView = [[UIButton alloc] init];
-    addImageView.userInteractionEnabled = NO;
+    [addImageView addTarget:self action:@selector(startAdd:) forControlEvents:UIControlEventTouchUpInside];
     addImageView.frame = CGRectMake(25, 15, 19, 19);
     [addImageView setBackgroundImage:[UIImage imageNamed:@"text.png"] forState:UIControlStateNormal];
     //[addImageView setBackgroundImage:[UIImage imageNamed:@"text_selected.png"] forState:UIControlStateSelected];
@@ -262,8 +261,8 @@
     UIView *photoView = [[UIView alloc] initWithFrame:CGRectMake(237, 0, 73, 49)];
     //photoView.backgroundColor = [UIColor redColor];
     UIButton *photoImageView = [[UIButton alloc] initWithFrame:CGRectMake(25, 15, 19, 17)];
+    [photoImageView addTarget:self action:@selector(startPhoto:) forControlEvents:UIControlEventTouchUpInside];
     [photoImageView setBackgroundImage:[UIImage imageNamed:@"photo.png"] forState:UIControlStateNormal];
-    photoImageView.userInteractionEnabled = NO;
     [photoView addSubview:photoImageView];
     photoView.userInteractionEnabled = YES;
     UITapGestureRecognizer *photoRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
@@ -571,15 +570,15 @@
         
         //TODO:优化图片尺寸算法
         UIImage *realImage;
-        if(image.size.width >= 640.0) {
-            CGFloat realWidth = 640.0;
-            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
-            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
-        }
-        else {
+//        if(image.size.width >= 640.0) {
+//            CGFloat realWidth = 640.0;
+//            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
+//            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
+//        }
+//        else {
             realImage = image;
-        }
-        
+//        }
+
         if (UIImagePNGRepresentation(realImage)) {
             //返回为png图像
             data = UIImagePNGRepresentation(realImage);
@@ -598,12 +597,19 @@
         self.HUD.labelText = @"正在上传图片";
         NSMutableDictionary *context = [NSMutableDictionary dictionary];
         [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
-        [enterpriseService createTaskAttach:data
+        uploadPicRequest = [enterpriseService createTaskAttach:data
                                    fileName:fileName
                                        type:@"picture"
                                     context:context
                                    delegate:self];
+        uploadPicRequest.timeOutSeconds = 10000;
+        uploadPicRequest.uploadProgressDelegate = self;
     }
+}
+
+- (void)setProgress:(float)newProgress
+{
+    self.HUD.labelText = [NSString stringWithFormat:@"正在上传图片：%0.f%%", newProgress * 100];
 }
 
 - (UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize

@@ -847,7 +847,8 @@
     [recognizer release];
     
     UIButton *coutiImageView = [[UIButton alloc] init];
-    coutiImageView.userInteractionEnabled = NO;
+    [coutiImageView addTarget:self action:@selector(toggleLeftPanel:) forControlEvents:UIControlEventTouchUpInside];
+    
     [coutiImageView setBackgroundImage:[[self class] defaultImage] forState:UIControlStateNormal];
     coutiImageView.frame = CGRectMake(9, 15, 13, 13);
     [coutiView addSubview:coutiImageView];

@@ -86,9 +86,17 @@
 			inputAccessoryView.frame = frame;
 			
 			UIBarButtonItem *doneBtn =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
+
+            UIButton *clearButton = [UIButton buttonWithType:UIBarButtonSystemItemDone];
+            [clearButton setTitle:@"清空" forState:UIControlStateNormal];
+            clearButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+            [clearButton setFrame:CGRectMake(0, 0, 40, 20)];
+            [clearButton addTarget:self action:@selector(clear:) forControlEvents:UIControlEventTouchUpInside];
+            UIBarButtonItem *clearBtn = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
+
 			UIBarButtonItem *flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 			
-			NSArray *array = [NSArray arrayWithObjects:flexibleSpaceLeft, doneBtn, nil];
+			NSArray *array = [NSArray arrayWithObjects:flexibleSpaceLeft, clearBtn, doneBtn, nil];
 			[inputAccessoryView setItems:array];
 		}
 		return inputAccessoryView;
@@ -100,6 +108,11 @@
         [delegate returnValue:self.dateValue];
     }
 	[self resignFirstResponder];
+}
+
+- (void)clear:(id)sender {
+    [self resignFirstResponder];
+    [delegate returnValue:nil];
 }
 
 - (BOOL)becomeFirstResponder {

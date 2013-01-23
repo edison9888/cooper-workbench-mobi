@@ -56,6 +56,19 @@
     if(disableCompleted == YES) {
         return;
     }
+
+    NSString* dueTime = [taskInfoDict objectForKey:@"dueTime"];
+    BOOL isdueTimeNotice = NO;
+    if(![dueTime isEqualToString:@""]) {
+
+        NSString *todayString = [Tools ShortNSDateToNSString:[NSDate date]];
+        NSDate *today = [Tools NSStringToShortNSDate:todayString];
+
+        NSDate *dueTimeDate = [Tools NSStringToShortNSDate:dueTime];
+        if([dueTimeDate isEqualToDate:today]) {
+            isdueTimeNotice = YES;
+        }
+    }
     NSNumber *isExternal = [taskInfoDict objectForKey:@"isExternal"];
     NSNumber *isCompleted = [taskInfoDict objectForKey:@"isCompleted"];
     NSString *taskId = [taskInfoDict objectForKey:@"id"];
@@ -63,7 +76,14 @@
         return;
     }
     if([isCompleted isEqualToNumber: [NSNumber numberWithInt:1]]) {
-        self.imageView.image = [UIImage imageNamed:@"notcompleted.png"];
+
+        if(isdueTimeNotice == YES) {
+            self.imageView.image = [UIImage imageNamed:@"notcompleted_notice.png"];
+        }
+        else {
+            self.imageView.image = [UIImage imageNamed:@"notcompleted.png"];
+        }
+        
         isCompleted = [NSNumber numberWithInt:0];
         [taskInfoDict setObject:isCompleted forKey:@"isCompleted"];
     }
@@ -139,12 +159,12 @@
     
     enterpriseService = [[EnterpriseService alloc] init];
 
+    NSNumber *isCompleted = [taskInfoDict objectForKey:@"isCompleted"];
+
     if([isExternal isEqualToNumber:[NSNumber numberWithInt:1]]) {
         self.imageView.image = [UIImage imageNamed:@"external.png"];
     }
     else {
-        NSNumber *isCompleted = [taskInfoDict objectForKey:@"isCompleted"];
-        
         if([isCompleted isEqualToNumber: [NSNumber numberWithInt:1]])
         {
             self.imageView.image = [UIImage imageNamed:@"completed.png"];
@@ -221,6 +241,10 @@
         if([dueTimeDate isEqualToDate:today]) {
             dueTimeLabel.textColor = [UIColor colorWithRed:172.0/255 green:147.0/255 blue:144.0/255 alpha:1];
             creatorLabel.textColor = [UIColor colorWithRed:172.0/255 green:147.0/255 blue:144.0/255 alpha:1];
+            if([isCompleted isEqualToNumber: [NSNumber numberWithInt:0]]) {
+                self.imageView.image = [UIImage imageNamed:@"notcompleted_notice.png"];
+            }
+            
         }
     }
     

@@ -104,7 +104,6 @@
 		1889315316953F0E00694FF3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1889314B16953F0E00694FF3 /* main.m */; };
 		1889315416953F0E00694FF3 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1889314E16953F0E00694FF3 /* Config.plist */; };
 		1889315516953F0E00694FF3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1889314F16953F0E00694FF3 /* InfoPlist.strings */; };
-		1889320E1695450E00694FF3 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1889320B1695450E00694FF3 /* JASidePanelController.m */; };
 		1889320F1695450E00694FF3 /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1889320D1695450E00694FF3 /* UIViewController+JASidePanel.m */; };
 		1889321E1695452900694FF3 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 188932121695452900694FF3 /* LICENSE */; };
 		1889321F1695452900694FF3 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 188932141695452900694FF3 /* NSObject+SBJSON.m */; };
@@ -216,6 +215,9 @@
 		18FE12A916984DFD00C52A6D /* TaskContentEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FE12A816984DFD00C52A6D /* TaskContentEditViewController.m */; };
 		18FE12D5169878C600C52A6D /* TaskCommentCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FE12D4169878C600C52A6D /* TaskCommentCreateViewController.m */; };
 		6A40B4B7169679FB003D3D42 /* login_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A40B4B6169679FB003D3D42 /* login_logo.png */; };
+		6A6B6C7716AFD5C7009B82A5 /* notcompleted_notice.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A6B6C7516AFD5C7009B82A5 /* notcompleted_notice.png */; };
+		6A6B6C7816AFD5C7009B82A5 /* notcompleted_notice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A6B6C7616AFD5C7009B82A5 /* notcompleted_notice@2x.png */; };
+		6A6B6CC916B00EEE009B82A5 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6B6CC816B00EEE009B82A5 /* JASidePanelController.m */; };
 		6A6E15E516994E9500748513 /* DateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6E15E416994E9500748513 /* DateView.m */; };
 		6A6E15E8169951A200748513 /* login_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A6E15E7169951A200748513 /* login_logo@2x.png */; };
 		6A6E15EA1699564A00748513 /* login_input@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A6E15E91699564A00748513 /* login_input@2x.png */; };
@@ -508,8 +510,6 @@
 		1889315016953F0E00694FF3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1889315116953F0E00694FF3 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		1889315616953F5000694FF3 /* Cooper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cooper-Info.plist"; sourceTree = "<group>"; };
-		1889320A1695450E00694FF3 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
-		1889320B1695450E00694FF3 /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASidePanelController.m; sourceTree = "<group>"; };
 		1889320C1695450E00694FF3 /* UIViewController+JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+JASidePanel.h"; sourceTree = "<group>"; };
 		1889320D1695450E00694FF3 /* UIViewController+JASidePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+JASidePanel.m"; sourceTree = "<group>"; };
 		188932111695452900694FF3 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
@@ -714,6 +714,10 @@
 		18FE12D3169878C500C52A6D /* TaskCommentCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskCommentCreateViewController.h; sourceTree = "<group>"; };
 		18FE12D4169878C600C52A6D /* TaskCommentCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskCommentCreateViewController.m; sourceTree = "<group>"; };
 		6A40B4B6169679FB003D3D42 /* login_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_logo.png; sourceTree = "<group>"; };
+		6A6B6C7516AFD5C7009B82A5 /* notcompleted_notice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notcompleted_notice.png; sourceTree = "<group>"; };
+		6A6B6C7616AFD5C7009B82A5 /* notcompleted_notice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notcompleted_notice@2x.png"; sourceTree = "<group>"; };
+		6A6B6CC716B00EEE009B82A5 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
+		6A6B6CC816B00EEE009B82A5 /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASidePanelController.m; sourceTree = "<group>"; };
 		6A6E15E316994E9500748513 /* DateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateView.h; sourceTree = "<group>"; };
 		6A6E15E416994E9500748513 /* DateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateView.m; sourceTree = "<group>"; };
 		6A6E15E7169951A200748513 /* login_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_logo@2x.png"; sourceTree = "<group>"; };
@@ -904,6 +908,8 @@
 		18752AD616958AFB0058F614 /* Enterprise */ = {
 			isa = PBXGroup;
 			children = (
+				6A6B6C7516AFD5C7009B82A5 /* notcompleted_notice.png */,
+				6A6B6C7616AFD5C7009B82A5 /* notcompleted_notice@2x.png */,
 				6A9D158916A54F720010548A /* detailcreate_bg.png */,
 				6A9D158A16A54F720010548A /* detailcreate_bg@2x.png */,
 				6A9D157D16A5433F0010548A /* priority_0@2x.png */,
@@ -1125,8 +1131,8 @@
 		188932091695450E00694FF3 /* JASidePanel */ = {
 			isa = PBXGroup;
 			children = (
-				1889320A1695450E00694FF3 /* JASidePanelController.h */,
-				1889320B1695450E00694FF3 /* JASidePanelController.m */,
+				6A6B6CC716B00EEE009B82A5 /* JASidePanelController.h */,
+				6A6B6CC816B00EEE009B82A5 /* JASidePanelController.m */,
 				1889320C1695450E00694FF3 /* UIViewController+JASidePanel.h */,
 				1889320D1695450E00694FF3 /* UIViewController+JASidePanel.m */,
 			);
@@ -2023,6 +2029,8 @@
 				6A9D158816A5433F0010548A /* priority_sel_2@2x.png in Resources */,
 				6A9D158B16A54F720010548A /* detailcreate_bg.png in Resources */,
 				6A9D158C16A54F720010548A /* detailcreate_bg@2x.png in Resources */,
+				6A6B6C7716AFD5C7009B82A5 /* notcompleted_notice.png in Resources */,
+				6A6B6C7816AFD5C7009B82A5 /* notcompleted_notice@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2064,7 +2072,6 @@
 				6AD181E5168194090064FA10 /* UIImageView+WebCache.m in Sources */,
 				1889315216953F0E00694FF3 /* AppDelegate.m in Sources */,
 				1889315316953F0E00694FF3 /* main.m in Sources */,
-				1889320E1695450E00694FF3 /* JASidePanelController.m in Sources */,
 				1889320F1695450E00694FF3 /* UIViewController+JASidePanel.m in Sources */,
 				1889321F1695452900694FF3 /* NSObject+SBJSON.m in Sources */,
 				188932201695452900694FF3 /* NSString+SBJSON.m in Sources */,
@@ -2150,6 +2157,7 @@
 				6A82DC3A16A3972900EBBFA7 /* MWZoomingScrollView.m in Sources */,
 				18CC92CF16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				18CC92D016AAE64100249440 /* UIScrollView+SVPullToRefresh.m in Sources */,
+				6A6B6CC916B00EEE009B82A5 /* JASidePanelController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2260,7 +2268,7 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8B6BD206-EF00-42E1-860B-4373CA962F86";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CAED0B46-663D-4A8F-BD50-EBEDD1A26D07";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR) \"$(BUILD_ROOT)/../IntermediateBuildFilesPath/UninstalledProducts\"";
 				WRAPPER_EXTENSION = app;

@@ -139,7 +139,7 @@
 
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 38, 45)];
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.userInteractionEnabled = NO;
+    [backBtn addTarget:self action:@selector(goBack:) forControlEvents:UIControlEventTouchUpInside];
     [backBtn setFrame:CGRectMake(9, 17, 15, 10)];
     [backBtn setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backView addSubview:backBtn];
@@ -251,7 +251,6 @@
 //    [assigneeView addSubview:fillLabelView];
 
     assigneeBtn = [[CustomButton alloc] initWithFrame:CGRectZero color:[UIColor colorWithRed:191.0/255 green:182.0/255 blue:175.0/255 alpha:1]];
-    assigneeBtn.userInteractionEnabled = NO;
     assigneeBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     [assigneeBtn setTitleColor:[UIColor colorWithRed:89.0/255 green:80.0/255 blue:73.0/255 alpha:1] forState:UIControlStateNormal];
     
@@ -266,7 +265,7 @@
     UIView *assigenChooseView = [[[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 88, 0, 38, 44)] autorelease];
     assigenChooseView.userInteractionEnabled = YES;
     UIButton *assigneeChooseBtn = [[UIButton alloc] initWithFrame:CGRectMake(11, 13, 18, 18)];
-    assigneeChooseBtn.userInteractionEnabled = NO;
+    [assigneeChooseBtn addTarget:self action:@selector(chooseUser:) forControlEvents:UIControlEventTouchUpInside];
     [assigneeChooseBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_assigneeAdd.png"] forState:UIControlStateNormal];
     UITapGestureRecognizer *chooseRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseUser:)];
     [assigenChooseView addGestureRecognizer:chooseRecognizer];
@@ -280,7 +279,7 @@
     UIView *assigneeMoreView = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 38, 24, 14, 44)];
     assigneeMoreView.userInteractionEnabled = YES;
     UIButton *assigneeMoreBtn = [[UIButton alloc] initWithFrame:CGRectMake(1, 17, 14, 3)];
-    assigneeMoreBtn.userInteractionEnabled = NO;
+    [assigneeMoreBtn addTarget:self action:@selector(more:) forControlEvents:UIControlEventTouchUpInside];
     [assigneeMoreBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_more.png"] forState:UIControlStateNormal];
     
     UITapGestureRecognizer *moreRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(more:)];
@@ -316,11 +315,13 @@
     [recognizer release];
     [moreView addSubview:dueTimeTitleLabel];
 
-    dueTimeLabel = [[DatePickerLabel alloc] initWithFrame:CGRectMake(208, 104, 120, 24)];
+    dueTimeLabel = [[DatePickerLabel alloc] initWithFrame:CGRectMake(300-130, 104, 120, 24)];
     dueTimeLabel.backgroundColor = [UIColor clearColor];
     dueTimeLabel.textColor = [UIColor colorWithRed:158.0/255 green:154.0/255 blue:150.0/255 alpha:1];
     dueTimeLabel.font = [UIFont systemFontOfSize:16];
     //dueTimeLabel.text = @"2012-12-21";
+    dueTimeLabel.text = @"请选择";
+    dueTimeLabel.textAlignment = UITextAlignmentRight;
     dueTimeLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *dueTimeRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectDueTime:)];
     [dueTimeLabel addGestureRecognizer:dueTimeRecognizer];
@@ -392,7 +393,7 @@
 {
     NSString *creatorWorkId = [taskDetailDict objectForKey:@"creatorWorkId"];
     NSString *subject = subjectTextView.text;
-    NSString *dueTime = dueTimeLabel.text;
+    NSString *dueTime = [dueTimeLabel.text isEqualToString:@"请选择"] ? @"" : dueTimeLabel.text;
     NSString *assigneeWorkId = [taskDetailDict objectForKey:@"assigneeWorkId"];
     NSNumber *priority = [NSNumber numberWithInt: priorityOptionView.selectedIndex];
     NSString *attachmentIds = @"";
@@ -482,14 +483,11 @@
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
     //判断是否有相机
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
-        //设置拍照后的图片可被编辑
-        picker.allowsEditing = YES;
+        pickerController = [[[UIImagePickerController alloc] init] autorelease];
+        pickerController.delegate = self;
         //资源类型为照相机
-        picker.sourceType = sourceType;
-        [self presentModalViewController:picker animated:YES];
-        [picker release];
+        pickerController.sourceType = sourceType;
+        [self presentModalViewController:pickerController animated:YES];
     }else {
         NSLog(@"该设备无摄像头");
     }
@@ -497,14 +495,13 @@
 
 - (void)localPhoto
 {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    pickerController = [[[UIImagePickerController alloc] init] autorelease];
     //资源类型为图片库
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    picker.delegate = self;
+    pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    pickerController.delegate = self;
     //设置选择后的图片可被编辑
-    picker.allowsEditing = YES;
-    [self presentModalViewController:picker animated:YES];
-    [picker release];
+    //picker.allowsEditing = YES;
+    [self presentModalViewController:pickerController animated:YES];
 }
 
 #pragma mark - TextViewDelegate
@@ -528,6 +525,9 @@
     
     if([requestType isEqualToString:@"CreateTaskAttach"])
     {
+        //关闭相册界面
+        [pickerController dismissModalViewControllerAnimated:YES];
+        
         if(request.responseStatusCode == 200)
         {
             textTitleLabel.text = @"创建任务";
@@ -647,17 +647,25 @@
             fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"jpg"];
         }
         //保存到阿里云盘
-        self.title = @"图片上传中...";
+        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
+        [pickerController.view addSubview:self.HUD];
+        [self.HUD show:YES];
+        self.HUD.labelText = @"正在上传图片";
         NSMutableDictionary *context = [NSMutableDictionary dictionary];
         [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
-        [enterpriseService createTaskAttach:data
+        uploadPicRequest = [enterpriseService createTaskAttach:data
                                    fileName:fileName
                                        type:@"picture"
                                     context:context
                                    delegate:self];
+        uploadPicRequest.timeOutSeconds = 10000;
+        uploadPicRequest.uploadProgressDelegate = self;
     }
-    //关闭相册界面
-    [picker dismissModalViewControllerAnimated:YES];
+}
+
+- (void)setProgress:(float)newProgress
+{
+    self.HUD.labelText = [NSString stringWithFormat:@"正在上传图片：%0.f%%", newProgress * 100];
 }
 
 #pragma mark - keyboard

@@ -12,18 +12,7 @@
 #import "SettingViewController.h"
 #import "AboutViewController.h"
 
-//#define AUDIO_OPTION    @"随口记"
-//#define IMAGE_OPTION     @"随手派"
-//#define LIST_OPTION     @"任务列表"
-
 @implementation EnterpriseOptionViewController
-
-//@synthesize infoView;
-//@synthesize menuScrollView;
-//@synthesize taskBarController;
-//@synthesize taskCreateController;
-//@synthesize audioController;
-//@synthesize imageController;
 
 @synthesize optionView;
 
