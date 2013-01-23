@@ -50,11 +50,39 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    self.mainViewController = [[MainViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
-    self.window.rootViewController = navController;
+    if ([[[Constant instance] loginType] isEqualToString:@"anonymous"]
+        || [[[Constant instance] loginType] isEqualToString:@"normal"]
+        || [[[Constant instance] loginType] isEqualToString:@"google"])
+    {
+        EnterpriseOptionViewController *optionViewController = [[EnterpriseOptionViewController alloc] init];
+        Base2NavigationController *optionNavController = [[Base2NavigationController alloc] initWithRootViewController:optionViewController];
+        
+        TodoTasksViewController *taskViewController = [[TodoTasksViewController alloc] init];
+        Base2NavigationController *taskNavController = [[Base2NavigationController alloc] initWithRootViewController:taskViewController];
+        
+        JASidePanelController *panelController = [[JASidePanelController alloc] init];
+        panelController.shouldDelegateAutorotateToVisiblePanel = NO;
+        panelController.leftPanel = optionNavController;
+        panelController.centerPanel = taskNavController;
+        
+        self.window.rootViewController = panelController;
+        
+        [taskViewController release];
+        [optionViewController release];
+        [panelController release];
+    }
+    else
+    {
+        self.mainViewController = [[MainViewController alloc] init];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
+        
+        self.window.rootViewController = navController;
+        
+        [navController release];
+    }
+    
     [self.window makeKeyAndVisible];
-    [navController release];
+    
     
     //[GTMHTTPFetcher setLoggingEnabled:YES];
     
@@ -174,7 +202,7 @@
     
     NSString *todayString = [Tools ShortNSDateToNSString:[NSDate date]];
     NSDate *today = [Tools NSStringToShortNSDate:todayString];
-    NSLog(@"【当前日期】%@", [Tools NSDateToNSString:today]);
+    NSLog(@"【今天日期】%@", [Tools NSDateToNSString:today]);
     NSLog(@"今天有 %d 个未完成的任务", taskCount);
     
     if(taskCount == 0)
@@ -184,7 +212,7 @@
     
     int interval = LOCALPUSH_TIME;
     //TODO:设置早上9点钟进行消息提醒
-    interval = (9 * 60 * 60 + 0 * 60 + 0);
+    interval = (23 * 60 * 60 + 49 * 60 + 0);
     
     NSDate *fireDate = [[NSDate alloc] initWithTimeInterval:interval
                                                   sinceDate:today];
@@ -203,6 +231,11 @@
     
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     [localNotification release];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    NSLog(@"收到了本地推送信息");
 }
 
 #pragma mark - Core Data 相关

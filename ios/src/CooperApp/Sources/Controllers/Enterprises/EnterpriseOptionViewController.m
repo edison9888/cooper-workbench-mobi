@@ -77,7 +77,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -107,6 +107,9 @@
         cell.textLabel.text = @"相关任务";
     }
     else if(indexPath.row == 2) {
+        cell.textLabel.text = @"今日到期";
+    }
+    else if(indexPath.row == 3) {
         cell.textLabel.text = @"设置";
     }
     return cell;
@@ -117,6 +120,7 @@
     if(indexPath.row == 0) {
         TodoTasksViewController *taskViewController = [[TodoTasksViewController alloc] init];
         Base2NavigationController *taskNavController = [[Base2NavigationController alloc] initWithRootViewController:taskViewController];
+        taskViewController.todayNotice = NO;
         self.sidePanelController.centerPanel = taskNavController;
         [taskViewController release];
 
@@ -128,6 +132,13 @@
         [taskViewController release];
     }
     else if(indexPath.row == 2) {
+        TodoTasksViewController *taskViewController = [[TodoTasksViewController alloc] init];
+        Base2NavigationController *taskNavController = [[Base2NavigationController alloc] initWithRootViewController:taskViewController];
+        taskViewController.todayNotice = YES;
+        self.sidePanelController.centerPanel = taskNavController;
+        [taskViewController release];
+    }
+    else if(indexPath.row == 3) {
 //        SettingViewController *settingViewController = [[SettingViewController alloc] initWithNibName:@"SettingViewController" bundle:nil];
 //        Base2NavigationController *settingNavController = [[Base2NavigationController alloc] initWithRootViewController:settingViewController];
 //        self.sidePanelController.centerPanel = settingNavController;

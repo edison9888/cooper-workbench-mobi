@@ -29,7 +29,7 @@
         || [[[Constant instance] loginType] isEqualToString:@"google"])
     {
         //跳过登录
-        [self loginFinish];
+//        [self loginFinish];
     }
     else 
     {

@@ -13,6 +13,7 @@
 
 @implementation TodoTasksViewController
 
+@synthesize todayNotice;
 @synthesize taskInfos;
 @synthesize taskDetailViewController;
 
@@ -87,18 +88,9 @@
 
 - (void)getTodoTasks
 {
-//    self.HUD = [Tools process:LOADING_TITLE view:self.view];
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.HUD];
 
-//    textTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-//    textTitleLabel.backgroundColor = [UIColor clearColor];
-//    textTitleLabel.textAlignment = UITextAlignmentCenter;
-//    textTitleLabel.textColor = APP_TITLECOLOR;
-//    textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-//    self.navigationItem.titleView = textTitleLabel;
-    
-    //textTitleLabel.text = @"Loading...";
     NSString *workId = [[Constant instance] workId];
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"GetTodoTasks" forKey:REQUEST_TYPE];
@@ -226,7 +218,7 @@
     textTitleLabel.backgroundColor = [UIColor clearColor];
     textTitleLabel.textAlignment = UITextAlignmentCenter;
     textTitleLabel.textColor = APP_TITLECOLOR;
-    textTitleLabel.text = @"我的任务";
+    textTitleLabel.text = self.todayNotice ? @"今日到期" : @"我的任务";
     textTitleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     self.navigationItem.titleView = textTitleLabel;
 
@@ -387,6 +379,18 @@
                     
                     for(NSMutableDictionary *taskDict in tasks)
                     {
+                        NSString *dueTime = [taskDict objectForKey:@"dueTime"] == [NSNull null] ? @"" : [taskDict objectForKey:@"dueTime"];
+                        
+                        if(todayNotice == YES) {
+                            if ([dueTime isEqualToString:@""]) {
+                                continue;
+                            }
+                            NSDate *dueTimeDate = [Tools NSStringToShortNSDate:dueTime];
+                            if(![dueTimeDate isEqualToDate:today]) {
+                                continue;
+                            }
+                        }
+                        
                         NSNumber *taskId = [taskDict objectForKey:@"id"];
                         NSString* subject = [taskDict objectForKey:@"subject"] == [NSNull null] ? @"" : [taskDict objectForKey:@"subject"];
                         NSString *body = [taskDict objectForKey:@"body"] == [NSNull null] ? @"" : [taskDict objectForKey:@"body"];
@@ -396,7 +400,7 @@
                         NSString *source = [taskDict objectForKey:@"source"];
                         NSNumber *isExternal = [taskDict objectForKey:@"isExternal"];
                         NSString *createTime = [taskDict objectForKey:@"createTime"];
-                        NSString *dueTime = [taskDict objectForKey:@"dueTime"] == [NSNull null] ? @"" : [taskDict objectForKey:@"dueTime"];
+                        
                         NSNumber *priority = [taskDict objectForKey:@"priority"] == [NSNull null] ? [NSNumber numberWithInt:-1] : [taskDict objectForKey:@"priority"];
                         NSNumber *isCompleted = [taskDict objectForKey:@"isCompleted"];
                         NSString *relatedUrl = [taskDict objectForKey:@"relatedUrl"];

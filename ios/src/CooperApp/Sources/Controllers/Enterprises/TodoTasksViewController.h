@@ -35,6 +35,7 @@
     BOOL _isLoad;
 }
 
+@property (nonatomic, assign) BOOL todayNotice;
 @property (nonatomic, retain) NSMutableArray *taskInfos;
 @property (nonatomic, retain) EnterpriseTaskDetailViewController *taskDetailViewController;
 
