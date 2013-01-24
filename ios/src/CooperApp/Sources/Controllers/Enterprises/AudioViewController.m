@@ -31,12 +31,12 @@
     [super viewDidLoad];
 
 
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
-        CGRect frame = self.view.bounds;
-        frame.origin.y -= 19.9f;
-        self.view.bounds = frame;
-    }
+//    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+//    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
+//        CGRect frame = self.view.bounds;
+//        frame.origin.y -= 19.9f;
+//        self.view.bounds = frame;
+//    }
 
     recording = 0;
     
@@ -495,13 +495,16 @@
 
     NSString *fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"mp3"];
 
+    
     NSMutableDictionary *context = [NSMutableDictionary dictionary];
     [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
-    [enterpriseService createTaskAttach:data
+    uploadAudioRequest = [enterpriseService createTaskAttach:data
                                fileName:fileName
                                    type:@"attachment"
                                 context:context
                                delegate:self];
+    uploadAudioRequest.timeOutSeconds = 10000;
+    uploadAudioRequest.uploadProgressDelegate = self;
 
 
 //    [_alert dismissWithClickedButtonIndex:0 animated:YES];
@@ -519,6 +522,11 @@
 //    [[UIApplication sharedApplication] endIgnoringInteractionEvents];
 //    NSInteger fileSize =  [self getFileSize:[NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", @"Mp3File.mp3"]];
 //    _mp3FileSize.text = [NSString stringWithFormat:@"%d kb", fileSize/1024];
+}
+
+- (void)setProgress:(float)newProgress
+{
+    self.HUD.labelText = [NSString stringWithFormat:@"上传音频文件中：%0.f%%", newProgress * 100];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request

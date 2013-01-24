@@ -14,7 +14,7 @@
 #import "TabbarLineView.h"
 #import "CooperService/EnterpriseService.h"
 
-@interface AudioViewController : Base2ViewController<AVAudioPlayerDelegate>
+@interface AudioViewController : Base2ViewController<AVAudioPlayerDelegate, ASIProgressDelegate>
 {
     NSURL *recordedFile;
     NSTimer *timer;
@@ -37,6 +37,8 @@
     
     int recording;
 
+    ASIHTTPRequest *uploadAudioRequest;
+    
     //UILabel *fileSizeLabel;
 }
 

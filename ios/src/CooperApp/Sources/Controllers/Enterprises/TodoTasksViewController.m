@@ -59,22 +59,22 @@
     [self loadTaskData];
     [self getTodoTasks];
 
-    CGRect frame = self.view.frame;
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    if(_isLoad != NO && appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
-        CGRect taskViewFrame = taskView.frame;
-        taskViewFrame.origin.y = 22.0f;
-        taskView.frame = taskViewFrame;
-        NSLog(@"【taskViewFrame】%f,%f,%f,%f", taskViewFrame.origin.x, taskViewFrame.origin.y, taskViewFrame.size.width, taskViewFrame.size.height);
+//    CGRect frame = self.view.frame;
+//    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+//    if(_isLoad != NO && appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
+//        CGRect taskViewFrame = taskView.frame;
+//        taskViewFrame.origin.y = 22.0f;
+//        taskView.frame = taskViewFrame;
+//        NSLog(@"【taskViewFrame】%f,%f,%f,%f", taskViewFrame.origin.x, taskViewFrame.origin.y, taskViewFrame.size.width, taskViewFrame.size.height);
+//
+//        CGRect tabbarViewFrame = tabbarView.frame;
+//        tabbarViewFrame.origin.y = [Tools screenMaxHeight] - 44.0f - 49.0f;
+//        tabbarView.frame = tabbarViewFrame;
+//        NSLog(@"【tabbarViewFrame】%f,%f,%f,%f", tabbarViewFrame.origin.x, tabbarViewFrame.origin.y, tabbarViewFrame.size.width, tabbarViewFrame.size.height);
+//    }
+//    _isLoad = YES;
 
-        CGRect tabbarViewFrame = tabbarView.frame;
-        tabbarViewFrame.origin.y = [Tools screenMaxHeight] - 44.0f - 49.0f;
-        tabbarView.frame = tabbarViewFrame;
-        NSLog(@"【tabbarViewFrame】%f,%f,%f,%f", tabbarViewFrame.origin.x, tabbarViewFrame.origin.y, tabbarViewFrame.size.width, tabbarViewFrame.size.height);
-    }
-    _isLoad = YES;
-
-    NSLog(@"【frame】%f,%f,%f,%f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+//    NSLog(@"【frame】%f,%f,%f,%f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void)viewWillDisappear:(BOOL)animated{

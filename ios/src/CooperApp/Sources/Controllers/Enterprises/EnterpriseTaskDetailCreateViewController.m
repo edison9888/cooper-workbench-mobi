@@ -27,12 +27,12 @@
 {
     [super viewDidLoad];
 
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
-        CGRect frame = self.view.bounds;
-        frame.origin.y -= 19.9f;
-        self.view.bounds = frame;
-    }
+//    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+//    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
+//        CGRect frame = self.view.bounds;
+//        frame.origin.y -= 19.9f;
+//        self.view.bounds = frame;
+//    }
 
     self.navigationController.navigationBarHidden = NO;
     

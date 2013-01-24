@@ -31,6 +31,7 @@
     UIImagePickerController *pickerController;
 
     ASIHTTPRequest *uploadPicRequest;
+    ASIHTTPRequest *uploadAudioRequest;
     
     BOOL _isLoad;
 }
