@@ -304,6 +304,10 @@
     [recorder stop];
     [recorder release];
     recorder = nil;
+    
+//    NSInteger fileSize =  [self getFileSize:[NSTemporaryDirectory() stringByAppendingString:@"RecordedFile"]];
+//    
+//    NSLog(@"%@", [NSString stringWithFormat:@"%d kb", fileSize/1024]);
 }
 
 - (void)submitAudio:(id)sender
@@ -451,18 +455,30 @@
         lame_set_in_samplerate(lame, 44100);
         lame_set_VBR(lame, vbr_default);
         lame_init_params(lame);
+        
+        NSInteger fileSize =  [self getFileSize:cafFilePath];
 
+        NSLog(@"%@", [NSString stringWithFormat:@"pcm: %d b", fileSize]);
+        
+        NSInteger readIndex = 0;
         do {
             read = fread(pcm_buffer, 2*sizeof(short int), PCM_SIZE, pcm);
+            readIndex += read;
+            
+            self.HUD.labelText = [NSString stringWithFormat:@"正在处理录音文件: %0.f%%", readIndex * 4.0 / fileSize * 100];
+            
             if (read == 0)
                 write = lame_encode_flush(lame, mp3_buffer, MP3_SIZE);
             else
                 write = lame_encode_buffer_interleaved(lame, pcm_buffer, read, mp3_buffer, MP3_SIZE);
 
             fwrite(mp3_buffer, write, 1, mp3);
-
+            
+            
         } while (read != 0);
 
+        //NSLog(@"%@", [NSString stringWithFormat:@"readIndex: %d b", readIndex]);
+        
         lame_close(lame);
         fclose(mp3);
         fclose(pcm);

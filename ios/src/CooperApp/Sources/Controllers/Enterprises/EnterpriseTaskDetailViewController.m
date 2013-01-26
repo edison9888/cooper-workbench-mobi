@@ -84,7 +84,12 @@
     
     //选择属性面板
     navPanelView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 59)] autorelease];
-    navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+    if(![Tools isPad]) {
+        navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel.png"]];
+    }
+    else {
+        navPanelView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"detail_navPanel_ipad.png"]];
+    }
     
     //完成面板
     completeView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width / 4, 39)] autorelease];

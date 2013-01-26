@@ -201,7 +201,12 @@
     //任务列表
     taskView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     taskView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background.png"]];
+    if(![Tools isPad]) {
+        taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background.png"]];
+    }
+    else {
+        taskView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tableview_background_ipad.png"]];
+    }
     //去掉底部空白
     UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     taskView.tableFooterView = footer;

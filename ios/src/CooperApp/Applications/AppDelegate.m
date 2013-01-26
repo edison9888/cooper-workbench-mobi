@@ -212,7 +212,7 @@
     
     int interval = LOCALPUSH_TIME;
     //TODO:设置早上9点钟进行消息提醒
-    interval = (23 * 60 * 60 + 49 * 60 + 0);
+    interval = (9 * 60 * 60 + 0 * 60 + 0);
     
     NSDate *fireDate = [[NSDate alloc] initWithTimeInterval:interval
                                                   sinceDate:today];
