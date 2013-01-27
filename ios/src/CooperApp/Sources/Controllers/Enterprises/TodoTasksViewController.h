@@ -34,6 +34,8 @@
     ASIHTTPRequest *uploadAudioRequest;
     
     BOOL _isLoad;
+    
+    BOOL chooseCamera;
 }
 
 @property (nonatomic, assign) BOOL todayNotice;

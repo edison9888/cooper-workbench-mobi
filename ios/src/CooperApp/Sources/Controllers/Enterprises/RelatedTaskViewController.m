@@ -519,6 +519,7 @@
 
 - (void)takePhoto
 {
+    chooseCamera = YES;
     //资源类型为照相机
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
     //判断是否有相机
@@ -537,6 +538,7 @@
 
 - (void)localPhoto
 {
+    chooseCamera = NO;
     pickerController = [[[UIImagePickerController alloc] init] autorelease];
     //资源类型为图片库
     pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -570,6 +572,10 @@
     if (image != nil) {
         
         NSLog(@"【图片尺寸】width:%f,height:%f", image.size.width, image.size.height);
+        
+        if(chooseCamera) {
+            UIImageWriteToSavedPhotosAlbum(image, self, nil, nil);
+        }
         
         //关闭相册界面
         [pickerController dismissModalViewControllerAnimated:YES];

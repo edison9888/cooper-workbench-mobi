@@ -50,6 +50,8 @@
     ASIHTTPRequest *uploadAudioRequest;
     
     BOOL processing;
+    
+    BOOL chooseCamera;
 }
 
 @property (retain, nonatomic) NSMutableDictionary *taskDetailDict;

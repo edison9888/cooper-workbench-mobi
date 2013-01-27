@@ -31,6 +31,8 @@
     UIImagePickerController *pickerController;
 
     ASIHTTPRequest *uploadPicRequest;
+    
+    BOOL chooseCamera;
 }
 
 @property (nonatomic, retain) NSMutableArray *taskInfos;

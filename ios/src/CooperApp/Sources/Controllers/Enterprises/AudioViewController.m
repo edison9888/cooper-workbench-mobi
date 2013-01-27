@@ -321,7 +321,7 @@
     [self stopRecord:nil];
     
     if(isPush) {
-    //prevViewController.navigationController.navigationBarHidden = NO;
+        prevViewController.navigationController.navigationBar.hidden = NO;
         [Tools layerTransition:self.navigationController.view from:@"left"];
         [self.navigationController popToViewController:prevViewController animated:NO];
     }

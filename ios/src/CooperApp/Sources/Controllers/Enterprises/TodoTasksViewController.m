@@ -577,6 +577,7 @@
 
 - (void)takePhoto
 {
+    chooseCamera = YES;
     //资源类型为照相机
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
     //判断是否有相机
@@ -595,6 +596,7 @@
 
 - (void)localPhoto
 {
+    chooseCamera = NO;
     pickerController = [[[UIImagePickerController alloc] init] autorelease];
     //资源类型为图片库
     pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -622,12 +624,49 @@
 //    NSLog(@"cancel camara.");
 //}
 
+
+//- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+//{
+//    // Recover the snapped image
+//    UIImage *image = [info
+//                      objectForKey:@"UIImagePickerControllerOriginalImage"];
+//    
+//    if (image != nil) {
+//        // Save the image to the album
+//        NSString *url = [info objectForKey:@"UIImagePickerControllerReferenceURL"];
+//        if(url == nil) {
+//            UIImageWriteToSavedPhotosAlbum(image, self, @selector(imagedidFinishSavingWithError:contextInfo:), nil);
+//        }
+//        
+//        NSLog(@"【图片尺寸】width:%f,height:%f", image.size.width, image.size.height);
+//        
+//        //关闭相册界面
+//        [pickerController dismissModalViewControllerAnimated:YES];
+//        
+//        EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
+//        
+//        taskDetailCreateViewController.prevViewController = self;
+//        taskDetailCreateViewController.createType = 2;
+//        taskDetailCreateViewController.pictureImage = image;
+//        
+//        [Tools layerTransition:self.navigationController.view from:@"right"];
+//        [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
+//        
+//        [taskDetailCreateViewController release];
+//    }
+//}
+
+
 //图像选取器的委托方法，选完图片后回调该方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
 
     if (image != nil) {
         
         NSLog(@"【图片尺寸】width:%f,height:%f", image.size.width, image.size.height);
+        
+        if(chooseCamera) {
+            UIImageWriteToSavedPhotosAlbum(image, self, nil, nil);
+        }
         
         //关闭相册界面
         [pickerController dismissModalViewControllerAnimated:YES];
@@ -642,47 +681,6 @@
         [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
         
         [taskDetailCreateViewController release];
-        
-//        NSData *data;
-//        NSString *fileName;
-//
-//        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
-//        [pickerController.view addSubview:self.HUD];
-//        [self.HUD show:YES];
-//        self.HUD.labelText = @"正在上传图片";
-//
-//        //TODO:优化图片尺寸算法
-//        UIImage *realImage;
-////        if(image.size.width >= 640.0) {
-////            CGFloat realWidth = 640.0;
-////            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
-////            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
-////        }
-////        else {
-//            realImage = image;
-////        }
-//
-//        if (UIImagePNGRepresentation(realImage)) {
-//            //返回为png图像
-//            data = UIImagePNGRepresentation(realImage);
-//            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
-//        }
-//        else {
-//            //返回为JPEG图像
-//            data = UIImageJPEGRepresentation(realImage, 1.0);
-//            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
-//        }
-//        //保存到阿里云盘
-//        //self.title = @"图片上传中...";
-//        NSMutableDictionary *context = [NSMutableDictionary dictionary];
-//        [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
-//        uploadPicRequest = [enterpriseService createTaskAttach:data
-//                                   fileName:fileName
-//                                       type:@"picture"
-//                                    context:context
-//                                   delegate:self];
-//        uploadPicRequest.timeOutSeconds = 10000;
-//        uploadPicRequest.uploadProgressDelegate = self;
     }
 }
 
