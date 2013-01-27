@@ -14,6 +14,12 @@
 #import "TabbarLineView.h"
 #import "CooperService/EnterpriseService.h"
 
+@protocol AudioViewDelegate <NSObject>
+
+- (void) returnOperation;
+
+@end
+
 @interface AudioViewController : Base2ViewController<AVAudioPlayerDelegate, ASIProgressDelegate>
 {
     NSURL *recordedFile;
@@ -43,5 +49,7 @@
 }
 
 @property (retain, nonatomic) UIViewController *prevViewController;
+@property (assign, nonatomic) BOOL isPush;
+@property (assign, nonatomic) id<AudioViewDelegate> delegate;
 
 @end

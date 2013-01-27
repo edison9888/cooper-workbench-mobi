@@ -608,6 +608,7 @@
 {
     AudioViewController *audioViewController = [[AudioViewController alloc] init];
     audioViewController.prevViewController = self;
+    audioViewController.isPush = YES;
     [Tools layerTransition:self.navigationController.view from:@"right"];
     [self.navigationController pushViewController:audioViewController animated:NO];
 
@@ -628,46 +629,60 @@
         
         NSLog(@"【图片尺寸】width:%f,height:%f", image.size.width, image.size.height);
         
-        NSData *data;
-        NSString *fileName;
-
-        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
-        [pickerController.view addSubview:self.HUD];
-        [self.HUD show:YES];
-        self.HUD.labelText = @"正在上传图片";
-
-        //TODO:优化图片尺寸算法
-        UIImage *realImage;
-//        if(image.size.width >= 640.0) {
-//            CGFloat realWidth = 640.0;
-//            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
-//            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
+        //关闭相册界面
+        [pickerController dismissModalViewControllerAnimated:YES];
+        
+        EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
+        
+        taskDetailCreateViewController.prevViewController = self;
+        taskDetailCreateViewController.createType = 2;
+        taskDetailCreateViewController.pictureImage = image;
+        
+        [Tools layerTransition:self.navigationController.view from:@"right"];
+        [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
+        
+        [taskDetailCreateViewController release];
+        
+//        NSData *data;
+//        NSString *fileName;
+//
+//        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
+//        [pickerController.view addSubview:self.HUD];
+//        [self.HUD show:YES];
+//        self.HUD.labelText = @"正在上传图片";
+//
+//        //TODO:优化图片尺寸算法
+//        UIImage *realImage;
+////        if(image.size.width >= 640.0) {
+////            CGFloat realWidth = 640.0;
+////            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
+////            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
+////        }
+////        else {
+//            realImage = image;
+////        }
+//
+//        if (UIImagePNGRepresentation(realImage)) {
+//            //返回为png图像
+//            data = UIImagePNGRepresentation(realImage);
+//            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
 //        }
 //        else {
-            realImage = image;
+//            //返回为JPEG图像
+//            data = UIImageJPEGRepresentation(realImage, 1.0);
+//            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
 //        }
-
-        if (UIImagePNGRepresentation(realImage)) {
-            //返回为png图像
-            data = UIImagePNGRepresentation(realImage);
-            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
-        }
-        else {
-            //返回为JPEG图像
-            data = UIImageJPEGRepresentation(realImage, 1.0);
-            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
-        }
-        //保存到阿里云盘
-        //self.title = @"图片上传中...";
-        NSMutableDictionary *context = [NSMutableDictionary dictionary];
-        [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
-        uploadPicRequest = [enterpriseService createTaskAttach:data
-                                   fileName:fileName
-                                       type:@"picture"
-                                    context:context
-                                   delegate:self];
-        uploadPicRequest.timeOutSeconds = 10000;
-        uploadPicRequest.uploadProgressDelegate = self;
+//        //保存到阿里云盘
+//        //self.title = @"图片上传中...";
+//        NSMutableDictionary *context = [NSMutableDictionary dictionary];
+//        [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
+//        uploadPicRequest = [enterpriseService createTaskAttach:data
+//                                   fileName:fileName
+//                                       type:@"picture"
+//                                    context:context
+//                                   delegate:self];
+//        uploadPicRequest.timeOutSeconds = 10000;
+//        uploadPicRequest.uploadProgressDelegate = self;
     }
 }
 

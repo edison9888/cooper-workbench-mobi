@@ -16,6 +16,8 @@
 @implementation AudioViewController
 
 @synthesize prevViewController;
+@synthesize isPush;
+@synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,14 +31,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-
-//    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-//    if(appDelegate.isJASideClicked == NO && MODEL_VERSION >= 6.0) {
-//        CGRect frame = self.view.bounds;
-//        frame.origin.y -= 19.9f;
-//        self.view.bounds = frame;
-//    }
 
     recording = 0;
     
@@ -107,34 +101,6 @@
     startAudioImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_inhuatong.png"]] autorelease];
     startAudioImageView.frame = CGRectMake((self.view.bounds.size.width - 157) / 2.0, 123, 157, 113);
     [recordingView addSubview:startAudioImageView];
-//
-//    //停止录音后UI
-//    playingView = [[[UIView alloc] init] autorelease];
-//    playingView.frame = CGRectMake(0, 100, [Tools screenMaxWidth], 300);
-//    [self.view addSubview:playingView];
-//
-//    UIImageView *soundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sound.png"]];
-//    soundImageView.frame = CGRectMake(([Tools screenMaxWidth] - 48) / 2.0, 0, 48, 48);
-//    [playingView addSubview:soundImageView];
-//
-//    playProgressView = [[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault] autorelease];
-//    playProgressView.frame = CGRectMake(20, 80, [Tools screenMaxWidth] - 40, 20);
-//    [playingView addSubview:playProgressView];
-//
-//    UIImageView *playImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"play.png"]];
-//    playImageView.frame = CGRectMake(([Tools screenMaxWidth] - 64) / 2.0, 120, 64, 64);
-//    [playingView addSubview:playImageView];
-//    playImageView.userInteractionEnabled = YES;
-//    UITapGestureRecognizer *playRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPlay:)];
-//    [playImageView addGestureRecognizer:playRecognizer];
-//    [playRecognizer release];
-//
-//    playingView.hidden = YES;
-
-    //    fileSizeLabel = [[UILabel alloc] init];
-    //    fileSizeLabel.text = @"";
-    //    fileSizeLabel.frame = CGRectMake(100, 140, 320, 40);
-    //    [self.view addSubview:fileSizeLabel];
 
     ///////////////////////////////////////////////////////////
     AVAudioSession *session = [AVAudioSession sharedInstance];
@@ -316,16 +282,32 @@
         [self stopRecord:nil];
     }
     
-    self.HUD = [Tools process:@"正在处理录音文件" view:self.view];
-
-//    [self performSelectorOnMainThread:@selector(processAudio)
-//                           withObject:nil
-//                        waitUntilDone:YES];
-
-    NSThread* myThread = [[NSThread alloc] initWithTarget:self
-                                                 selector:@selector(processAudio)
-                                                   object:nil];
-    [myThread start];
+    if(isPush) {
+        EnterpriseTaskDetailCreateViewController *taskDetailCreateViewController = [[EnterpriseTaskDetailCreateViewController alloc] init];
+        
+        //taskDetailCreateViewController.taskDetailDict = taskDetailDict;
+        taskDetailCreateViewController.prevViewController = prevViewController;
+        taskDetailCreateViewController.createType = 1;
+        
+        self.navigationController.navigationBar.hidden = NO;
+        
+        [Tools layerTransition:self.navigationController.view from:@"right"];
+        [self.navigationController pushViewController:taskDetailCreateViewController animated:NO];
+        
+        [taskDetailCreateViewController release];
+    }
+    else {
+        [self dismissModalViewControllerAnimated:YES];
+        
+        [delegate returnOperation];
+    }
+    
+//    self.HUD = [Tools process:@"正在处理录音文件" view:self.view];
+//
+//    NSThread* myThread = [[NSThread alloc] initWithTarget:self
+//                                                 selector:@selector(processAudio)
+//                                                   object:nil];
+//    [myThread start];
 }
 
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -338,10 +320,14 @@
 {
     [self stopRecord:nil];
     
+    if(isPush) {
     //prevViewController.navigationController.navigationBarHidden = NO;
-    [Tools layerTransition:self.navigationController.view from:@"left"];
-    [self.navigationController popToViewController:prevViewController animated:NO];
-    //[self dismissModalViewControllerAnimated:YES];
+        [Tools layerTransition:self.navigationController.view from:@"left"];
+        [self.navigationController popToViewController:prevViewController animated:NO];
+    }
+    else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 - (void)sendFile:(id)sender

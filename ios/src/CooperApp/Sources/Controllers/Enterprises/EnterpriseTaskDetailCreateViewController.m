@@ -7,13 +7,13 @@
 //
 
 #import "EnterpriseTaskDetailCreateViewController.h"
-#import "AppDelegate.h"
 
 @implementation EnterpriseTaskDetailCreateViewController
 
 @synthesize taskDetailDict;
 @synthesize prevViewController;
 @synthesize createType;
+@synthesize pictureImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -186,39 +186,97 @@
         [detailInfoView addSubview:subjectTextView];
     }
     else if(createType == 1) {
-        NSString *attachmentId = [taskDetailDict objectForKey:@"attachmentId"];
-        if(attachmentId != nil) {
-            UIButton *attachmentBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 85, 85)];
-            [attachmentBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_audioflag.png"] forState:UIControlStateNormal];
-            [attachmentBtn addTarget:self action:@selector(startPhoto:) forControlEvents:UIControlEventTouchUpInside];
-            [detailInfoView addSubview:attachmentBtn];
+        attachmentView = [[[UIView alloc] initWithFrame:CGRectMake(10, 10, 85, 85)] autorelease];
+        attachmentView.userInteractionEnabled = NO;
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startAudio:)];
+        [attachmentView addGestureRecognizer:recognizer];
+        [recognizer release];
+        
+        attachmentBtn = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 85, 85)] autorelease];
+        attachmentBtn.userInteractionEnabled = NO;
+        [attachmentBtn setBackgroundImage:[UIImage imageNamed:@"detailcreate_audioflag.png"] forState:UIControlStateNormal];
+        [attachmentBtn addTarget:self action:@selector(startAudio:) forControlEvents:UIControlEventTouchUpInside];
+        attachmentBtn.alpha = 0.3f;
+        [attachmentView addSubview:attachmentBtn];
+        
+        attachmentProcessLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 55, 85, 10)] autorelease];
+        attachmentProcessLabel.textAlignment = UITextAlignmentCenter;
+        attachmentProcessLabel.backgroundColor = [UIColor clearColor];
+        attachmentProcessLabel.font = [UIFont systemFontOfSize:10.0f];
+        
+        [attachmentView addSubview:attachmentProcessLabel];
+        
+        processBar = [[[KOAProgressBar alloc] initWithFrame:CGRectMake(5, 70, 75, 9)] autorelease];
+        processBar.minValue = 0.0f;
+        processBar.maxValue = 1.0f;
+       
+        processBar.displayedWhenStopped = YES;
+        [attachmentView addSubview:processBar];
+        
+        [self startProcessAudio];
 
-            subjectTextView = [[[GCPlaceholderTextView alloc] init] autorelease];
-            subjectTextView.frame = CGRectMake(95, 0, self.view.bounds.size.width - 113, 105);
-            subjectTextView.font = [UIFont systemFontOfSize:16.0f];
-            subjectTextView.placeholder = @"写点什么";
-            subjectTextView.delegate = self;
-            subjectTextView.backgroundColor = [UIColor clearColor];
-            subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
-            subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-            subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-            [detailInfoView addSubview:subjectTextView];
-        }
+        [detailInfoView addSubview:attachmentView];
+
+        subjectTextView = [[[GCPlaceholderTextView alloc] init] autorelease];
+        subjectTextView.frame = CGRectMake(95, 0, self.view.bounds.size.width - 113, 105);
+        subjectTextView.font = [UIFont systemFontOfSize:16.0f];
+        subjectTextView.placeholder = @"写点什么";
+        subjectTextView.delegate = self;
+        subjectTextView.backgroundColor = [UIColor clearColor];
+        subjectTextView.textColor = [UIColor colorWithRed:93.0/255 green:81.0/255 blue:73.0/255 alpha:1];
+        subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+        subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [detailInfoView addSubview:subjectTextView];
     }
     else if(createType == 2) {
-        NSString *pictureId = [taskDetailDict objectForKey:@"pictureId"];
-        if(pictureId != nil) {
-            NSString *pictureThumbUrl = [taskDetailDict objectForKey:@"pictureThumbUrl"];
+//        NSString *pictureId = [taskDetailDict objectForKey:@"pictureId"];
+//        if(pictureId != nil) {
+//            NSString *pictureThumbUrl = [taskDetailDict objectForKey:@"pictureThumbUrl"];
             //cell.textLabel.text = attachmentFileName;
-            pictureImageView = [[[UIImageView alloc] init] autorelease];
-            pictureImageView.frame = CGRectMake(10, 10, 85, 85);
-            pictureImageView.userInteractionEnabled = YES;
-            UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
-            [pictureImageView addGestureRecognizer:recognizer];
-            [recognizer release];
-            [pictureImageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
-            [detailInfoView addSubview:pictureImageView];
+        attachmentView = [[[UIView alloc] initWithFrame:CGRectMake(10, 10, 85, 85)] autorelease];
+        attachmentView.userInteractionEnabled = NO;
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
+        [attachmentView addGestureRecognizer:recognizer];
+        [recognizer release];
+        
+        attachmentBtn = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 85, 85)] autorelease];
+        attachmentBtn.userInteractionEnabled = NO;
+        if(self.pictureImage != nil) {
+            [attachmentBtn setBackgroundImage:self.pictureImage forState:UIControlStateNormal];
+        }
+        
+        [attachmentBtn addTarget:self action:@selector(startPhoto:) forControlEvents:UIControlEventTouchUpInside];
+        attachmentBtn.alpha = 0.3f;
+        [attachmentView addSubview:attachmentBtn];
+        
+        attachmentProcessLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 55, 85, 10)] autorelease];
+        attachmentProcessLabel.textAlignment = UITextAlignmentCenter;
+        attachmentProcessLabel.backgroundColor = [UIColor clearColor];
+        attachmentProcessLabel.font = [UIFont systemFontOfSize:10.0f];
+        attachmentProcessLabel.text = @"处理中";
+        [attachmentView addSubview:attachmentProcessLabel];
+        
+        processBar = [[[KOAProgressBar alloc] initWithFrame:CGRectMake(5, 70, 75, 9)] autorelease];
+        processBar.minValue = 0.0f;
+        processBar.maxValue = 1.0f;
+        processBar.alpha = 0.7f;
+        [processBar setRealProgress:0.0f];
+        processBar.displayedWhenStopped = YES;
+        [attachmentView addSubview:processBar];
+        
+        [self startProcessPicture];
+        processing = YES;
 
+//            pictureImageView.frame = CGRectMake(10, 10, 85, 85);
+//            pictureImageView.userInteractionEnabled = YES;
+//            UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startPhoto:)];
+//            [pictureImageView addGestureRecognizer:recognizer];
+//            [recognizer release];
+//            [pictureImageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
+//            [detailInfoView addSubview:pictureImageView];
+
+        [detailInfoView addSubview:attachmentView];
+        
             subjectTextView = [[[GCPlaceholderTextView alloc] init] autorelease];
             subjectTextView.frame = CGRectMake(95, 0, self.view.bounds.size.width - 113, 105);
             subjectTextView.font = [UIFont systemFontOfSize:16.0f];
@@ -229,7 +287,7 @@
             subjectTextView.autocorrectionType = UITextAutocorrectionTypeNo;
             subjectTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
             [detailInfoView addSubview:subjectTextView];
-        }
+//        }
     }
 
     UIView *assigneePanelView = [[UIView alloc] initWithFrame:CGRectMake(10, 126, self.view.bounds.size.width - 20, 70)];
@@ -384,13 +442,28 @@
 
 - (void)goBack:(id)sender
 {
+    [self clearProcessAudioQueue];
+    
     [Tools layerTransition:self.navigationController.view from:@"left"];
     [self.navigationController popToViewController:prevViewController animated:NO];
     //[self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)clearProcessAudioQueue
+{
+    if(processAudioQueue != nil) {
+        dispatch_suspend(processAudioQueue);
+        //dispatch_release(processAudioQueue);
+        processAudioQueue = nil;
+    }
+}
+
 - (void)newTask:(id)sender
 {
+    if(processing) {
+        [Tools alert:@"正在处理文件中，请稍等"];
+        return;
+    }
     NSString *creatorWorkId = [taskDetailDict objectForKey:@"creatorWorkId"];
     NSString *subject = subjectTextView.text;
     NSString *dueTime = [dueTimeLabel.text isEqualToString:@"请选择"] ? @"" : dueTimeLabel.text;
@@ -398,15 +471,25 @@
     NSNumber *priority = [NSNumber numberWithInt: priorityOptionView.selectedIndex];
     NSString *attachmentIds = @"";
     if(createType == 1) {
-         attachmentIds = [taskDetailDict objectForKey:@"attachmentId"];
-        if (subject == nil || [subject isEqualToString:@""]) {
-            subject = [NSString stringWithFormat:@"%@%@", @"语音任务", [Tools ShortNSDateToNSString:[NSDate date]]];
+        attachmentIds = [taskDetailDict objectForKey:@"attachmentId"];
+        if(attachmentIds == nil) {
+            attachmentIds = @"";
+        }
+        else {
+            if (subject == nil || [subject isEqualToString:@""]) {
+                subject = [NSString stringWithFormat:@"%@%@", @"语音任务", [Tools ShortNSDateToNSString:[NSDate date]]];
+            }
         }
     }
     else if(createType == 2) {
         attachmentIds = [taskDetailDict objectForKey:@"pictureId"];
-        if (subject == nil || [subject isEqualToString:@""]) {
-            subject = [NSString stringWithFormat:@"%@%@", @"图片任务", [Tools ShortNSDateToNSString:[NSDate date]]];
+        if(attachmentIds == nil) {
+            attachmentIds = @"";
+        }
+        else {
+            if (subject == nil || [subject isEqualToString:@""]) {
+                subject = [NSString stringWithFormat:@"%@%@", @"图片任务", [Tools ShortNSDateToNSString:[NSDate date]]];
+            }
         }
     }
 
@@ -447,8 +530,23 @@
     [subjectTextView resignFirstResponder];
 }
 
+- (void)startAudio:(id)startAudio
+{
+    [subjectTextView resignFirstResponder];
+    
+    AudioViewController *audioViewController = [[AudioViewController alloc] init];
+    audioViewController.prevViewController = self;
+    audioViewController.isPush = NO;
+    audioViewController.delegate = self;
+
+    [self presentModalViewController:audioViewController animated:YES];
+    
+    [audioViewController release];
+}
+
 - (void)startPhoto:(id)sender
 {
+    [subjectTextView resignFirstResponder];
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
@@ -504,6 +602,213 @@
     [self presentModalViewController:pickerController animated:YES];
 }
 
+- (void)startProcessAudio
+{
+    attachmentView.userInteractionEnabled = NO;
+    attachmentBtn.userInteractionEnabled = NO;
+    attachmentProcessLabel.hidden = NO;
+    attachmentProcessLabel.text = @"处理中";
+    attachmentBtn.alpha = 0.3f;
+    processBar.hidden = NO;
+    processBar.alpha = 0.7f;
+    [processBar setRealProgress:0.0f];
+    
+    processing = YES;
+    processAudioQueue = dispatch_queue_create("processAudio", NULL);
+    dispatch_async(processAudioQueue, ^{
+        [self processAudio:nil];
+    });
+}
+
+- (void)startProcessPicture
+{
+    attachmentView.userInteractionEnabled = NO;
+    attachmentBtn.userInteractionEnabled = NO;
+    attachmentProcessLabel.hidden = NO;
+    attachmentProcessLabel.text = @"处理中";
+    attachmentBtn.alpha = 0.3f;
+    processBar.hidden = NO;
+    processBar.alpha = 0.7f;
+    [processBar setRealProgress:0.0f];
+    
+    processing = YES;
+    processAudioQueue = dispatch_queue_create("processPicture", NULL);
+    dispatch_async(processAudioQueue, ^{
+        [self processPicture:nil];
+    });
+}
+
+- (void)processAudio:(id)sender
+{
+    NSString *cafFilePath =[NSTemporaryDirectory() stringByAppendingString:@"RecordedFile"];
+    
+    NSString *mp3FileName = @"mp3File";
+    mp3FileName = [mp3FileName stringByAppendingString:@".mp3"];
+    NSString *mp3FilePath = [[NSHomeDirectory() stringByAppendingFormat:@"/Documents/"] stringByAppendingPathComponent:mp3FileName];
+    
+    NSLog(@"mp3FilePath:%@", mp3FilePath);
+    
+    @try {
+        int read, write;
+        
+        FILE *pcm = fopen([cafFilePath cStringUsingEncoding:1], "rb");  //source
+        fseek(pcm, 4*1024, SEEK_CUR);                                   //skip file header
+        FILE *mp3 = fopen([mp3FilePath cStringUsingEncoding:1], "wb");  //output
+        
+        const int PCM_SIZE = 8192;
+        const int MP3_SIZE = 8192;
+        short int pcm_buffer[PCM_SIZE*2];
+        unsigned char mp3_buffer[MP3_SIZE];
+        
+        lame_t lame = lame_init();
+        lame_set_in_samplerate(lame, 44100);
+        lame_set_VBR(lame, vbr_default);
+        lame_init_params(lame);
+        
+        NSInteger fileSize =  [self getFileSize:cafFilePath];
+        
+        NSLog(@"%@", [NSString stringWithFormat:@"pcm: %d b", fileSize]);
+        
+        NSInteger readIndex = 0;
+        do {
+            read = fread(pcm_buffer, 2*sizeof(short int), PCM_SIZE, pcm);
+            readIndex += read;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                attachmentProcessLabel.text = [NSString stringWithFormat:@"处理中:%0.f%%", readIndex * 4.0 / fileSize * 100 / 2.0];
+                [processBar setRealProgress: readIndex * 4.0 / fileSize / 2.0];
+            });
+            
+            if (read == 0)
+                write = lame_encode_flush(lame, mp3_buffer, MP3_SIZE);
+            else
+                write = lame_encode_buffer_interleaved(lame, pcm_buffer, read, mp3_buffer, MP3_SIZE);
+            
+            fwrite(mp3_buffer, write, 1, mp3);
+            
+            
+        } while (read != 0);
+        
+        //NSLog(@"%@", [NSString stringWithFormat:@"readIndex: %d b", readIndex]);
+        
+        lame_close(lame);
+        fclose(mp3);
+        fclose(pcm);
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@",[exception description]);
+    }
+    @finally {
+        [self convertMp3Finish];
+//        [self performSelectorOnMainThread:@selector(convertMp3Finish)
+//                               withObject:nil
+//                            waitUntilDone:YES];
+    }
+}
+
+- (void)processPicture:(id)sender
+{
+    if(self.pictureImage) {
+        NSData *data;
+        NSString *fileName;
+
+        //TODO:优化图片尺寸算法
+        UIImage *realImage;
+//        if(image.size.width >= 640.0) {
+//            CGFloat realWidth = 640.0;
+//            CGFloat realHeight = image.size.height * 640.0 / image.size.width;
+//            realImage = [self imageWithImageSimple:image scaledToSize:CGSizeMake(realWidth, realHeight)];
+//        }
+//        else {
+            realImage = self.pictureImage;
+//        }
+
+        if (UIImagePNGRepresentation(realImage)) {
+            //返回为png图像
+            data = UIImagePNGRepresentation(realImage);
+            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"png"];
+        }
+        else {
+            //返回为JPEG图像
+            data = UIImageJPEGRepresentation(realImage, 1.0);
+            fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"jpg"];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            attachmentProcessLabel.text = [NSString stringWithFormat:@"上传中:%0.f%%", 50.0];
+            [processBar setRealProgress: 0.5f];
+        });
+        
+        //保存到阿里云盘
+        //self.title = @"图片上传中...";
+        NSMutableDictionary *context = [NSMutableDictionary dictionary];
+        [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
+        [context setObject:@"picture" forKey:@"attachment"];
+        uploadPicRequest = [enterpriseService createTaskAttach:data
+                                   fileName:fileName
+                                       type:@"picture"
+                                    context:context
+                                   delegate:self];
+        uploadPicRequest.timeOutSeconds = 10000;
+        uploadPicRequest.uploadProgressDelegate = self;
+    }
+}
+
+- (NSInteger) getFileSize:(NSString*) path
+{
+    NSFileManager * filemanager = [[[NSFileManager alloc]init] autorelease];
+    if([filemanager fileExistsAtPath:path]){
+        NSDictionary * attributes = [filemanager attributesOfItemAtPath:path error:nil];
+        NSNumber *theFileSize;
+        if ( (theFileSize = [attributes objectForKey:NSFileSize]) )
+            return  [theFileSize intValue];
+        else
+            return -1;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+- (void) convertMp3Finish
+{
+    NSLog(@"convertMp3Finish");
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        attachmentProcessLabel.text = @"上传中";
+    });
+    
+    NSString *mp3FileName = @"mp3File";
+    mp3FileName = [mp3FileName stringByAppendingString:@".mp3"];
+    NSString *mp3FilePath = [[NSHomeDirectory() stringByAppendingFormat:@"/Documents/"] stringByAppendingPathComponent:mp3FileName];
+    
+    NSLog(@"mp3FilePath:%@", mp3FilePath);
+    
+    NSData *data = [NSData dataWithContentsOfFile:mp3FilePath];
+    
+    NSString *fileName = [NSString stringWithFormat:@"%@.%@", [Tools NSDateToNSFileString:[NSDate date]], @"mp3"];
+    
+    
+    NSMutableDictionary *context = [NSMutableDictionary dictionary];
+    [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
+    [context setObject:@"audio" forKey:@"attachment"];
+    uploadAudioRequest = [enterpriseService createTaskAttach:data
+                                                    fileName:fileName
+                                                        type:@"attachment"
+                                                     context:context
+                                                    delegate:self];
+    uploadAudioRequest.timeOutSeconds = 10000;
+    uploadAudioRequest.uploadProgressDelegate = self;
+}
+
+- (void)setProgress:(float)newProgress
+{
+    attachmentProcessLabel.text = [NSString stringWithFormat:@"上传中:%0.f%%", 50.0 + newProgress * 100 / 2.0];
+    
+    [processBar setRealProgress: 0.5f + newProgress / 2.0];
+}
+
 #pragma mark - TextViewDelegate
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -512,6 +817,13 @@
         [self performSelector:@selector(searchUser:) withObject:nil afterDelay:0.5];
     }
     return YES;
+}
+
+#pragma mark - AudioViewDelegate
+
+- (void)returnOperation
+{
+    [self startProcessAudio];
 }
 
 #pragma mark - ASIHTTPRequestDelgate
@@ -523,42 +835,7 @@
     NSDictionary *userInfo = request.userInfo;
     NSString *requestType = [userInfo objectForKey:REQUEST_TYPE];
     
-    if([requestType isEqualToString:@"CreateTaskAttach"])
-    {
-        //关闭相册界面
-        [pickerController dismissModalViewControllerAnimated:YES];
-        
-        if(request.responseStatusCode == 200)
-        {
-            textTitleLabel.text = @"创建任务";
-            
-            NSDictionary *dict = [[request responseString] JSONValue];
-            if(dict)
-            {
-                NSNumber *state = [dict objectForKey:@"state"];
-                
-                if(state == [NSNumber numberWithInt:0]) {
-                    NSMutableDictionary *data = [dict objectForKey:@"data"];
-                    NSString *pictureId = [data objectForKey:@"attachmentId"];
-                    NSString *pictureFileName = [data objectForKey:@"fileName"];
-                    NSString *pictureUrl = [data objectForKey:@"url"];
-                    NSString *pictureThumbUrl = [data objectForKey:@"thumbUrl"];
-
-                    [taskDetailDict setObject:pictureId forKey:@"pictureId"];
-                    [taskDetailDict setObject:pictureFileName forKey:@"pictureFileName"];
-                    [taskDetailDict setObject:pictureUrl forKey:@"pictureUrl"];
-                    [taskDetailDict setObject:pictureThumbUrl forKey:@"pictureThumbUrl"];
-
-                    [pictureImageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
-                }
-            }
-        }
-        else
-        {
-            [Tools failed:self.HUD];
-        }
-    }
-    else if([requestType isEqualToString:@"NewTask"]) {
+    if([requestType isEqualToString:@"NewTask"]) {
         [Tools close:self.HUD];
         if(request.responseStatusCode == 200) {
             [self goBack:nil];
@@ -605,6 +882,62 @@
             [Tools failed:self.HUD];
         }
     }
+    else if([requestType isEqualToString:@"CreateTaskAttach"])
+    {
+        if(request.responseStatusCode == 200)
+        {
+            NSString *type = [request.userInfo objectForKey:@"attachment"];
+             
+            NSDictionary *dict = [[request responseString] JSONValue];
+            if(dict)
+            {
+                NSNumber *state = [dict objectForKey:@"state"];
+                if(state == [NSNumber numberWithInt:0]) {
+                    if([type isEqualToString:@"audio"]) {
+                        NSNumber *state = [dict objectForKey:@"state"];
+                        
+                        if(state == [NSNumber numberWithInt:0]) {
+                            NSMutableDictionary *data = [dict objectForKey:@"data"];
+                            
+                            NSString *attachmentId = [data objectForKey:@"attachmentId"];
+                            NSString *attachmentFileName = [data objectForKey:@"fileName"];
+                            NSString *attachmentUrl = [data objectForKey:@"url"];
+
+                            [taskDetailDict setObject:attachmentId forKey:@"attachmentId"];
+                            [taskDetailDict setObject:attachmentFileName forKey:@"attachmentFileName"];
+                            [taskDetailDict setObject:attachmentUrl forKey:@"attachmentUrl"];
+                        }
+                    }
+                    else if([type isEqualToString:@"picture"]) {
+                        NSMutableDictionary *data = [dict objectForKey:@"data"];
+                        NSString *pictureId = [data objectForKey:@"attachmentId"];
+                        NSString *pictureFileName = [data objectForKey:@"fileName"];
+                        NSString *pictureUrl = [data objectForKey:@"url"];
+                        NSString *pictureThumbUrl = [data objectForKey:@"thumbUrl"];
+
+                        [taskDetailDict setObject:pictureId forKey:@"pictureId"];
+                        [taskDetailDict setObject:pictureFileName forKey:@"pictureFileName"];
+                        [taskDetailDict setObject:pictureUrl forKey:@"pictureUrl"];
+                        [taskDetailDict setObject:pictureThumbUrl forKey:@"pictureThumbUrl"];
+
+//                        [pictureImageView setImageWithURL:[NSURL URLWithString:pictureThumbUrl]];
+                    }
+                }
+            }
+            
+            attachmentProcessLabel.text = @"上传完成";
+
+            processing = NO;
+            
+            [self performSelector:@selector(processFinished:) withObject:nil afterDelay:0.7];
+        }
+        else
+        {
+            attachmentProcessLabel.text = @"上传失败";
+            [processBar setRealProgress:0.0f];
+            attachmentBtn.userInteractionEnabled = YES;
+        }
+    }
 }
 
 - (void)searchUser:(id)sender
@@ -622,6 +955,15 @@
     [self.navigationController pushViewController:searchUserController animated:NO];
 }
 
+- (void)processFinished:(id)sender
+{
+    attachmentProcessLabel.hidden = YES;
+    processBar.hidden = YES;
+    attachmentBtn.alpha = 1.0f;
+    attachmentBtn.userInteractionEnabled = YES;
+    attachmentView.userInteractionEnabled = YES;
+}
+
 #pragma Delegate method UIImagePickerControllerDelegate
 
 //- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -634,39 +976,49 @@
     
     if (image != nil) {
         
-        NSData *data;
-        NSString *fileName;
-        if (UIImagePNGRepresentation(image)) {
-            //返回为png图像
-            data = UIImagePNGRepresentation(image);
-            fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"png"];
-        }
-        else {
-            //返回为JPEG图像
-            data = UIImageJPEGRepresentation(image, 1.0);
-            fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"jpg"];
-        }
-        //保存到阿里云盘
-        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
-        [pickerController.view addSubview:self.HUD];
-        [self.HUD show:YES];
-        self.HUD.labelText = @"正在上传图片";
-        NSMutableDictionary *context = [NSMutableDictionary dictionary];
-        [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
-        uploadPicRequest = [enterpriseService createTaskAttach:data
-                                   fileName:fileName
-                                       type:@"picture"
-                                    context:context
-                                   delegate:self];
-        uploadPicRequest.timeOutSeconds = 10000;
-        uploadPicRequest.uploadProgressDelegate = self;
+        self.pictureImage = image;
+        
+        [attachmentBtn setBackgroundImage:self.pictureImage forState:UIControlStateNormal];
+        
+        //关闭相册界面
+        [pickerController dismissModalViewControllerAnimated:YES];
+        
+        [self startProcessPicture];
+        
+//        NSData *data;
+//        NSString *fileName;
+//        if (UIImagePNGRepresentation(image)) {
+//            //返回为png图像
+//            data = UIImagePNGRepresentation(image);
+//            fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"png"];
+//        }
+//        else {
+//            //返回为JPEG图像
+//            data = UIImageJPEGRepresentation(image, 1.0);
+//            fileName = [NSString stringWithFormat:@"%@.%@", [Tools stringWithUUID], @"jpg"];
+//        }
+//        //保存到阿里云盘
+//        self.HUD = [[MBProgressHUD alloc] initWithView:pickerController.view];
+//        [pickerController.view addSubview:self.HUD];
+//        [self.HUD show:YES];
+//        self.HUD.labelText = @"正在上传图片";
+//        NSMutableDictionary *context = [NSMutableDictionary dictionary];
+//        [context setObject:@"CreateTaskAttach" forKey:REQUEST_TYPE];
+//        [context setObject:@"picture" forKey:@"attachment"];
+//        uploadPicRequest = [enterpriseService createTaskAttach:data
+//                                   fileName:fileName
+//                                       type:@"picture"
+//                                    context:context
+//                                   delegate:self];
+//        uploadPicRequest.timeOutSeconds = 10000;
+//        uploadPicRequest.uploadProgressDelegate = self;
     }
 }
 
-- (void)setProgress:(float)newProgress
-{
-    self.HUD.labelText = [NSString stringWithFormat:@"正在上传图片：%0.f%%", newProgress * 100];
-}
+//- (void)setProgress:(float)newProgress
+//{
+//    self.HUD.labelText = [NSString stringWithFormat:@"正在上传图片：%0.f%%", newProgress * 100];
+//}
 
 #pragma mark - keyboard
 

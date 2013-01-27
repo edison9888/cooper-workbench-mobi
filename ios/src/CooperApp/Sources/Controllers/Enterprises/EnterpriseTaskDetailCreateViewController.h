@@ -6,27 +6,21 @@
 //  Copyright (c) 2012年 codesharp. All rights reserved.
 //
 
-//#import "WebViewController.h"
-//#import "BaseNavigationController.h"
 #import "Base2ViewController.h"
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "GCPlaceholderTextView.h"
-//#import "CommentTextField.h"
-//#import "PriorityButton.h"
-//#import "DateLabel.h"
 #import "DatePickerLabel.h"
-//#import "BodyTextView.h"
 #import "CooperService/EnterpriseService.h"
-//#import "SEFilterControl.h"
 #import "PriorityOptionView.h"
 #import "EnterpriseTaskCreateDelegate.h"
 #import "CustomButton.h"
 #import "FillLabelView.h"
 #import "SearchUserViewController.h"
-//#import "CodesharpSDK/JSCoreTextView.h"
+#import "KOAProgressBar.h"
+#import "AudioViewController.h"
 
-@interface EnterpriseTaskDetailCreateViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DatePickerLabelDelegate, EnterpriseTaskCreateDelegate, ASIProgressDelegate>
+@interface EnterpriseTaskDetailCreateViewController : Base2ViewController<UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DatePickerLabelDelegate, EnterpriseTaskCreateDelegate, ASIProgressDelegate, AudioViewDelegate>
 {
     GCPlaceholderTextView *subjectTextView;
     PriorityOptionView *priorityOptionView;
@@ -44,10 +38,23 @@
     UIImagePickerController *pickerController;
 
     ASIHTTPRequest *uploadPicRequest;
+    
+    KOAProgressBar *processBar;
+    
+    NSThread *processThread;
+    
+    UIButton *attachmentBtn;
+    UIView *attachmentView;
+    UILabel *attachmentProcessLabel;
+    dispatch_queue_t processAudioQueue;
+    ASIHTTPRequest *uploadAudioRequest;
+    
+    BOOL processing;
 }
 
 @property (retain, nonatomic) NSMutableDictionary *taskDetailDict;
 @property (retain, nonatomic) UIViewController *prevViewController;
 @property (assign, nonatomic) int createType;
+@property (retain, nonatomic) UIImage *pictureImage;
 
 @end

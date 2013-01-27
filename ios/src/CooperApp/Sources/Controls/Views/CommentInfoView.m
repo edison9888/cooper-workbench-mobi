@@ -62,7 +62,7 @@
     contentLabel.backgroundColor = [UIColor clearColor];
     contentLabel.textColor = [UIColor colorWithRed:102.0/255 green:102.0/255 blue:102.0/255 alpha:1];
     contentLabel.text = content;
-    contentLabel.font = [UIFont boldSystemFontOfSize:13];
+    contentLabel.font = [UIFont systemFontOfSize:13];
     CGSize contentLabelSize = [contentLabel.text sizeWithFont:contentLabel.font
                                             constrainedToSize:CGSizeMake(self.bounds.size.width - 40, 10000)
                                                 lineBreakMode:UILineBreakModeWordWrap];

@@ -100,6 +100,8 @@
 		1878F8F416B3E0B1002EB553 /* tableview_background_ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1878F8F216B3E0B1002EB553 /* tableview_background_ipad@2x.png */; };
 		1878F8F716B3E18D002EB553 /* detail_navPanel_ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1878F8F516B3E18D002EB553 /* detail_navPanel_ipad.png */; };
 		1878F8F816B3E18D002EB553 /* detail_navPanel_ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1878F8F616B3E18D002EB553 /* detail_navPanel_ipad@2x.png */; };
+		187E887E16B4C2CD00D2CCC8 /* koaGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E887B16B4C2CD00D2CCC8 /* koaGradient.m */; };
+		187E887F16B4C2CD00D2CCC8 /* KOAProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E887D16B4C2CD00D2CCC8 /* KOAProgressBar.m */; };
 		18893142169529E100694FF3 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 1889313E169529E100694FF3 /* Default.png */; };
 		18893143169529E100694FF3 /* Default~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1889313F169529E100694FF3 /* Default~ipad.png */; };
 		18893144169529E100694FF3 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 18893140169529E100694FF3 /* icon.png */; };
@@ -502,6 +504,10 @@
 		1878F8F516B3E18D002EB553 /* detail_navPanel_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detail_navPanel_ipad.png; sourceTree = "<group>"; };
 		1878F8F616B3E18D002EB553 /* detail_navPanel_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_navPanel_ipad@2x.png"; sourceTree = "<group>"; };
 		187E6E9F15E3532A00A85ECF /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		187E887A16B4C2CD00D2CCC8 /* koaGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = koaGradient.h; sourceTree = "<group>"; };
+		187E887B16B4C2CD00D2CCC8 /* koaGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = koaGradient.m; sourceTree = "<group>"; };
+		187E887C16B4C2CD00D2CCC8 /* KOAProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KOAProgressBar.h; sourceTree = "<group>"; };
+		187E887D16B4C2CD00D2CCC8 /* KOAProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KOAProgressBar.m; sourceTree = "<group>"; };
 		1889313E169529E100694FF3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		1889313F169529E100694FF3 /* Default~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default~ipad.png"; sourceTree = "<group>"; };
 		18893140169529E100694FF3 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -1094,6 +1100,18 @@
 				18752B2416958AFB0058F614 /* uncomplete.png */,
 			);
 			path = PersonalAndTeam;
+			sourceTree = "<group>";
+		};
+		187E887916B4C2CD00D2CCC8 /* KOAProgressBar */ = {
+			isa = PBXGroup;
+			children = (
+				187E887A16B4C2CD00D2CCC8 /* koaGradient.h */,
+				187E887B16B4C2CD00D2CCC8 /* koaGradient.m */,
+				187E887C16B4C2CD00D2CCC8 /* KOAProgressBar.h */,
+				187E887D16B4C2CD00D2CCC8 /* KOAProgressBar.m */,
+			);
+			name = KOAProgressBar;
+			path = ../../lib/KOAProgressBar;
 			sourceTree = "<group>";
 		};
 		1889313D169529E100694FF3 /* Images */ = {
@@ -1699,6 +1717,7 @@
 		EE87F78C15A3F50100DA8E7F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				187E887916B4C2CD00D2CCC8 /* KOAProgressBar */,
 				18CC92C916AAE64100249440 /* SVPullToRefresh */,
 				6A82DC2716A3972900EBBFA7 /* MWPhotoBrowser */,
 				188932101695452900694FF3 /* SBJSON */,
@@ -2156,6 +2175,8 @@
 				18CC92CF16AAE64100249440 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				18CC92D016AAE64100249440 /* UIScrollView+SVPullToRefresh.m in Sources */,
 				6A6B6CC916B00EEE009B82A5 /* JASidePanelController.m in Sources */,
+				187E887E16B4C2CD00D2CCC8 /* koaGradient.m in Sources */,
+				187E887F16B4C2CD00D2CCC8 /* KOAProgressBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
