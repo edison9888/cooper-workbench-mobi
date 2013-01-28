@@ -49,9 +49,9 @@
 
     enterpriseService = [[EnterpriseService alloc] init];
     
-    
-    
     [self initContentView];
+
+    [self performSelector:@selector(subjectTextViewClick:) withObject:nil afterDelay:0];
 }
 
 - (void)viewDidUnload
@@ -66,7 +66,7 @@
     viewCenter = self.view.center;
     NSLog("viewCenter: %f, %f",self.view.center.x, self.view.center.y);
     
-    [self performSelector:@selector(subjectTextViewClick:) withObject:nil afterDelay:0];
+//    [self performSelector:@selector(subjectTextViewClick:) withObject:nil afterDelay:0];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -509,6 +509,8 @@
 - (void)chooseUser:(id)sender
 {
     NSLog(@"chooseAssigneeUser");
+
+    [subjectTextView resignFirstResponder];
     
     if(self.navigationController.navigationBar.hidden == YES) {
         self.navigationController.navigationBar.hidden = NO;
